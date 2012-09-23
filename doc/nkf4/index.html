@@ -1,0 +1,463 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title></title><link rel="stylesheet" type="text/css" href="style.css"><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"><link rel="home" href="#d0e1" title=""><link rel="next" href="#d0e2" title="Nika Framework 3 (NKF 3) Documentation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><script src="logic.js" type="text/javascript"></script><div class="book"><div class="titlepage"><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="article"><a href="#d0e2">Nika Framework 3 (NKF 3) Documentation</a></span></dt><dd><dl><dt><span class="section"><a href="#d0e22">Intro</a></span></dt><dt><span class="section"><a href="#d0e29">Terms</a></span></dt><dt><span class="section"><a href="#d0e69">Features</a></span></dt><dt><span class="section"><a href="#d0e88">Structure</a></span></dt><dt><span class="section"><a href="#d0e228">Structure - Details Overview</a></span></dt><dt><span class="section"><a href="#d0e279">Build System</a></span></dt><dt><span class="section"><a href="#d0e385">Component Structure</a></span></dt><dt><span class="section"><a href="#d0e430">First Application</a></span></dt><dt><span class="section"><a href="#d0e593">JSON Page Data</a></span></dt></dl></dd></dl></div><div class="list-of-figures"><p><b>List of Figures</b></p><dl><dt>1. <a href="#d0e105">Base Framework Structure</a></dt><dt>2. <a href="#d0e112">Detailed Framework Structure</a></dt><dt>3. <a href="#d0e148">Base Framework Structure</a></dt><dt>4. <a href="#d0e155">Component Structure</a></dt><dt>5. <a href="#d0e211">Detailed Component Structure</a></dt></dl></div><div class="article" title="Nika Framework 3 (NKF 3) Documentation"><div class="titlepage"><div><div><h2 class="title"><a name="d0e2"></a>Nika Framework 3 (NKF 3) Documentation</h2></div><div><div class="author"><h3 class="author"><span class="firstname">Alex</span> <span class="surname">Ivasyuv</span></h3></div></div><div><p class="copyright">Copyright &copy; 2012 Alex Ivasyuv</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#d0e22">Intro</a></span></dt><dt><span class="section"><a href="#d0e29">Terms</a></span></dt><dt><span class="section"><a href="#d0e69">Features</a></span></dt><dt><span class="section"><a href="#d0e88">Structure</a></span></dt><dt><span class="section"><a href="#d0e228">Structure - Details Overview</a></span></dt><dt><span class="section"><a href="#d0e279">Build System</a></span></dt><dt><span class="section"><a href="#d0e385">Component Structure</a></span></dt><dt><span class="section"><a href="#d0e430">First Application</a></span></dt><dt><span class="section"><a href="#d0e593">JSON Page Data</a></span></dt></dl></div><p>
+            This document is official documentation for Nika Framework 3.
+        </p><div class="section" title="Intro"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e22"></a>Intro</h2></div></div></div><p>
+                "Nika Framework" is Architectural Front-End JavaScript Framework. Unlike others, it archives different
+                goals.
+                It's not UI framework, as it's doesn't provide any UI components and widgets.
+                It's also doesn't MVC one, as it has different architecture. This framework allows you to use any UI
+                components as you wish,
+                and use any JavaScript libraries. All that it provide you - it's powerful architectural style.
+            </p><p>
+                So what is NKF? It's widget based framework, that allows you to build complex application based on
+                widgets.
+            </p></div><div class="section" title="Terms"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e29"></a>Terms</h2></div></div></div><div class="variablelist"><dl><dt><span class="term">UI</span></dt><dd><p>
+                            User Interface
+                        </p></dd><dt><span class="term">NKF</span></dt><dd><p>
+                            Nika Framework
+                        </p></dd><dt><span class="term">Abstract Component</span></dt><dd><p>
+                            Some type of the following one: layout, page, widget, component
+                        </p></dd><dt><span class="term">Layout</span></dt><dd><p>
+                            Page layout correspond for components placement
+                        </p></dd><dt><span class="term">Page</span></dt><dd><p>
+                            Component that has predefined components placement
+                        </p></dd><dt><span class="term">Widget</span></dt><dd><p>
+                            Some UI part on page that corresponds some logical entity
+                        </p></dd></dl></div></div><div class="section" title="Features"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e69"></a>Features</h2></div></div></div><p>
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+                        Full AJAX. All page changing - only via AJAX
+                    </li><li class="listitem">
+                        One request to server per page. In this request you get all needed data to your components
+                    </li><li class="listitem">
+                        Event Driven Development (EDD). All Components are absolutely independed and communicate each
+                        other
+                        via events.
+                    </li><li class="listitem">
+                        Components reusable. You can use a few times on some page the some component with different
+                        view/functionality/etc...
+                    </li><li class="listitem">
+                        Two files on output: merged.js and merged.css. For production mode merged.jsz and merged.cssz.
+                    </li><li class="listitem">
+                        XTML, SASS, SVG support.
+                    </li></ul></div><p>
+            </p></div><div class="section" title="Structure"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e88"></a>Structure</h2></div></div></div><p>
+                All Framework divided into two parts:
+                <span class="emphasis"><em>common</em></span>
+                and<span class="emphasis"><em>impl</em></span>.
+                In
+                <span class="emphasis"><em>common</em></span>
+                we have framework core, and in
+                <span class="emphasis"><em>impl</em></span>
+                - user implementation.
+
+                </p><div class="figure"><a name="d0e105"></a><p class="title"><b>Figure&nbsp;1.&nbsp;Base Framework Structure</b></p><div class="figure-contents"><div><img src="img/base-structure.png" alt="Base Framework Structure"></div></div></div><p><br class="figure-break">
+            </p><p>
+                </p><div class="figure"><a name="d0e112"></a><p class="title"><b>Figure&nbsp;2.&nbsp;Detailed Framework Structure</b></p><div class="figure-contents"><div><img src="img/detailed-structure.png" alt="Detailed Framework Structure"></div></div></div><p><br class="figure-break">
+
+                In
+                <span class="emphasis"><em>core</em></span>
+                we have the following packages:
+                <span class="emphasis"><em>components</em></span>,<span class="emphasis"><em>network</em></span>,<span class="emphasis"><em>storage</em></span>.
+
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                            Components response for all types of components: layout, page, widget and component.
+                        </p></li><li class="listitem"><p>
+                            Network response to support different types of network, in online and offline mode.
+                        </p></li><li class="listitem"><p>
+                            Storage - saves data into one of available storage type: localStorage, cookies, memory.
+                        </p></li></ul></div><p>
+
+            </p><p>
+                In
+                <span class="emphasis"><em>impl</em></span>
+                we have
+                <span class="emphasis"><em>components</em></span>
+                package, that includes all types of components.
+
+                </p><div class="figure"><a name="d0e148"></a><p class="title"><b>Figure&nbsp;3.&nbsp;Base Framework Structure</b></p><div class="figure-contents"><div><img src="img/impl-structure.png" alt="Base Framework Structure"></div></div></div><p><br class="figure-break">
+            </p><p>
+                Each component has predefined structure for JavaScript, XHTML, CSS/SASS, SVG files and images.
+
+                </p><div class="figure"><a name="d0e155"></a><p class="title"><b>Figure&nbsp;4.&nbsp;Component Structure</b></p><div class="figure-contents"><div><img src="img/component-structure.png" alt="Component Structure"></div></div></div><p><br class="figure-break">
+            </p><p>
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                            <span class="emphasis"><em>JavaScript</em></span>
+                            files should locate under
+                            <span class="emphasis"><em>logic</em></span>
+                            folder.
+                        </p></li><li class="listitem"><p>
+                            <span class="emphasis"><em>XHTML</em></span>
+                            files - under
+                            <span class="emphasis"><em>dom</em></span>
+                            folder.
+                        </p></li><li class="listitem"><p>
+                            <span class="emphasis"><em>SVG</em></span>
+                            files - under
+                            <span class="emphasis"><em>svg</em></span>
+                            folder.
+                        </p></li><li class="listitem"><p>
+                            <span class="emphasis"><em>CSS/SASS</em></span>
+                            files - under
+                            <span class="emphasis"><em>style</em></span>
+                            folder.
+                        </p></li><li class="listitem"><p>
+                            <span class="emphasis"><em>Image</em></span>
+                            files - under
+                            <span class="emphasis"><em>img</em></span>
+                            folder.
+                        </p></li></ul></div><p>
+            </p><p>
+                </p><div class="figure"><a name="d0e211"></a><p class="title"><b>Figure&nbsp;5.&nbsp;Detailed Component Structure</b></p><div class="figure-contents"><div><img src="img/detailed-component-structure.png" alt="Detailed Component Structure"></div></div></div><p><br class="figure-break">
+
+                </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>Please note, that<span class="emphasis"><em>dom</em></span>,
+                    <span class="emphasis"><em>svg</em></span>
+                    and
+                    <span class="emphasis"><em>img</em></span>
+                    folder can have a subfolders. Later we will explain how to access them.
+                </div><p>
+            </p></div><div class="section" title="Structure - Details Overview"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e228"></a>Structure - Details Overview</h2></div></div></div><p>Lets considering detailed, why we need these folders and how we can use files from them.</p><p>
+                <span class="emphasis"><em>dom</em></span>
+                folder used to store your own xhtml piece of code. Later you can access them via inherited method
+                <span class="emphasis"><em>_getComponent</em></span>.
+
+                </p><pre class="programlisting">
+    <strong class="hl-keyword">this</strong>._getComponent();
+                </pre><p>
+
+                Using method without any parameters returns
+                <code class="filename">dom/index.xhtml</code>
+                by default.
+
+                </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+                    Please note, that by default component type is xhtml files. How to access another types - please
+                    read
+                    below.
+                </div><p>
+
+                To access files in subfolder
+                you need to pass
+                <code class="code">componentPartName</code>
+                key.
+
+                </p><pre class="programlisting">
+    <strong class="hl-keyword">this</strong>._getComponent({
+     componentPartName: <strong class="hl-string"><em style="color:red">"items/controlItem"</em></strong>
+    });
+                </pre><p>
+
+                will returns<code class="filename">dom/items/controlItem.xhtml</code>.
+
+                If you what to access for example you
+                <span class="emphasis"><em>svg</em></span>
+                files, you need to pass
+                <code class="code">componentPart</code>
+                key.
+
+                </p><pre class="programlisting">
+    <strong class="hl-keyword">this</strong>._getComponent({
+     componentPart: <strong class="hl-string"><em style="color:red">"svg"</em></strong>,
+     componentPartName: <strong class="hl-string"><em style="color:red">"items/controlItem"</em></strong>
+    });
+                </pre><p>
+
+                in this case it returns you<code class="filename">svg/items/controlItem.svg</code>.
+            </p><p>
+                </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+                    Please note, that when you access your components with
+                    <code class="code">_getComponent</code>
+                    method, it returns it jQuery-wrapped.
+                    It means, that you don't need to wrap it again, you can use all jQuery methods on it right after
+                    accessing.
+                </div><p>
+            </p></div><div class="section" title="Build System"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e279"></a>Build System</h2></div></div></div><p>To understand how later all files from component build, lets considering how build system works.
+            </p><p>
+                <span class="emphasis"><em>Build System</em></span>
+                relay on
+                <code class="filename">impl/conf/include.list</code>
+                file, where you point files that should be included.
+                In most cases it's only JavaScript files, and could be one sass file, that include others.
+
+                </p><pre class="programlisting">
+
+    impl/extra/style/main.scss
+
+    impl/extra/js/jquery.js
+    impl/extra/js/plugins/jquery.attributes.js
+    impl/extra/js/plugins/jquery.namespace.js
+    impl/extra/js/plugins/string.format.js
+    impl/extra/js/plugins/jquery.cookie.js
+
+    impl/extra/js/base64.js
+
+    common/network/NetworkAbstract.js
+    common/network/NetworkOnline.js
+    common/network/NetworkManager.js
+
+    common/storage/StorageAbstract.js
+    common/storage/MemoryStorage.js
+    common/storage/CookieStorage.js
+    common/storage/LocalStorage.js
+    common/storage/StorageManager.js
+
+    .....
+
+                </pre><p>
+
+                This file need due to right order JavaScript files includes. As for example, a.js could relay on b.js,
+                so
+                b.js should be included first.
+            </p><p>
+                </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+                            So, first Build System runs over
+                            <code class="filename">include.list</code>
+                            and include all files that mentioned there.
+                        </p></li><li class="listitem"><p>
+                            Next, it runs over
+                            <code class="filename">impl</code>
+                            folder and pick up all<span class="emphasis"><em>.xhtml</em></span>,<span class="emphasis"><em>.svg</em></span>,
+                            <span class="emphasis"><em>.css</em></span>
+                            and
+                            <span class="emphasis"><em>.css</em></span>
+                            files
+                        </p></li><li class="listitem"><p>
+                            Than, all scss files convert to css files.
+                        </p></li><li class="listitem"><p>
+                            All images pointed in .xhtml and .css files converted to
+                            <code class="code">data:base64</code>
+                            protocol.
+                        </p></li><li class="listitem"><p>
+                            All .xhtml files merged into hashmap and available via global variable
+                            <code class="code">__dom__</code>
+                            </p><div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note</h3>
+                                You don't have to access that variable directly. Use
+                                <code class="code">_getComponent</code>
+                                method instead.
+                            </div><p>
+                        </p></li><li class="listitem"><p>
+                            And in the end - generates two files:
+                            <code class="filename">merged.css</code>
+                            and
+                            <code class="filename">merged.js</code>
+                        </p></li></ul></div><p>
+            </p><p>
+                Build System works in two modes:
+                <span class="emphasis"><em>development</em></span>
+                and<span class="emphasis"><em>production</em></span>.
+                By default it runs in development mode, but if you pass second parameter as
+                <span class="emphasis"><em>production</em></span>
+                it will create
+                compressed versions of .js and .css, like .jsz and .cssz.
+            </p><p>
+                Build System located in
+                <code class="filename">build</code>
+                folder and written in NodeJS.
+            </p><pre class="screen">
+                <code class="prompt">$</code> <strong class="userinput"><code>node build.js # runs in development mode</code></strong>
+            </pre><pre class="screen">
+                <code class="prompt">$</code> <strong class="userinput"><code>node build.js production # runs in production mode</code></strong>
+            </pre></div><div class="section" title="Component Structure"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e385"></a>Component Structure</h2></div></div></div><p>
+                Lets start with JavaScript structure.
+
+                </p><pre class="programlisting">
+    (<strong class="hl-keyword">function</strong>() {
+      <strong class="hl-string"><em style="color:red">"use strict"</em></strong>;
+
+      <strong class="hl-keyword">var</strong> ns = <strong class="hl-string"><em style="color:red">"ks.nkf3.impl.components.layout"</em></strong>;
+      <strong class="hl-keyword">var</strong> self = $.namespace(ns);
+
+      extendClass(Login, ks.nkf3.common.components.component.LayoutAbstract);
+      Login.className = <strong class="hl-string"><em style="color:red">"Login"</em></strong>;
+
+      <strong class="hl-keyword">function</strong> Login() {
+        <strong class="hl-keyword">this</strong>.className = Login.className;
+
+        <strong class="hl-keyword">this</strong>.getRenderedDOM = <strong class="hl-keyword">function</strong>() {
+          <strong class="hl-keyword">return</strong> domComponent;
+        };
+
+        <strong class="hl-keyword">function</strong> constructor() {
+          init.call(<strong class="hl-keyword">this</strong>);
+        }
+
+        <strong class="hl-keyword">function</strong> init() {
+        }
+
+        <strong class="hl-keyword">var</strong> domComponent = <strong class="hl-keyword">this</strong>._getComponent();
+
+        constructor.call(<strong class="hl-keyword">this</strong>);
+      }
+
+      $.extend(self, {
+        Login: Login
+      });
+
+    })();</pre><p>
+
+            </p><p>
+                As we can see, each component has to implement appropriate super class. For <span class="emphasis"><em>layout</em></span> it's
+                <span class="emphasis"><em>LayoutAbstract</em></span>, for <span class="emphasis"><em>page</em></span> it's <span class="emphasis"><em>PageAbstract</em></span> and so on...
+            </p><p>
+                Also, we can see that there's a <span class="emphasis"><em>namespace</em></span> using. In out case it's <code class="code">ks.nkf3.impl.components.layout</code>.
+                Each component must be in appropriate namespace.
+            </p><p>
+                <span class="emphasis"><em>className</em></span> using for prevent class names while obfuscare.
+            </p><p>
+                Also, we must to override <code class="code">getRenderedDOM</code> method for each component. This method should return ready <span class="emphasis"><em>DOM</em></span>
+                for component.
+            </p><p>Another it's optional.</p></div><div class="section" title="First Application"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e430"></a>First Application</h2></div></div></div><p>
+                Lets create a sample application, that allows us to understand how NKF works.
+            </p><p>
+                 Lets start from <span class="emphasis"><em>Layout</em></span>. We will use <span class="emphasis"><em>login</em></span> layout. You can call it whatever you want.
+                In our case, it'll responses for showing <span class="emphasis"><em>header</em></span> and <span class="emphasis"><em>footer</em></span>.
+            </p><p>
+                Create in <code class="filename">impl/components/layout</code> <code class="filename">Login</code> folder.
+                Inside this folder create three folders: <code class="filename">dom</code>, <code class="filename">style</code>, <code class="filename">login</code>.
+            </p><p>
+                In <code class="filename">logic</code> folder create file called <code class="filename">Login.js</code> with the following content:
+                </p><pre class="programlisting">
+    (<strong class="hl-keyword">function</strong>() {
+      <strong class="hl-string"><em style="color:red">"use strict"</em></strong>;
+
+      <strong class="hl-keyword">var</strong> ns = <strong class="hl-string"><em style="color:red">"ks.nkf3.impl.components.layout"</em></strong>;
+      <strong class="hl-keyword">var</strong> self = $.namespace(ns);
+
+      extendClass(Login, ks.nkf3.common.components.component.LayoutAbstract);
+      Login.className = <strong class="hl-string"><em style="color:red">"Login"</em></strong>;
+
+      <strong class="hl-keyword">function</strong> Login() {
+        <strong class="hl-keyword">this</strong>.className = Login.className;
+
+        <strong class="hl-keyword">this</strong>.getRenderedDOM = <strong class="hl-keyword">function</strong>() {
+          <strong class="hl-keyword">return</strong> domComponent;
+        };
+
+        <strong class="hl-keyword">function</strong> constructor() {
+          init.call(<strong class="hl-keyword">this</strong>);
+        }
+
+        <strong class="hl-keyword">function</strong> init() {
+        }
+
+        <strong class="hl-keyword">var</strong> domComponent = <strong class="hl-keyword">this</strong>._getComponent();
+
+        constructor.call(<strong class="hl-keyword">this</strong>);
+      }
+
+      $.extend(self, {
+        Login: Login
+      });
+
+    })();
+                </pre><p>
+                In fact, this file do anything but returns <span class="emphasis"><em>DOM</em></span> for <span class="emphasis"><em>Login</em></span> layout.
+            </p><p>
+                Now, lets create <span class="emphasis"><em>DOM</em></span> for <span class="emphasis"><em>Login</em></span>. For that, create <code class="filename">dom/index.xhtml</code> file
+                with the following content:
+
+                </p><pre class="programlisting">
+    
+    &lt;div&gt;
+        &lt;header&gt;
+            &lt;div data-nkf-component-type="widget" data-nkf-component-name="Header"&gt;&lt;/div&gt;
+        &lt;/header&gt;
+
+        &lt;section&gt;&lt;/section&gt;
+
+        &lt;footer&gt;
+            &lt;div data-nkf-component-type="widget" data-nkf-component-name="Footer"&gt;&lt;/div&gt;
+        &lt;/footer&gt;
+    &lt;/div&gt;
+    
+                </pre><p>
+                Please pay attention, that we use <span class="emphasis"><em>data-nkf-component-*</em></span> attributes. Due to them, we define
+                what components will be use.
+                <code class="code">data-nkf-component-type</code> - corresponds for component type, e.g. <span class="emphasis"><em>layout</em></span>, <span class="emphasis"><em>page</em></span>,
+                <span class="emphasis"><em>widget</em></span>, <span class="emphasis"><em>component</em></span>.
+                <code class="code">data-nkf-component-name</code> - component name.
+            </p><p>
+                Please note, that we have <code class="code">section</code> tag. It required, as in this tag will be written page.
+            </p><p>
+                Optionally you can create a style for component in <code class="filename">style</code> folder.
+            </p><p>
+                So, when framework will render this layout, it'll always show <span class="emphasis"><em>header</em></span> and <span class="emphasis"><em>footer</em></span>
+                even when you will change content. As all that pointed in layout will never change, until you change layout.
+            </p><p>
+                In same way, you can create a page. The difference is that it has to be inherited from <code class="code">PageAbstract</code>.
+                In <span class="emphasis"><em>DOM</em></span> you can also defined some widgets that has to be shown.
+            </p><p>And in the same manner, you what to create defined widgets. In most cases, actually widgets it's the most complicated components in system.</p><p>
+                Lets considered one:
+                </p><pre class="programlisting">
+    (<strong class="hl-keyword">function</strong>() {
+      <strong class="hl-string"><em style="color:red">"use strict"</em></strong>;
+
+      <strong class="hl-keyword">var</strong> ns = <strong class="hl-string"><em style="color:red">"ks.nkf3.impl.components.widget"</em></strong>;
+      <strong class="hl-keyword">var</strong> self = $.namespace(ns);
+
+      extendClass(Header, ks.nkf3.common.components.component.WidgetAbstract);
+      Header.className = <strong class="hl-string"><em style="color:red">"Header"</em></strong>;
+
+      <strong class="hl-keyword">function</strong> Header() {
+
+        <em class="hl-comment" style="color: silver">// --------------------------------------------------------------------</em>
+        <em class="hl-comment" style="color: silver">// Public methods/variables</em>
+        <em class="hl-comment" style="color: silver">// --------------------------------------------------------------------</em>
+
+        <strong class="hl-keyword">this</strong>.className = Header.className;
+
+        <strong class="hl-keyword">this</strong>.getRenderedDOM = <strong class="hl-keyword">function</strong>() {
+          <strong class="hl-keyword">return</strong> domComponent;
+        };
+
+        <em class="hl-comment" style="color: silver">// --------------------------------------------------------------------</em>
+        <em class="hl-comment" style="color: silver">// Private methods</em>
+        <em class="hl-comment" style="color: silver">// --------------------------------------------------------------------</em>
+
+        <strong class="hl-keyword">function</strong> constructor() {
+          init.call(<strong class="hl-keyword">this</strong>);
+        }
+
+        <strong class="hl-keyword">function</strong> init() {
+          $(<strong class="hl-string"><em style="color:red">"#customer-logo img"</em></strong>, domComponent).attr({
+            src: <strong class="hl-string"><em style="color:red">"/nkf3/impl/extra/img/customers/{customerName}.png"</em></strong>.format({
+              customerName: globalData.main.customerNickName
+            })
+          });
+        }
+
+        <em class="hl-comment" style="color: silver">// --------------------------------------------------------------------</em>
+        <em class="hl-comment" style="color: silver">// Private variables</em>
+        <em class="hl-comment" style="color: silver">// --------------------------------------------------------------------</em>
+
+        <strong class="hl-keyword">var</strong> domComponent = <strong class="hl-keyword">this</strong>._getComponent();
+        <strong class="hl-keyword">var</strong> widgetData = <strong class="hl-keyword">this</strong>._getData();
+
+        <strong class="hl-keyword">var</strong> $ComponentManager = ks.nkf3.common.components.ComponentManager.getInstance();
+        <strong class="hl-keyword">var</strong> globalData = $ComponentManager.getGlobalComponentsData();
+
+        constructor.call(<strong class="hl-keyword">this</strong>);
+      }
+
+      $.extend(self, {
+        Header: Header
+      });
+
+    })();
+                </pre><p>
+
+                This is quite simple widget, that insert into predefined <span class="emphasis"><em>DOM</em></span> customer logo.
+            </p><p>
+                Please paint attention to <code class="code">_getComponent</code> and <code class="code">_getData</code> methods.
+                <code class="code">_getComponent</code> - in this case will get default <span class="emphasis"><em>.xhtml</em></span> file, in our case it's
+                <code class="filename">index.xhtml</code>.
+                But <code class="code">_getData</code> method without any parameters will get data for current widget from <span class="emphasis"><em>JSON</em></span> page file.
+                Now lets move further, and look at <code class="code">$ComponentManager</code> variable. In <span class="emphasis"><em>NKF</em></span> all system variables that refer to
+                core functionality, writes with dollar sight.
+            </p><p>
+                <span class="emphasis"><em>ComponentManager</em></span> - it's class, that manage components render, page loading and other work that should be manage.
+                In this case, we call <span class="emphasis"><em>getGlobalComponentsData</em></span> method to fetch global component data.
+            </p><p>
+
+            </p></div><div class="section" title="JSON Page Data"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e593"></a>JSON Page Data</h2></div></div></div><p>
+
+            </p></div></div></div></body></html>

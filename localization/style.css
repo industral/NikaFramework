@@ -1,0 +1,14 @@
+li {
+    list-style: none;
+    margin: 5px 0;
+}
+
+li:nth-child(odd) {
+    background: #ccc;
+}
+
+ul li label,
+ul li input {
+    display: inline-block;
+    width: 200px;
+}

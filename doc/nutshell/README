@@ -1,0 +1,3 @@
+Download docbook-xsl from http://sourceforge.net/projects/docbook/files/docbook-xsl and unpack it into that folder.
+
+xsltproc --nonet --xinclude build.xsl index.xml

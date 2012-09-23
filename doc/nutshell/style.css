@@ -1,0 +1,98 @@
+a {
+    color: #336699;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+em {
+    font-weight: bold;
+    font-style: normal;
+    background: #eee;
+    border: 1px solid #ddd;
+    padding: 0 4px;
+}
+
+body {
+    background: url("img/bg.png");
+    color: #333333;
+}
+
+.book {
+    width: 1024px;
+    margin: 0 auto;
+    border: 1px solid #ECECE7;
+    border-top: none;
+    border-bottom: none;
+    padding: 10px 30px;
+    background: #fff;
+    box-shadow: 2px 2px 0 rgba(170, 160, 130, 0.5), 4px 4px 0 rgba(200, 190, 165, 0.5);
+}
+
+.note {
+    background: #eee;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+.note h3 {
+    margin: 5px 3px 1em;
+}
+
+.book > .titlepage > hr {
+    display: none;
+}
+
+.toc {
+    float: right;
+    background: #E4EDF7;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.toc + * {
+    clear: both;
+}
+
+.article .toc {
+    display: none;
+}
+
+.programlisting {
+    background: none repeat scroll 0 0 #eee !important;
+    border: 1px solid #CCCCCC;
+    margin: 0 0.5in;
+    padding: 10px;
+}
+
+.command {
+    background: #eee;
+    border: 1px solid #ccc;
+    color: green;
+    display: block;
+    margin: 0 0.5in;
+    padding: 10px;
+}
+
+.command strong {
+    font-family: monospace;
+    font-weight: normal;
+}
+
+code.filename {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 0 4px;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    display: inline-block;
+    /*margin: 0;*/
+}

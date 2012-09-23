@@ -1,0 +1,3 @@
+java -cp lib/saxon.jar:lib/xslthl-2.0.2.jar -Dxslthl.config="file://`pwd`/docbook-xsl/highlighting/xslthl-config.xml" com.icl.saxon.StyleSheet index.xml build.xsl
+
+xsltproc --nonet build.xsl index.xml
