@@ -75,7 +75,13 @@
     var output = nkf.conf.def.hash + (data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName);
 
     if (data.params && $Utils.getObjectSize(data.params)) {
-      output += "|" + $Utils.getSerializeObject(data.params);
+      var preparedData = $Utils.prepareURLObject(data.params);
+
+      if ($Utils.getObjectSize(preparedData)) {
+        var serializedData = $Utils.getSerializeObject(preparedData);
+
+        output += "|" + serializedData;
+      }
     }
 
     hashChangeAllowed = false;

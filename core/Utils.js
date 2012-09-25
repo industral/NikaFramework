@@ -144,10 +144,30 @@
     }
   };
 
+  Utils.prepareURLObject = function(data) {
+    if (data && Utils.getObjectSize(data)) {
+      $.each(data, function(key, value) {
+        if (typeof value === "object") {
+          if (value.delete) {
+            delete data[key];
+          } else {
+            data[key] = value.value;
+          }
+        }
+      });
+
+      return data;
+    }
+  };
+
   Utils.getSerializeObject = function(data) {
     var string = JSON.stringify(data);
 
-    return string.replace(/"(\w+)"\s*:/g, "$1:");
+    if (string) {
+      return string.replace(/"(\w+)"\s*:/g, "$1:");
+    } else {
+      return "";
+    }
   };
 
   Utils.getDeserializedObject = function(data) {
