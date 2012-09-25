@@ -147,7 +147,7 @@
   Utils.prepareURLObject = function(data) {
     if (data && Utils.getObjectSize(data)) {
       $.each(data, function(key, value) {
-        if (typeof value === "object") {
+        if (typeof value === "object" && value._custom) {
           if (value.delete) {
             delete data[key];
           } else {

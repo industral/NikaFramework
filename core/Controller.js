@@ -41,7 +41,7 @@
 
         if (isInit) {
           data.pageName = data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
-          data.params = $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, data.params);
+          data.params = data.clear ? data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, data.params);
 
           Controller.setCurrentPath(data);
 
