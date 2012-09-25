@@ -12,7 +12,9 @@
     function addEventHandler() {
       window.onhashchange = function(e) {
         if (hashChangeAllowed) {
-          $(document).trigger("nkf.core.Controller.load", {
+          $(document).trigger("nkf.core.Controller", {
+            action: "load",
+            actionType: nkf.def.events.type.make,
             pageName: Controller.getNormalizedObject(Controller.getCurrentPath()).pageName,
             params: Controller.getNormalizedObject(Controller.getCurrentPath()).params,
             init: true
@@ -22,28 +24,36 @@
         }
       };
 
-      $(document).bind("{ns}.{className}.load".format({
+      $(document).bind("{ns}.{className}".format({
         ns: ns,
         className: Controller.className
       }), function(e, data) {
-        if (!isInit) {
-          init();
-        }
+        if (data.action === "load" && data.actionType === nkf.def.events.type.make) {
+          if (!isInit) {
+            init();
+          }
 
-        if (!data) {
-          data = {};
-        }
+          if (!data) {
+            data = {};
+          }
 
-        if (isInit) {
-          data.pageName = data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
-          data.params = data.clear ? data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, data.params);
+          if (isInit) {
+            data.pageName = data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
+            data.params = data.clear ? data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, data.params);
 
-          Controller.setCurrentPath(data);
+          $(document).trigger("nkf.core.Controller", {
+            actionType: nkf.def.events.type.is,
+            action: "load",
+            init: data.init
+          });
 
-          if (data.init) {
-            ++historyCounter;
+            Controller.setCurrentPath(data);
 
-            componentManager.load(data);
+            if (data.init) {
+              ++historyCounter;
+
+              componentManager.load(data);
+            }
           }
         }
       });
