@@ -12,16 +12,11 @@
     function addEventHandler() {
       window.onhashchange = function(e) {
         if (hashChangeAllowed) {
-
-//          $(document).trigger("nkf.core.Controller.load", {
-//            pageName: Controller.getNormalizedObject(Controller.getCurrentPath()).pageName,
-//            params: Controller.getNormalizedObject(Controller.getCurrentPath()).params
-//          });
-
-//          componentManager.load({
-//            pageName: Controller.getNormalizedObject(Controller.getCurrentPath()).pageName,
-//            params: Controller.getNormalizedObject(Controller.getCurrentPath()).params,
-//          });
+          $(document).trigger("nkf.core.Controller.load", {
+            pageName: Controller.getNormalizedObject(Controller.getCurrentPath()).pageName,
+            params: Controller.getNormalizedObject(Controller.getCurrentPath()).params,
+            init: true
+          });
         } else {
           hashChangeAllowed = true;
         }
@@ -46,6 +41,8 @@
           Controller.setCurrentPath(data);
 
           if (data.init) {
+            ++historyCounter;
+
             componentManager.load(data);
           }
         }
@@ -105,6 +102,10 @@
     return output;
   };
 
+  Controller.getHistoryCounter = function() {
+    return historyCounter;
+  };
+
   $.extend(self, {
     Controller: Controller
   });
@@ -113,7 +114,9 @@
   var componentManager = new self.components.ComponentManager.getInstance();
   var $Utils = nkf.core.Utils;
 
-  var hashChangeAllowed = true;
+  var hashChangeAllowed = false;
+
+  var historyCounter = -1;
 
   var isInit = false;
 })();
