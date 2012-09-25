@@ -148,7 +148,7 @@
     if (data && Utils.getObjectSize(data)) {
       $.each(data, function(key, value) {
         if (typeof value === "object" && value._custom) {
-          if (value.delete) {
+          if (value.isDelete) {
             delete data[key];
           } else {
             data[key] = value.value;
