@@ -41,11 +41,11 @@
             data.pageName = data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
             data.params = data.clear ? data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, data.params);
 
-          $(document).trigger("nkf.core.Controller", {
-            actionType: nkf.def.events.type.is,
-            action: "load",
-            init: data.init
-          });
+            $(document).trigger("nkf.core.Controller", {
+              actionType: nkf.def.events.type.is,
+              action: "load",
+              init: data.init
+            });
 
             Controller.setCurrentPath(data);
 
@@ -95,7 +95,9 @@
 
     window.location.hash = output;
 
-    hashChangeAllowed = true;
+    setTimeout(function() {
+      hashChangeAllowed = true;
+    }, 100);
   };
 
   Controller.getNormalizedObject = function(url) {
