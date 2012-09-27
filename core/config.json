@@ -10,6 +10,7 @@
         "usePageLoadStandardBehaviour": true,
         "pageURL": "/data/pages",
         "pageNameExtension": "json",
+        "loadingMaskSelector": "#page-loading-mask",
         "def": {
             "xml": {
                 "path": "dom",

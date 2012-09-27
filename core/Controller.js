@@ -11,7 +11,10 @@
 
     function addEventHandler() {
       window.onhashchange = function(e) {
-        if (hashChangeAllowed) {
+//        console.info(previousHash, "!", currentHash, "!", e.newURL, "!", e.oldURL);
+        if ((currentHash !== e.newURL.match(hashPattern)[0])) {
+//          console.warn(previousHash, currentHash, e.newURL, e.oldURL);
+
           $(document).trigger("nkf.core.Controller", {
             action: "load",
             actionType: nkf.def.events.type.make,
@@ -19,8 +22,6 @@
             params: Controller.getNormalizedObject(Controller.getCurrentPath()).params,
             init: true
           });
-        } else {
-          hashChangeAllowed = true;
         }
       };
 
@@ -91,13 +92,10 @@
       }
     }
 
-    hashChangeAllowed = false;
+    previousHash = currentHash;
+    currentHash = output;
 
-    window.location.hash = output;
-
-    setTimeout(function() {
-      hashChangeAllowed = true;
-    }, 100);
+    window.location.hash = currentHash;
   };
 
   Controller.getNormalizedObject = function(url) {
@@ -126,9 +124,12 @@
   var componentManager = new self.components.ComponentManager.getInstance();
   var $Utils = nkf.core.Utils;
 
-  var hashChangeAllowed = false;
+  var hashPattern = new RegExp(nkf.conf.def.hash + ".+", "g");
 
   var historyCounter = -1;
+
+  var currentHash = "";
+  var previousHash = "";
 
   var isInit = false;
 })();

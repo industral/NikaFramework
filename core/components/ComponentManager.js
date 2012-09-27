@@ -317,6 +317,8 @@
         renderScreen(currentComponents);
       }
 
+      (_this.getPreRenderedDOM() || $("body")) .find(nkf.conf.loadingMaskSelector).removeClass(nkf.conf.classes.none);
+
       //TODO: option to not load data
       //TODO: option to add additional params
       //TODO: option to add custom pageName for URL
