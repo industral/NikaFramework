@@ -68,7 +68,7 @@
     };
 
     this.localize = function(inputData) {
-      inputData.lang = inputData.lang || $.cookie("lang");
+      inputData.lang = inputData.lang || $.cookie("lang") || "en";
 
       if (inputData.lang !== "en") {
 
