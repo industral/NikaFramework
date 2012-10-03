@@ -24,7 +24,12 @@
 
       dom.attr(attr);
 
-      params.dom ? $(nkf.conf.render.layout.selector, params.dom).append(dom) : $ComponentManager.setPreRenderedDOM(dom);
+      if (params.dom) {
+        params.dom.find(nkf.conf.render.layout.selector).contents().detach();
+        params.dom.find(nkf.conf.render.layout.selector).append(dom);
+      } else {
+        $ComponentManager.setPreRenderedDOM(dom);
+      }
 
       return dom;
     };

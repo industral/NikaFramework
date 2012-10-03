@@ -191,6 +191,12 @@
     return count;
   };
 
+  Utils.os =  {
+  };
+
+  Utils.os.win = navigator.platform.match(/win/i);
+  Utils.os.mac = navigator.platform.match(/mac/i);
+
   $.extend(self, {
     Utils: Utils
   });

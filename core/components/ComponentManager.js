@@ -13,8 +13,6 @@
     addEventsHandler();
 
     this.load = function(data) {
-      preRenderedDOM = null;
-
       userSettings = getSettings();
       getData(data);
     };
@@ -70,24 +68,31 @@
     };
 
     this.localize = function(inputData) {
+      inputData.lang = inputData.lang || $.cookie("lang");
+
       if (inputData.lang !== "en") {
 
         $("body").attr("data-lang", inputData.lang);
 
-        if (!inputData.dom) {
+        if (!translateData || currentLanguageName !== inputData.lang) {
           $.ajax({
             url: "data/lang/" + inputData.lang + ".json",
             async: false,
             success: function(data) {
+              currentLanguageName = inputData.lang;
               translateData = data;
 
               doLocalize(inputData);
             }
           });
         } else {
+          currentLanguageName =inputData.lang;
+
           doLocalize(inputData);
         }
       } else {
+        currentLanguageName =inputData.lang;
+
         translateData = {
           translate: {},
           settings: {}
@@ -220,11 +225,7 @@
         lang: $("body").attr("data-lang") || $.cookie("lang") || "en"
       });
 
-      if ($(nkf.conf.render.layout.selector).length && !data.renderLayout) {
-        $(nkf.conf.render.layout.selector).contents().detach();
-        $(nkf.conf.render.layout.selector).append(preRenderedDOM);
-      } else {
-        $(nkf.conf.render.body.selector).contents().detach();
+      if (!$("body > [data-nkf-component-type=layout]").length) {
         $(nkf.conf.render.body.selector).append(preRenderedDOM);
       }
 
@@ -301,11 +302,16 @@
         throw "No page class for " + pageName + " found";
       }
 
+      var isNeedToRenderLayout = !preRenderedDOM || (preRenderedDOM && currentLayoutName !== layoutName);
+
       currentComponents = {
         layout: layoutClass,
         page: pageClass,
-        renderLayout: params && params.init
+        renderLayout: isNeedToRenderLayout
       };
+
+      currentLayoutName = layoutName;
+      currentPageName = pageName;
 
       function callback() {
         $(document).trigger(ns + "." + ComponentManager.className, {
@@ -315,9 +321,11 @@
         });
 
         renderScreen(currentComponents);
+
+        (_this.getPreRenderedDOM() || $("body")).find(nkf.conf.loadingMaskSelector).addClass(nkf.conf.classes.none);
       }
 
-      (_this.getPreRenderedDOM() || $("body")) .find(nkf.conf.loadingMaskSelector).removeClass(nkf.conf.classes.none);
+      (_this.getPreRenderedDOM() || $("body")).find(nkf.conf.loadingMaskSelector).removeClass(nkf.conf.classes.none);
 
       //TODO: option to not load data
       //TODO: option to add additional params
@@ -455,15 +463,16 @@
       components: {}
     };
 
-    var translateData = {
-      translate: {},
-      settings: {}
-    };
+    var translateData = null;
+    var currentLanguageName = "en";
 
     var userSettings = null;
     var preRenderedDOM = null;
     var componentsList = [];
     var currentComponents = {};
+
+    var currentLayoutName;
+    var currentPageName;
 
     var $UserSettings = new nkf.core.UserSettings();
     var $NetworkManager = new nkf.core.network.NetworkManager();

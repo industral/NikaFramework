@@ -11,10 +11,7 @@
 
     function addEventHandler() {
       window.onhashchange = function(e) {
-//        console.info(previousHash, "!", currentHash, "!", e.newURL, "!", e.oldURL);
-        if ((currentHash !== e.newURL.match(hashPattern)[0])) {
-//          console.warn(previousHash, currentHash, e.newURL, e.oldURL);
-
+        if ((previousHash && (Controller.getNormalizedObject(decodeURIComponent(e.oldURL)).pageName !== Controller.getNormalizedObject(decodeURIComponent(e.newURL)).pageName)) || (!previousLogin && $.cookie("isLogin"))) {
           $(document).trigger("nkf.core.Controller", {
             action: "load",
             actionType: nkf.def.events.type.make,
@@ -23,6 +20,9 @@
             init: true
           });
         }
+
+        previousHash = window.location.hash;
+        previousLogin = $.cookie("isLogin");
       };
 
       $(document).bind("{ns}.{className}".format({
@@ -92,7 +92,8 @@
       }
     }
 
-    previousHash = currentHash;
+    previousLogin = $.cookie("isLogin");
+    previousHash = window.location.hash;
     currentHash = output;
 
     window.location.hash = currentHash;
@@ -101,7 +102,7 @@
   Controller.getNormalizedObject = function(url) {
     var output = {};
 
-    var splited = Controller.getCurrentPath().split("|");
+    var splited = (url || Controller.getCurrentPath()).split("|");
 
     var pageName = splited[0];
     var parameters = splited[1];
@@ -130,6 +131,7 @@
 
   var currentHash = "";
   var previousHash = "";
+  var previousLogin = false;
 
   var isInit = false;
 })();
