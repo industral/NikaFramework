@@ -15,7 +15,7 @@
     this.className = ComponentAbstract.className;
 
     this.render = function() {
-      console.warn("This method doesn't redefined");
+      console.error("This method doesn't redefined");
     };
 
     this.setState = function(data) {
@@ -35,9 +35,11 @@
         var resultObj = {};
 
         var passedObj = {
-          actionType: nkf.def.events.type.is,
-          action: nkf.def.component.action.state,
-          state: data.state
+          type: nkf.def.events.type.is,
+          name: nkf.def.component.action.state,
+          data: {
+            state: data.state
+          }
         };
 
         $.extend(resultObj, data, passedObj);
@@ -47,7 +49,7 @@
     };
 
     this.getRenderedDOM = function() {
-      console.warn("This method doesn't redefined");
+      console.error("This method doesn't redefined");
     };
 
     this._getComponent = function(data) {

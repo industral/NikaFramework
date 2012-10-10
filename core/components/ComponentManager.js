@@ -86,12 +86,12 @@
             }
           });
         } else {
-          currentLanguageName =inputData.lang;
+          currentLanguageName = inputData.lang;
 
           doLocalize(inputData);
         }
       } else {
-        currentLanguageName =inputData.lang;
+        currentLanguageName = inputData.lang;
 
         translateData = {
           translate: {},
@@ -120,7 +120,7 @@
 
                   var output = $(value).attr("data-lang-" + attributeName).replace(aValue, translatedString || string4translate);
 
-                  if (attributeName === "textContent") {
+                  if (attributeName === "textcontent") {
                     $(value).text(output);
                   } else {
                     $(value).attr(attributeName, output);
@@ -129,7 +129,7 @@
               } else {
                 var output = $(value).attr("data-lang-" + attributeName);
 
-                if (attributeName === "textContent") {
+                if (attributeName === "textcontent") {
                   $(value).text(output);
                 } else {
                   $(value).attr(attributeName, output);
@@ -178,6 +178,14 @@
         $("html").attr({
           dir: translateData.settings.dir || "ltr"
         });
+
+        $(document).trigger("nkf.core.components.ComponentManager", {
+          type: nkf.def.events.type.is,
+          name: "localize",
+          data: {
+            lang: inputData.lang
+          }
+        });
       }
     };
 
@@ -213,10 +221,12 @@
 
         if ($Utils.getComponentType(value) === nkf.enumType.Component.widget) {
           value.setState({
-            actionType: nkf.def.events.type.is,
-            action: nkf.def.component.action.state,
-            state: componentSettings.state,
-            "state-effect": componentSettings["state-effect"]
+            type: nkf.def.events.type.is,
+            name: nkf.def.component.action.state,
+            data: {
+              state: componentSettings.state,
+              "state-effect": componentSettings["state-effect"]
+            }
           });
         }
       });
@@ -234,16 +244,20 @@
 
         $(document).trigger(component, {
           //TODO: check with settings
-          actionType: nkf.def.events.type.is,
-          action: nkf.def.component.action.rendered,
-          state: nkf.def.component.render.state.showed
+          type: nkf.def.events.type.is,
+          name: nkf.def.component.action.rendered,
+          data: {
+            state: nkf.def.component.render.state.showed
+          }
         });
       });
 
       $(document).trigger(ns + "." + ComponentManager.className, {
-        actionType: nkf.def.events.type.is,
-        action: nkf.def.component.action.rendered,
-        state: nkf.def.component.render.state.showed
+        type: nkf.def.events.type.is,
+        name: nkf.def.component.action.rendered,
+        data: {
+          state: nkf.def.component.render.state.showed
+        }
       });
 
     }
@@ -315,9 +329,11 @@
 
       function callback() {
         $(document).trigger(ns + "." + ComponentManager.className, {
-          actionType: nkf.def.events.type.is,
-          action: "dataFetched",
-          pageName: pageName
+          type: nkf.def.events.type.is,
+          name: "dataFetched",
+          data: {
+            pageName: pageName
+          }
         });
 
         renderScreen(currentComponents);
@@ -376,9 +392,10 @@
     //TODO: the same methods move
     Render.layout = function(params) {
       var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
-      if (component.init && !component.isInit) {
-        component.init();
-        component.isInit = true;
+
+      if (component.Constructor && !component.isConstructed) {
+        component.Constructor();
+        component.isConstructed = true;
       }
 
       var dom = component.render({
@@ -395,9 +412,9 @@
 
     Render.page = function(params) {
       var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
-      if (component.init && !component.isInit) {
-        component.init();
-        component.isInit = true;
+      if (component.Constructor && !component.isConstructed) {
+        component.Constructor();
+        component.isConstructed = true;
       }
 
       var dom = component.render({
@@ -414,9 +431,9 @@
 
     Render.widget = function(params) {
       var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
-      if (component.init && !component.isInit) {
-        component.init();
-        component.isInit = true;
+      if (component.Constructor && !component.isConstructed) {
+        component.Constructor();
+        component.isConstructed = true;
       }
 
       var dom = component.render({
@@ -438,15 +455,11 @@
     }
 
     function addEventsHandler() {
-      $(document).bind(ns + "." + ComponentManager.className, function(e, data) {
-        if (data.actionType === nkf.def.events.type.make && data.custom) {
-          switch (data.data.name) {
-            case "localize":
-              _this.localize({
-                lang: data.data.locale
-              });
-              break;
-          }
+      $(document).bind(ns + "." + ComponentManager.className, function(e, object) {
+        if (object.type === nkf.def.events.type.make && object.name === "localize") {
+          _this.localize({
+            lang: object.data.lang
+          });
         }
       });
     }

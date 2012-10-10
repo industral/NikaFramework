@@ -18,7 +18,7 @@
 
       if (path) {
         var pathNS = $.lnamespace(path, data);
-        $.extend(storedData, pathNS);
+        $.extend(true, storedData, pathNS);
       } else {
         storedData = data;
       }

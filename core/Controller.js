@@ -11,13 +11,15 @@
 
     function addEventHandler() {
       window.onhashchange = function(e) {
-        if ((previousHash && (Controller.getNormalizedObject(decodeURIComponent(e.oldURL)).pageName !== Controller.getNormalizedObject(decodeURIComponent(e.newURL)).pageName)) || (!previousLogin && $.cookie("isLogin"))) {
+        if ((previousHash && (Controller.getNormalizedObject(previousHash).pageName !== Controller.getNormalizedObject(decodeURIComponent(window.location.hash)).pageName)) || (!previousLogin && $.cookie("isLogin"))) {
           $(document).trigger("nkf.core.Controller", {
-            action: "load",
-            actionType: nkf.def.events.type.make,
-            pageName: Controller.getNormalizedObject(Controller.getCurrentPath()).pageName,
-            params: Controller.getNormalizedObject(Controller.getCurrentPath()).params,
-            init: true
+            type: nkf.def.events.type.make,
+            name: "load",
+            data: {
+              pageName: Controller.getNormalizedObject(Controller.getCurrentPath()).pageName,
+              params: Controller.getNormalizedObject(Controller.getCurrentPath()).params,
+              init: true
+            }
           });
         }
 
@@ -28,32 +30,34 @@
       $(document).bind("{ns}.{className}".format({
         ns: ns,
         className: Controller.className
-      }), function(e, data) {
-        if (data.action === "load" && data.actionType === nkf.def.events.type.make) {
+      }), function(e, object) {
+        if (object.type === nkf.def.events.type.make && object.name === "load") {
           if (!isInit) {
             init();
           }
 
-          if (!data) {
-            data = {};
+          if (!object) {
+            object = {};
           }
 
           if (isInit) {
-            data.pageName = data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
-            data.params = data.clear ? data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, data.params);
+            object.data.pageName = object.data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
+            object.data.params = object.clear ? object.data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, object.data.params);
 
             $(document).trigger("nkf.core.Controller", {
-              actionType: nkf.def.events.type.is,
-              action: "load",
-              init: data.init
+              type: nkf.def.events.type.is,
+              name: "load",
+              data: {
+                init: object.init
+              }
             });
 
-            Controller.setCurrentPath(data);
+            Controller.setCurrentPath(object.data);
 
-            if (data.init) {
+            if (object.data.init) {
               ++historyCounter;
 
-              componentManager.load(data);
+              componentManager.load(object.data);
             }
           }
         }
@@ -102,7 +106,7 @@
   Controller.getNormalizedObject = function(url) {
     var output = {};
 
-    var splited = (url || Controller.getCurrentPath()).split("|");
+    var splited = (url || Controller.getCurrentPath()).replace(/(.+)?#.+=/g, "").split("|");
 
     var pageName = splited[0];
     var parameters = splited[1];

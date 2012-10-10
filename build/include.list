@@ -14,7 +14,7 @@ core/network/NetworkManager.js
 core/storage/StorageAbstract.js
 core/storage/MemoryStorage.js
 ;core/storage/CookieStorage.js
-;core/storage/LocalStorage.js
+core/storage/LocalStorage.js
 core/storage/StorageManager.js
 
 core/UserSettings.js
