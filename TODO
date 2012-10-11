@@ -1,5 +1,3 @@
 - create out folder automatically
 - when render selector doesn't found - create it automatically
 //nkf.conf.render.layout.selector = "#container";
-
-
