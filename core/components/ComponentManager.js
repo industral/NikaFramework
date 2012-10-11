@@ -232,7 +232,7 @@
       });
 
       _this.localize({
-        lang: $("body").attr("data-lang") || $.cookie("lang") || "en"
+        lang: $.cookie("lang") || $("body").attr("data-lang") || "en"
       });
 
       if (!$("body > [data-nkf-component-type=layout]").length) {

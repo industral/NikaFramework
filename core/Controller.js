@@ -40,15 +40,19 @@
             object = {};
           }
 
+          if (!object.data) {
+            object.data = {};
+          }
+
           if (isInit) {
             object.data.pageName = object.data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
-            object.data.params = object.clear ? object.data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, object.data.params);
+            object.data.params = object.data.clear ? object.data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, object.data.params);
 
             $(document).trigger("nkf.core.Controller", {
               type: nkf.def.events.type.is,
               name: "load",
               data: {
-                init: object.init
+                init: object.data.init
               }
             });
 
