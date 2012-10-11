@@ -1,0 +1,19 @@
+AddType application/json .json
+AddType text/cache-manifest .manifest
+
+DirectoryIndex index.xhtmlz
+
+<Files *.jsz>
+    AddEncoding x-gzip .jsz
+    ForceType text/javascript
+</Files>
+
+<Files *.cssz>
+    AddEncoding x-gzip .cssz
+    ForceType text/css
+</Files>
+
+<Files *.xhtmlz>
+    AddEncoding x-gzip .xhtmlz
+    ForceType application/xhtml+xml
+</Files>
