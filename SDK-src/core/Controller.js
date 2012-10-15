@@ -101,7 +101,9 @@
     }
 
     previousLogin = $.cookie("isLogin");
-    previousHash = window.location.hash;
+    if (!previousHash) {
+      previousHash = "#page=Home";
+    }
     currentHash = output;
 
     window.location.hash = currentHash;

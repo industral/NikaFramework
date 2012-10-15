@@ -393,9 +393,17 @@
     Render.layout = function(params) {
       var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
 
+      if (component.reInit && component.isConstructed) {
+        component.reInit();
+      }
+
       if (component.Constructor && !component.isConstructed) {
         component.Constructor();
         component.isConstructed = true;
+      }
+
+      if (component.init) {
+        component.init();
       }
 
       var dom = component.render({
@@ -412,9 +420,18 @@
 
     Render.page = function(params) {
       var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
+
+      if (component.reInit && component.isConstructed) {
+        component.reInit();
+      }
+
       if (component.Constructor && !component.isConstructed) {
         component.Constructor();
         component.isConstructed = true;
+      }
+
+      if (component.init) {
+        component.init();
       }
 
       var dom = component.render({
@@ -431,9 +448,18 @@
 
     Render.widget = function(params) {
       var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
+
+      if (component.reInit && component.isConstructed) {
+        component.reInit();
+      }
+
       if (component.Constructor && !component.isConstructed) {
         component.Constructor();
         component.isConstructed = true;
+      }
+
+      if (component.init) {
+        component.init();
       }
 
       var dom = component.render({
