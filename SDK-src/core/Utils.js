@@ -172,7 +172,9 @@
 
   Utils.getDeserializedObject = function(data) {
     if (data) {
-      var string = data.replace(/(\w+)\s*:/g, '"$1":');
+      var string = decodeURIComponent(data);
+      string = string.replace(/(\w+)\s*:/g, '"$1":');
+
       return JSON.parse(string);
     } else {
       return {};

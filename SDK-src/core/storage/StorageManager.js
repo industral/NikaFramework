@@ -43,11 +43,11 @@
     // --------------------------------------------------------------------
 
     function checkAbility() {
-      if (window.localStorage && window.localStorage.getItem) {
-        storageInstance = new self.LocalStorage();
-      } else {
+//      if (window.localStorage && window.localStorage.getItem) {
+//        storageInstance = new self.LocalStorage();
+//      } else {
         storageInstance = new self.MemoryStorage();
-      }
+//      }
     }
 
     // --------------------------------------------------------------------
