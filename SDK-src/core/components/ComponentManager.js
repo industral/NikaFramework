@@ -194,6 +194,10 @@
     }
 
     function renderScreen(data) {
+      $("body").attr({
+        "data-status": "loading"
+      });
+
       preRenderScreen(data);
       postRenderScreen();
     }
@@ -258,6 +262,10 @@
         data: {
           state: nkf.def.component.render.state.showed
         }
+      });
+
+      $("body").attr({
+        "data-status": "loaded"
       });
 
     }
