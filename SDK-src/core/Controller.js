@@ -102,7 +102,7 @@
 
     previousLogin = $.cookie("isLogin");
     if (!previousHash) {
-      previousHash = "#page=Unknow";
+      previousHash = window.location.hash;
     }
     currentHash = output;
 
