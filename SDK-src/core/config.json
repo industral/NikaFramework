@@ -42,8 +42,7 @@
                     "name": "data-nkf-component-name"
                 },
                 "state": "data-state"
-            },
-            "hash": "#path="
+            }
         },
 
         "storage": {
