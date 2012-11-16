@@ -10,18 +10,33 @@
     addEventHandler();
 
     function addEventHandler() {
+      if (!history.pushState) {
+        History.Adapter.bind(window, "statechange", function() {
+          var state = History.getState().data;
 
-      window.onpopstate = function(event) {
-        $(document).trigger("nkf.core.Controller", {
-          type: nkf.def.events.type.make,
-          name: "load",
-          data: {
-            pageName: Controller.getNormalizedObject(event.state.path).pageName,
-            params: Controller.getNormalizedObject(event.state.path).params,
-            init: true
-          }
+          $(document).trigger("nkf.core.Controller", {
+            type: nkf.def.events.type.make,
+            name: "load",
+            data: {
+              pageName: Controller.getNormalizedObject(state.path).pageName,
+              params: Controller.getNormalizedObject(state.path).params,
+              init: true
+            }
+          });
         });
-      };
+      } else {
+        window.onpopstate = function(event) {
+          $(document).trigger("nkf.core.Controller", {
+            type: nkf.def.events.type.make,
+            name: "load",
+            data: {
+              pageName: Controller.getNormalizedObject(event.state.path).pageName,
+              params: Controller.getNormalizedObject(event.state.path).params,
+              init: true
+            }
+          });
+        };
+      }
 
       $(document).bind("{ns}.{className}".format({
         ns: ns,
@@ -82,7 +97,11 @@
   }
 
   Controller.getCurrentPath = function() {
-    return window.location.pathname;
+    if (history.pushState) {
+      return window.location.pathname;
+    } else {
+      return window.location.hash;
+    }
   };
 
   Controller.setCurrentPath = function(data) {
@@ -100,13 +119,14 @@
 
     previousLogin = $.cookie("isLogin");
 
-    history.pushState({path: "/" + output}, "", "/" + output);
+    $history.pushState({path: "/" + output}, "", "/" + output);
   };
 
   Controller.getNormalizedObject = function(url) {
     var output = {};
 
     var splited = (url || Controller.getCurrentPath()).replace(/^\//, "").split("/");
+//    var splited = (url || Controller.getCurrentPath()).replace(/^\#?\.?\/?/, "").split("/");
 
     var pageName = splited[0];
     var parameters = splited[1];

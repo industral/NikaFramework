@@ -5,6 +5,10 @@ extra/js/plugins/jquery.cookie.js
 extra/js/plugins/jquery.attributes.js
 extra/js/helper.js
 
+extra/js/legacy/history.html4.js
+extra/js/legacy/history.js
+extra/js/legacy/history.adapter.jquery.js
+
 core/Utils.js
 
 core/network/NetworkAbstract.js

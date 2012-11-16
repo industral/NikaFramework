@@ -7,6 +7,9 @@
   function Utils() {
   }
 
+  History.options.disableSuid = true;
+  window.$history = history.pushState ? history : History;
+
   Utils.getComponentPart = function(data) {
     data.componentPart = data.componentPart ? data.componentPart : "html";
 
@@ -175,7 +178,11 @@
       var string = decodeURIComponent(data);
       string = string.replace(/(\w+)\s*:/g, '"$1":');
 
-      return JSON.parse(string);
+      try {
+        return  JSON.parse(string);
+      } catch (e) {
+        return {};
+      }
     } else {
       return {};
     }
@@ -193,7 +200,7 @@
     return count;
   };
 
-  Utils.os =  {
+  Utils.os = {
   };
 
   Utils.os.win = navigator.platform.match(/win/i);
