@@ -7,9 +7,6 @@
   function Utils() {
   }
 
-  History.options.disableSuid = true;
-  window.$history = history.pushState ? history : History;
-
   Utils.getComponentPart = function(data) {
     data.componentPart = data.componentPart ? data.componentPart : "html";
 

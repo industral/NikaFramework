@@ -10,33 +10,17 @@
     addEventHandler();
 
     function addEventHandler() {
-      if (!history.pushState) {
-        History.Adapter.bind(window, "statechange", function() {
-          var state = History.getState().data;
-
-          $(document).trigger("nkf.core.Controller", {
-            type: nkf.def.events.type.make,
-            name: "load",
-            data: {
-              pageName: Controller.getNormalizedObject(state.path).pageName,
-              params: Controller.getNormalizedObject(state.path).params,
-              init: true
-            }
-          });
+      window.onpopstate = function(event) {
+        $(document).trigger("nkf.core.Controller", {
+          type: nkf.def.events.type.make,
+          name: "load",
+          data: {
+            pageName: Controller.getNormalizedObject(event.state.path).pageName,
+            params: Controller.getNormalizedObject(event.state.path).params,
+            init: true
+          }
         });
-      } else {
-        window.onpopstate = function(event) {
-          $(document).trigger("nkf.core.Controller", {
-            type: nkf.def.events.type.make,
-            name: "load",
-            data: {
-              pageName: Controller.getNormalizedObject(event.state.path).pageName,
-              params: Controller.getNormalizedObject(event.state.path).params,
-              init: true
-            }
-          });
-        };
-      }
+      };
 
       $(document).bind("{ns}.{className}".format({
         ns: ns,
@@ -97,10 +81,10 @@
   }
 
   Controller.getCurrentPath = function() {
-    if (history.pushState) {
-      return window.location.pathname;
+    if ($.browser.msie && $.browser.version < 10) {
+      return window.location.hash.replace(/\#?\/?/, "");
     } else {
-      return window.location.hash;
+      return window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(/\/#\//, "").replace(/^\//, "");
     }
   };
 
@@ -119,7 +103,7 @@
 
     previousLogin = $.cookie("isLogin");
 
-    $history.pushState({path: "/" + output}, "", "/" + output);
+    history.pushState({path: "/" + output}, "", "/" + output);
   };
 
   Controller.getNormalizedObject = function(url) {
