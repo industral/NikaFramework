@@ -81,10 +81,13 @@
   }
 
   Controller.getCurrentPath = function() {
+    var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(/\/#\//, "").replace(/^\//, "");
+    var ie = window.location.hash.replace(/\#?\/?/, "");
+
     if ($.browser.msie && $.browser.version < 10) {
-      return window.location.hash.replace(/\#?\/?/, "");
+      return ie || normalBrowsers;
     } else {
-      return window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(/\/#\//, "").replace(/^\//, "");
+      return normalBrowsers;
     }
   };
 
@@ -122,7 +125,8 @@
   };
 
   Controller.getHistoryCounter = function() {
-    return historyCounter;
+    //HACK: Chrome fire popustate on the page load... don't know why
+    return $.browser.chrome ? historyCounter - 1 : historyCounter;
   };
 
   $.extend(self, {

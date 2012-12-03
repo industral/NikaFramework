@@ -76,7 +76,7 @@
 
         if (!translateData || currentLanguageName !== inputData.lang) {
           $.ajax({
-            url: "data/lang/" + inputData.lang + ".json",
+            url: "/data/lang/" + inputData.lang + ".json",
             async: false,
             success: function(data) {
               currentLanguageName = inputData.lang;
