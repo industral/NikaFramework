@@ -17,7 +17,8 @@
           data: {
             pageName: Controller.getNormalizedObject(event.state.path).pageName,
             params: Controller.getNormalizedObject(event.state.path).params,
-            init: true
+            init: true,
+            type: "popstate"
           }
         });
       };
@@ -51,7 +52,7 @@
               }
             });
 
-            if (!object.data.appInit) {
+            if (!object.data.appInit && object.data.type !== "popstate") {
               Controller.setCurrentPath(object.data);
             }
 
