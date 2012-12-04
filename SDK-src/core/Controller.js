@@ -11,16 +11,18 @@
 
     function addEventHandler() {
       window.onpopstate = function(event) {
-        $(document).trigger("nkf.core.Controller", {
-          type: nkf.def.events.type.make,
-          name: "load",
-          data: {
-            pageName: Controller.getNormalizedObject(event.state.path).pageName,
-            params: Controller.getNormalizedObject(event.state.path).params,
-            init: true,
-            type: "popstate"
-          }
-        });
+        if (!event.state.init) {
+          $(document).trigger("nkf.core.Controller", {
+            type: nkf.def.events.type.make,
+            name: "load",
+            data: {
+              pageName: Controller.getNormalizedObject(event.state.path).pageName,
+              params: Controller.getNormalizedObject(event.state.path).params,
+              init: true,
+              type: "popstate"
+            }
+          });
+        }
       };
 
       $(document).bind("{ns}.{className}".format({
@@ -126,8 +128,7 @@
   };
 
   Controller.getHistoryCounter = function() {
-    //HACK: Chrome fire popustate on the page load... don't know why
-    return $.browser.chrome ? historyCounter - 1 : historyCounter;
+    return historyCounter;
   };
 
   $.extend(self, {
