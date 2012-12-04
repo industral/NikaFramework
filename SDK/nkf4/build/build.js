@@ -138,7 +138,7 @@
       command += "--debug-info";
     }
 
-    $exec(command,
+    $exec(command, {maxBuffer: 5000 * 1024},
       function(error, stdout, stderr) {
         if (error !== null) {
           console.log("exec error: " + error);
@@ -230,7 +230,7 @@
         var fileName = _match[2].replace("/nkf4/", "../");
         fileName = fileName.replace(/#.+/, "");
 
-        if (!fileName.match(/^#|^data:/)) {
+        if (!fileName.match(/^#|^data:|\.webm$/)) {
           try {
             var buffer = $fs.readFileSync(fileName);
             var dataURI;
@@ -266,7 +266,10 @@
       type: "xml"
     });
 
-    var jsData = "var __dom__ = " + xmlData + "\n" + "var __json__ = " + JSON.stringify(processedComponentSpace.data) + "\n" + processedComponentSpace.js;
+    var d = new Date();
+    var buildNumber = d.getMonth() + 1 + "/" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
+    var jsData = "var __dom__ = " + xmlData + "\n" + "var __json__ = " + JSON.stringify(processedComponentSpace.data) + "\n" + processedComponentSpace.js + "\n" + "nkf.build=" + '"' + buildNumber + '"';
 
     var cssData = optimize({
       data: processedComponentSpace.css
@@ -280,7 +283,7 @@
     }
 
     if (process.argv[2] === "production") {
-      $exec("java -jar compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --jscomp_off internetExplorerChecks --warning_level QUIET --js=../../out/merged.js > ../../out/merged.compressed.js",
+      $exec("java -jar compiler.jar --compilation_level SIMPLE_OPTIMIZATIONS --jscomp_off internetExplorerChecks --warning_level QUIET --js=../../out/merged.js > ../../out/merged.compressed.js", {maxBuffer: 5000 * 1024},
         function(error, stdout, stderr) {
           if (error !== null) {
             console.log("exec error: " + error);
@@ -291,7 +294,7 @@
           }
 
           if (!error && !stderr) {
-            $exec("mv ../../out/merged.compressed.js ../../out/merged.js",
+            $exec("mv ../../out/merged.compressed.js ../../out/merged.js", {maxBuffer: 5000 * 1024},
               function(error, stdout, stderr) {
                 if (error !== null) {
                   console.log("exec error: " + error);
@@ -330,7 +333,7 @@
 
     $fs.writeFileSync("../../index.xhtml", xmlDoc.toString());
 
-    $exec("gzip -f ../../index.xhtml", function(error, stdout, stderr) {
+    $exec("gzip -f ../../index.xhtml", {maxBuffer: 5000 * 1024}, function(error, stdout, stderr) {
       if (error !== null) {
         console.log("exec error: " + error);
       }
