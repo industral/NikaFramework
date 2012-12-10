@@ -115,11 +115,11 @@
   Controller.getNormalizedObject = function(url) {
     var output = {};
 
-    var splited = (url || Controller.getCurrentPath()).replace(/^\//, "").split("/");
-//    var splited = (url || Controller.getCurrentPath()).replace(/^\#?\.?\/?/, "").split("/");
+    var resultURL = (url || Controller.getCurrentPath()).replace(/^\//, "");
+    var splited = resultURL.split("/");
 
     var pageName = splited[0];
-    var parameters = splited[1];
+    var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
 
     output.pageName = pageName;
     output.params = $Utils.getDeserializedObject(parameters);
