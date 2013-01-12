@@ -275,6 +275,13 @@
       data: processedComponentSpace.css
     });
 
+    nkfVersion = jsData.match(/,"version":"(.\..\..)/)[1];
+
+    var isOutExist = $fs.existsSync("../../out");
+    if (!isOutExist) {
+      $fs.mkdirSync("../../out");
+    }
+
     $fs.writeFileSync("../../out/merged.js", jsData);
     $fs.writeFileSync("../../out/merged.css", cssData);
 
@@ -327,7 +334,14 @@
     });
     cssTag.cdata($fs.readFileSync("../../out/merged.css").toString());
 
+    var metaTag = $libxmljs.Element(xmlDoc, "meta");
+    metaTag.attr({
+      name: "generator",
+      content: "NikaFramework " + nkfVersion
+    });
+
     var head = xmlDoc.get('//xmlns:html/xmlns:head', "http://www.w3.org/1999/xhtml");
+    head.addChild(metaTag);
     head.addChild(cssTag);
     head.addChild(scriptTag);
 
@@ -357,6 +371,8 @@
 
     return data;
   }
+
+  var nkfVersion;
 
   init();
 

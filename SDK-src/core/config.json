@@ -1,6 +1,8 @@
 {
     "runtime": {},
     "conf": {
+        "useLogin": true,
+
         "defaultLoggedInPage": "Home",
         "defaultNotLoggedInPage": "NotLoggedIn",
 

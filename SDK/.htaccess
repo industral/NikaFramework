@@ -1,7 +1,7 @@
 AddType application/json .json
 AddType text/cache-manifest .manifest
 
-DirectoryIndex index.xhtmlz
+DirectoryIndex index.xhtmlz index.xhtml
 
 <Files *.jsz>
     AddEncoding x-gzip .jsz
@@ -17,3 +17,6 @@ DirectoryIndex index.xhtmlz
     AddEncoding x-gzip .xhtmlz
     ForceType application/xhtml+xml
 </Files>
+
+RewriteEngine On
+RewriteRule ^(Home)/?(.+)?$ / [L]

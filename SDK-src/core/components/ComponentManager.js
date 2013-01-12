@@ -499,7 +499,7 @@
     }
 
     function isLogin() {
-      return $.cookie("isLogin");
+      return nkf.conf.useLogin ? $.cookie("isLogin") : true;
     }
 
     constructor.call(this);
