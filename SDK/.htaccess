@@ -1,5 +1,4 @@
 AddType application/json .json
-AddType text/cache-manifest .manifest
 
 DirectoryIndex index.xhtmlz index.xhtml
 
