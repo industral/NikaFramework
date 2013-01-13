@@ -5,13 +5,10 @@
         ]>
 
 <book xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>NikaFramework 4 (NKF 4) in a Nutshell</title>
+
     <article>
         <articleinfo>
-            <title>NikaFramework 4 (NKF 4) in a Nutshell</title>
-            <!--<author>-->
-            <!--<firstname>Alex</firstname>-->
-            <!--<surname>Ivasyuv</surname>-->
-            <!--</author>-->
             <copyright>
                 <year>2011-2013</year>
                 <holder>ITHerz</holder>
@@ -24,32 +21,42 @@
             <title>Install</title>
             <para>
                 Go to
-                <ulink url="http://nikaframework.com">http://nikaframework.com</ulink>
+                <ulink url="http://nikaframework.com">NikaFramework website</ulink>
                 and download the latest version of SDK.
                 After extracting, you have to get the following structure:
 
                 <graphic fileref="img/initial-structure.png" />
             </para>
             <para>
-                <emphasis>data</emphasis> - there will be our JSON's for testing purpose
+                <emphasis>data</emphasis> - JSON stub for testing purpose
+            </para>
+            <para>
+                <emphasis>localization</emphasis> - tool to helps localize text found in xhtml files
             </para>
              <para>
-                <emphasis>nkf4</emphasis> - it's <application>NikaFramework</application> SDK folder
+                <emphasis>nkf4</emphasis> - main SDK folder
             </para>
             <para>
-                <emphasis>nkf.js</emphasis> - it's <application>NikaFramework</application> SDK file
+                <emphasis>nkf4/build</emphasis> - build system
             </para>
             <para>
-                <emphasis>build</emphasis> - build system
+                <emphasis>nkf4/impl</emphasis> - components implementation
             </para>
             <para>
-                <emphasis>impl</emphasis> - there where we will implement our own components
+                <emphasis>nkf4/nkf.js</emphasis> - SDK file
+            </para>
+            <para>
+                <emphasis>.htaccess</emphasis> - need for correct working framework
+            </para>
+            <para>
+                <emphasis>index.template.xhtml</emphasis> - template of index file, which content will be used to render
+                HTML into.
             </para>
 
             <para>
                 Move all files to any <emphasis>Web Server</emphasis>, for example <emphasis>Apache</emphasis>.
-                To get working <filename>index.xhtml</filename> file by default, add <programlisting>DirectoryIndex index.xhtml</programlisting>
-                to Apache config file.
+                To get working ensure that <programlisting>AllowOverride All</programlisting> added to Apache config file
+                in appropriate place.
             </para>
         </section>
 
@@ -66,17 +73,26 @@
                 <para>
                     After all required software is installed, we can move further. In <filename
                         class="directory">build</filename> directory there is a file called
-                    <filename>include.list</filename>. There is only one line
-                    <programlisting>nkf.js</programlisting>
+                    <filename>include.list</filename>. There are only two lines:
+                    <programlisting>nkf.js
+
+;impl/app.js</programlisting>
                 </para>
                 <para>
-                    It means, that for build we will include only NKF SDK. So lets build our application. Go to build folder and
-                    execute
+                    It means, that for build it will include only NKF SDK. <filename>impl/app.js</filename> is commented, as
+                    at the beginning of line we have <emphasis>;</emphasis>
+                    So lets build our application. Go to build folder and execute
                 </para>
                 <command>node build.js</command>
                 <para>
                     In out folder should appear two files:
-                    <filename>merged.css</filename> and <filename>merged.js</filename>
+                    <filename>merged.css</filename> and <filename>merged.js</filename>.
+                    But we shouldn't care about them. In root directory should appear <filename>index.xhtmlz</filename> file.
+                </para>
+                <para>
+                   <filename>index.xhtmlz</filename> - generated file by NKF <emphasis>Build System</emphasis> which contains all resources, including
+                    JavaScript, XHTML, CSS and any other binary resources such as images, video as base64.
+                    For more detail information see <ulink url="http://webresourcebundle.org/">Web Resource Bundle</ulink>
                 </para>
                 <para>
                     Now hit <ulink url="http://localhost">http://localhost</ulink> in browser. Yes, nothing will happend.
@@ -88,17 +104,22 @@
                 <title>Try to get it working</title>
 
                 <para>
-                    Lets create a <filename>app.js</filename> file under <filename class="folder">impl</filename> folder with the following content
+                    Lets uncomment <emphasis>;impl/app.js</emphasis> from <filename>build/include.list</filename> as:
+                    <programlisting language="brush: plain"><xi:include href="files/include-1.list" parse="text" /></programlisting>
 
+                    and see at content of that file:
                     <programlisting
-                            language="brush: js">$(document).trigger("nkf.core.Controller.load");</programlisting>
+                            language="brush: js">$(function() {
+  $(document).trigger("nkf.core.Controller", {
+    type: nkf.def.events.type.make,
+    name: "load",
+    data: {
+      init: true
+    }
+  });
+});</programlisting>
 
-                    Then add it to <filename>include.list</filename>:
-
-                    <programlisting language="brush: plain"><xi:include href="files/include-1.list"
-                                                                        parse="text" /></programlisting>
-
-                    and run build again under build directory
+                    then run build again under build directory
                 </para>
                 <command>node build.js</command>
                 <para>
