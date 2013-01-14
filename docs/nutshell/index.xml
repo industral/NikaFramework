@@ -92,7 +92,8 @@
                 <para>
                    <filename>index.xhtmlz</filename> - generated file by NKF <emphasis>Build System</emphasis> which contains all resources, including
                     JavaScript, XHTML, CSS and any other binary resources such as images, video as base64.
-                    For more detail information see <ulink url="http://webresourcebundle.org/">Web Resource Bundle</ulink>
+                    For more detail information see <ulink
+                        url="http://webresourcebundle.org/">Web Resource Bundle</ulink>
                 </para>
                 <para>
                     Now hit <ulink url="http://localhost">http://localhost</ulink> in browser. Yes, nothing will happend.
@@ -105,9 +106,10 @@
 
                 <para>
                     Lets uncomment <emphasis>;impl/app.js</emphasis> from <filename>build/include.list</filename> as:
-                    <programlisting language="brush: plain"><xi:include href="files/include-1.list" parse="text" /></programlisting>
+                    <programlisting language="brush: plain"><xi:include href="files/include-1.list"
+                                                                        parse="text" /></programlisting>
 
-                    and see at content of that file:
+                    and look at content of that file:
                     <programlisting
                             language="brush: js">$(function() {
   $(document).trigger("nkf.core.Controller", {
@@ -155,13 +157,13 @@
                             <graphic fileref="img/not-logged-in-layout.png" />
                         </para>
                         <para>
-                            <emphasis>dom</emphasis> - there will be our <emphasis>xhtml</emphasis> files
+                            <emphasis>dom</emphasis> - <emphasis>xhtml</emphasis> files
                         </para>
                         <para>
-                            <emphasis>logic</emphasis> - there will be <emphasis>JavaScript</emphasis> logic
+                            <emphasis>logic</emphasis> - <emphasis>JavaScript</emphasis> logic
                         </para>
                         <para>
-                            <emphasis>style</emphasis> - there will be styles. <emphasis>CSS</emphasis> or <emphasis>Sass</emphasis> (scss)
+                            <emphasis>style</emphasis> - styles - <emphasis>CSS</emphasis> or <emphasis>Sass</emphasis> (scss)
                         </para>
                         <para>
                             <note>
@@ -171,7 +173,7 @@
                         <para>
                             <filename>impl/components/layout/NotLoggedIn/dom/index.xhtml:</filename>
                             <programlisting language="brush: html"><xi:include
-                                    href="files/impl/components/layout/NotLoggedIn/dom/index-1.xhtml" parse="text" /></programlisting>
+                                    href="files/impl/components/layout/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
                         </para>
                         <para>
                             <filename>index.xhtml</filename> file could be any content, but by default layout will render into
@@ -215,19 +217,20 @@
                         <graphic fileref="img/login-page.png" />
                     </para>
                     <para>
-                        <filename>impl/components/page/Login/dom/index.xhtml:</filename>
+                        <filename>impl/components/page/NotLoggedIn/dom/index.xhtml:</filename>
                         <programlisting language="brush: html"><xi:include
-                                href="files/impl/components/page/Login/dom/index.xhtml" parse="text" /></programlisting>
+                                href="files/impl/components/page/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
                     </para>
                     <para>
-                        <filename>impl/components/page/Login/logic/Login.js:</filename>
+                        <filename>impl/components/page/NotLoggedIn/logic/NotLoggedIn.js:</filename>
                         <programlisting language="brush: js"><xi:include
-                                href="files/impl/components/page/Login/logic/Login.js" parse="text" /></programlisting>
+                                href="files/impl/components/page/NotLoggedIn/logic/NotLoggedIn.js"
+                                parse="text" /></programlisting>
                     </para>
                     <para>
-                        <filename>impl/components/page/Login/style/style.scss:</filename>
+                        <filename>impl/components/page/NotLoggedIn/style/style.scss:</filename>
                         <programlisting language="brush: sass"><xi:include
-                                href="files/impl/components/page/Login/style/style.scss"
+                                href="files/impl/components/page/NotLoggedIn/style/style.scss"
                                 parse="text" /></programlisting>
                     </para>
                     <para>
@@ -236,14 +239,48 @@
                                                                             parse="text" /></programlisting>
                     </para>
                     <para>Now, rebuild and refresh page. You should be as the following:</para>
+                    <graphic fileref="img/widget-not-found.png" />
+                    </section>
+
+                <section>
+                    <title>Add widget component</title>
+
+                    <para>
+                        Lets create <emphasis>widget</emphasis> component as in the following figure below:
+
+                        <graphic fileref="img/login-widget.png" />
+                    </para>
+                    <para>
+                        <filename>impl/components/widget/Login/dom/index.xhtml:</filename>
+                        <programlisting language="brush: html"><xi:include
+                                href="files/impl/components/widget/Login/dom/index.xhtml" parse="text" /></programlisting>
+                    </para>
+                    <para>
+                        <filename>impl/components/widget/Login/logic/Login.js:</filename>
+                        <programlisting language="brush: js"><xi:include
+                                href="files/impl/components/widget/Login/logic/Login.js"
+                                parse="text" /></programlisting>
+                    </para>
+                    <para>
+                        <filename>impl/components/widget/Login/style/style.scss:</filename>
+                        <programlisting language="brush: sass"><xi:include
+                                href="files/impl/components/widget/Login/style/style.scss"
+                                parse="text" /></programlisting>
+                    </para>
+                    <para>
+                        <filename>include.list:</filename>
+                        <programlisting language="brush: plain"><xi:include href="files/include-4.list"
+                                                                            parse="text" /></programlisting>
+                    </para>
+                    <para>Now, rebuild and refresh page. It should be as the following:</para>
                     <graphic fileref="img/page-not-found.png" />
+
                     <para>It's because for each page framework does one request. In this case this name is the same as page component name (this can be configured)</para>
-                    <para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>Login.json</filename> file with empty <emphasis>JSON</emphasis> content</para>
+                    <para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>NotLoggedIn.json</filename> file with empty <emphasis>JSON</emphasis> content</para>
                     <programlisting language="brush: js"><![CDATA[{ }]]></programlisting>
                     <para>and refresh page. Now you have to see as the following:</para>
                     <graphic fileref="img/first-working-app.png" />
 
-                    <para>Pay attention, that there's success server request, browser <emphasis>URL</emphasis> changed to <emphasis>#path=Login</emphasis> and we have <emphasis>LAYOUT</emphasis> and <emphasis>PAGE</emphasis> text.</para>
                     <para>Lets see how indeed <emphasis>NKF</emphasis> does all stuff for us:</para>
 
                     <graphic fileref="img/framework-dom-structure.png" />
@@ -264,7 +301,7 @@
                 <title>Move further. Play around with layout, page and widget components</title>
 
                 <para>Now, for best explanation how layout, page and widget works together, lets create something useful.
-                    Lets create simple fake login page, and after user will "login", we will redirect to "Logged In" page.
+                    Lets create simple fake login page, and after user will login, he will redirect to "Home" page.
                     In that example we will explain a lot things..</para>
                 <para>First, lets reset all default <emphasis>User Agent</emphasis> CSS styles. For that, just create <filename>reset.scss</filename></para>
                 <filename>impl/extra/style/reset.scss:</filename>
@@ -277,11 +314,67 @@
                                                                    parse="text" /></programlisting>
 
                 <note>You don't need to define your resource files (xml, xhtml, json, css, scss, svg, etc) into <filename>include.list</filename> except only <emphasis>JavaScript</emphasis>.</note>
-                <para>Next step, create all necessary components. Lets start from <emphasis>layout</emphasis>. Default not logged in layout called <emphasis>NotLoggedIn</emphasis>.</para>
+                <para>Next step, create all necessary components. Lets start from <emphasis>widget</emphasis> component.
+
+                    <!--<para>-->
+                    Lets create <emphasis>widget</emphasis> component as in the following figure below:
+
+                        <graphic fileref="img/login-widget.png" />
+                    </para>
+                    <para>
+                        <filename>impl/components/widget/Login/dom/index.xhtml:</filename>
+                        <programlisting language="brush: html"><xi:include
+                                href="files/impl/components/widget/Login/dom/index.xhtml" parse="text" /></programlisting>
+                    </para>
+                    <para>
+                        <filename>impl/components/widget/Login/logic/Login.js:</filename>
+                        <programlisting language="brush: js"><xi:include
+                                href="files/impl/components/widget/Login/logic/Login.js"
+                                parse="text" /></programlisting>
+                    </para>
+                    <para>
+                        <filename>impl/components/widget/Login/style/style.scss:</filename>
+                        <programlisting language="brush: sass"><xi:include
+                                href="files/impl/components/widget/Login/style/style.scss"
+                                parse="text" /></programlisting>
+                    </para>
+                    <para>
+                        <filename>include.list:</filename>
+                        <programlisting language="brush: plain"><xi:include href="files/include-4.list"
+                                                                            parse="text" /></programlisting>
+                    </para>
+                    <para>Now, rebuild and refresh page. It should be as the following:</para>
+                    <!--<graphic fileref="img/page-not-found.png" />-->
+
+                    <para>It's because for each page framework does one request. In this case this name is the same as page component name (this can be configured)</para>
+                    <para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>NotLoggedIn.json</filename> file with empty <emphasis>JSON</emphasis> content</para>
+                    <programlisting language="brush: js"><![CDATA[{ }]]></programlisting>
+                    <para>and refresh page. Now you have to see as the following:</para>
+                    <graphic fileref="img/first-working-app.png" />
+
+                    <para>Lets see how indeed <emphasis>NKF</emphasis> does all stuff for us:</para>
+
+                    <graphic fileref="img/framework-dom-structure.png" />
+
+                    <para>
+                        Lets pay attention to the following:
+                    </para>
+
+                    <para>
+                        <emphasis>data-nkf-component-type</emphasis> attribute contains information about <emphasis>component</emphasis> type. Available types are: <emphasis>layout</emphasis>, <emphasis>page</emphasis>, <emphasis>widget</emphasis>
+                    </para>
+                    <para>
+                       <emphasis>data-nkf-component-name</emphasis> attribute contains information about <emphasis>component</emphasis> name
+                    </para>
+
+
+                <para>Next step, create all necessary components. Lets start from <emphasis>layout</emphasis>.
+                Default not logged in layout called <emphasis>NotLoggedIn</emphasis>.</para>
 
                 <filename>impl/components/layout/NotLoggedIn/dom/index.xhtml:</filename>
                 <programlisting language="brush: html; highlight: [13, 14]"><xi:include
-                        href="files/app1/impl/components/layout/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
+                        href="files/app1/impl/components/layout/NotLoggedIn/dom/index.xhtml"
+                        parse="text" /></programlisting>
                 <para>By default, layout component render it's content (<emphasis>page</emphasis>) into <emphasis>section</emphasis> tag. That's why in our layout html presents <emphasis>section</emphasis> tag</para>
 
                 <note>It's encourage to use new <emphasis>HTML5</emphasis> semantic tags.</note>

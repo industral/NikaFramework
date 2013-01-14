@@ -23,20 +23,11 @@
     // Private methods
     // --------------------------------------------------------------------
 
-    function constructor() {
-      init.call(this);
-    }
-
-    function init() {
-    }
-
     // --------------------------------------------------------------------
     // Private variables
     // --------------------------------------------------------------------
 
     var domComponent = this._getComponent();
-
-    constructor.call(this);
   }
 
   $.extend(self, {
