@@ -96,3 +96,7 @@ dd {
     display: inline-block;
     /*margin: 0;*/
 }
+
+img {
+    max-width: 1024px;
+}

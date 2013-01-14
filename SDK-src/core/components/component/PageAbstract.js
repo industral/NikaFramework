@@ -25,8 +25,13 @@
       dom.attr(attr);
 
       if (params.dom) {
-        params.dom.find(nkf.conf.render.layout.selector).contents().detach();
-        params.dom.find(nkf.conf.render.layout.selector).append(dom);
+        var section = params.dom.find(nkf.conf.render.layout.selector);
+        if (section.length) {
+          section.contents().detach();
+          section.append(dom);
+        } else {
+          console.warn("Render layout section not found");
+        }
       } else {
         $ComponentManager.setPreRenderedDOM(dom);
       }

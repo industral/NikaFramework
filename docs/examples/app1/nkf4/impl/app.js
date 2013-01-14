@@ -1,4 +1,5 @@
 $(function() {
+  nkf.conf.pageURL = "/app1" + nkf.conf.pageURL;
 //  nkf.conf.usePageLoadStandardBehaviour = false;
 
   $(document).trigger("nkf.core.Controller", {

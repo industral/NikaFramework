@@ -1,5 +1,7 @@
 nkf.js
 
+impl/components/page/NotLoggedIn/logic/NotLoggedIn.js
+
 impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js
 
 impl/app.js

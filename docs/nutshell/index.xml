@@ -128,7 +128,7 @@
                     Now refresh a page, and you have to find JavaScript error
                     <emphasis>No implementation found</emphasis>
 
-                    <graphic fileref="img/no-impl-found.png" />
+                    <graphic fileref="img/app1/no-impl-found.png" />
                 </para>
                 <para>
                     It because we doesn't have our implementation. To get it working we must have at least one <emphasis>layout</emphasis>
@@ -154,7 +154,7 @@
                                 class="directory">impl/layout</filename> folder.
                             Alone create structure, that presented below:
 
-                            <graphic fileref="img/not-logged-in-layout.png" />
+                            <graphic fileref="img/app1/not-logged-in-layout.png" />
                         </para>
                         <para>
                             <emphasis>dom</emphasis> - <emphasis>xhtml</emphasis> files
@@ -201,7 +201,7 @@
                         <para>
                             Now rebuild application again, and refresh a page. New JavaScript error should appear: <emphasis>No page component found</emphasis>
 
-                            <graphic fileref="img/no-page-component-found.png" />
+                            <graphic fileref="img/app1/no-page-component-found.png" />
 
                             That means that remains need to add a <emphasis>page</emphasis> component.
                         </para>
@@ -214,7 +214,7 @@
                     <para>
                         Lets create <emphasis>page</emphasis> component as in the following figure below:
 
-                        <graphic fileref="img/login-page.png" />
+                        <graphic fileref="img/app1/login-page.png" />
                     </para>
                     <para>
                         <filename>impl/components/page/NotLoggedIn/dom/index.xhtml:</filename>
@@ -239,7 +239,18 @@
                                                                             parse="text" /></programlisting>
                     </para>
                     <para>Now, rebuild and refresh page. You should be as the following:</para>
-                    <!--<graphic fileref="img/widget-not-found.png" />-->
+                    <graphic fileref="img/app1/page-not-found.png" />
+
+                    <para>It's because for each page framework does one request. In this case this name is the same as page component name (this can be configured)</para>
+                    <para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>NotLoggedIn.json</filename> file with empty <emphasis>JSON</emphasis> content</para>
+                    <programlisting language="brush: js"><![CDATA[{ }]]></programlisting>
+                    <para>and change data JSON path at <filename>nkf4/impl/app.js</filename>:</para>
+
+
+                    <para>and refresh page. Now you have to see as the following:</para>
+                    <graphic fileref="img/app1/first-working-app.png" />
+                    <graphic fileref="img/app1/DOM.png" />
+
                     </section>
             </section>
             </section>
@@ -298,11 +309,11 @@
                     <para>Now, rebuild and refresh page. It should be as the following:</para>
                     <!--<graphic fileref="img/page-not-found.png" />-->
 
-                    <para>It's because for each page framework does one request. In this case this name is the same as page component name (this can be configured)</para>
-                    <para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>NotLoggedIn.json</filename> file with empty <emphasis>JSON</emphasis> content</para>
-                    <programlisting language="brush: js"><![CDATA[{ }]]></programlisting>
-                    <para>and refresh page. Now you have to see as the following:</para>
-                    <graphic fileref="img/first-working-app.png" />
+                    <!--<para>It's because for each page framework does one request. In this case this name is the same as page component name (this can be configured)</para>-->
+                    <!--<para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>NotLoggedIn.json</filename> file with empty <emphasis>JSON</emphasis> content</para>-->
+                    <!--<programlisting language="brush: js"><![CDATA[{ }]]></programlisting>-->
+                    <!--<para>and refresh page. Now you have to see as the following:</para>-->
+                    <!--<graphic fileref="img/first-working-app.png" />-->
 
                     <para>Lets see how indeed <emphasis>NKF</emphasis> does all stuff for us:</para>
 
