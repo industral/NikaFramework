@@ -106,7 +106,7 @@
 
                 <para>
                     Lets uncomment <emphasis>;impl/app.js</emphasis> from <filename>build/include.list</filename> as:
-                    <programlisting language="brush: plain"><xi:include href="files/include-1.list"
+                    <programlisting language="brush: plain"><xi:include href="files/app1/nkf4/build/include-1.list"
                                                                         parse="text" /></programlisting>
 
                     and look at content of that file:
@@ -146,10 +146,10 @@
                         <para>
                            Lets start from <emphasis>layout</emphasis>. Each component should be created under appropriate folder.
                            For layout component it's <emphasis>layout</emphasis> folder. This folder should be created under <emphasis>impl</emphasis> folder.
-                           Actually all resources, that we are going to create will be under <emphasis>impl</emphasis> folder, as it's "our" folder.
+                           Actually all resources, that we are going to create will be under <emphasis>impl</emphasis> folder, as it's folder where implementation go on.
                         </para>
                         <para>
-                            As we are non logged in yet, layout by default will be <emphasis>NotLoggedIn</emphasis> (later you can change it).
+                            As we are non logged in yet, layout by default will be <emphasis>NotLoggedIn</emphasis> (later you can change it via <emphasis>nkf.conf.defaultNotLoggedInLayout</emphasis>).
                             So now, create <filename class="directory">NotLoggedIn</filename> folder under <filename
                                 class="directory">impl/layout</filename> folder.
                             Alone create structure, that presented below:
@@ -173,7 +173,7 @@
                         <para>
                             <filename>impl/components/layout/NotLoggedIn/dom/index.xhtml:</filename>
                             <programlisting language="brush: html"><xi:include
-                                    href="files/impl/components/layout/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
+                                    href="files/app1/nkf4/impl/components/layout/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
                         </para>
                         <para>
                             <filename>index.xhtml</filename> file could be any content, but by default layout will render into
@@ -183,19 +183,19 @@
                         <para>
                             <filename>impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js:</filename>
                             <programlisting language="brush: js"><xi:include
-                                    href="files/impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js"
+                                    href="files/app1/nkf4/impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js"
                                     parse="text" /></programlisting>
                         </para>
 
                         <para>
                             <filename>impl/components/layout/NotLoggedIn/style/style.scss:</filename>
                             <programlisting language="brush: sass"><xi:include
-                                    href="files/impl/components/layout/NotLoggedIn/style/style.scss"
+                                    href="files/app1/nkf4/impl/components/layout/NotLoggedIn/style/style.scss"
                                     parse="text" /></programlisting>
                         </para>
                        <para>And change <filename>include.list</filename> to following format:</para>
 
-                       <programlisting language="brush: plain"><xi:include href="files/include-2.list"
+                       <programlisting language="brush: plain"><xi:include href="files/app1/nkf4/build/include-1.list"
                                                                            parse="text" /></programlisting>
 
                         <para>
@@ -219,104 +219,51 @@
                     <para>
                         <filename>impl/components/page/NotLoggedIn/dom/index.xhtml:</filename>
                         <programlisting language="brush: html"><xi:include
-                                href="files/impl/components/page/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
+                                href="files/app1/nkf4/impl/components/page/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
                     </para>
                     <para>
                         <filename>impl/components/page/NotLoggedIn/logic/NotLoggedIn.js:</filename>
                         <programlisting language="brush: js"><xi:include
-                                href="files/impl/components/page/NotLoggedIn/logic/NotLoggedIn.js"
+                                href="files/app1/nkf4/impl/components/page/NotLoggedIn/logic/NotLoggedIn.js"
                                 parse="text" /></programlisting>
                     </para>
                     <para>
                         <filename>impl/components/page/NotLoggedIn/style/style.scss:</filename>
                         <programlisting language="brush: sass"><xi:include
-                                href="files/impl/components/page/NotLoggedIn/style/style.scss"
+                                href="files/app1/nkf4/impl/components/page/NotLoggedIn/style/style.scss"
                                 parse="text" /></programlisting>
                     </para>
                     <para>
                         <filename>include.list:</filename>
-                        <programlisting language="brush: plain"><xi:include href="files/include-3.list"
+                        <programlisting language="brush: plain"><xi:include href="files/app1/nkf4/build/include-2.list"
                                                                             parse="text" /></programlisting>
                     </para>
                     <para>Now, rebuild and refresh page. You should be as the following:</para>
-                    <graphic fileref="img/widget-not-found.png" />
+                    <!--<graphic fileref="img/widget-not-found.png" />-->
                     </section>
-
-                <section>
-                    <title>Add widget component</title>
-
-                    <para>
-                        Lets create <emphasis>widget</emphasis> component as in the following figure below:
-
-                        <graphic fileref="img/login-widget.png" />
-                    </para>
-                    <para>
-                        <filename>impl/components/widget/Login/dom/index.xhtml:</filename>
-                        <programlisting language="brush: html"><xi:include
-                                href="files/impl/components/widget/Login/dom/index.xhtml" parse="text" /></programlisting>
-                    </para>
-                    <para>
-                        <filename>impl/components/widget/Login/logic/Login.js:</filename>
-                        <programlisting language="brush: js"><xi:include
-                                href="files/impl/components/widget/Login/logic/Login.js"
-                                parse="text" /></programlisting>
-                    </para>
-                    <para>
-                        <filename>impl/components/widget/Login/style/style.scss:</filename>
-                        <programlisting language="brush: sass"><xi:include
-                                href="files/impl/components/widget/Login/style/style.scss"
-                                parse="text" /></programlisting>
-                    </para>
-                    <para>
-                        <filename>include.list:</filename>
-                        <programlisting language="brush: plain"><xi:include href="files/include-4.list"
-                                                                            parse="text" /></programlisting>
-                    </para>
-                    <para>Now, rebuild and refresh page. It should be as the following:</para>
-                    <graphic fileref="img/page-not-found.png" />
-
-                    <para>It's because for each page framework does one request. In this case this name is the same as page component name (this can be configured)</para>
-                    <para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>NotLoggedIn.json</filename> file with empty <emphasis>JSON</emphasis> content</para>
-                    <programlisting language="brush: js"><![CDATA[{ }]]></programlisting>
-                    <para>and refresh page. Now you have to see as the following:</para>
-                    <graphic fileref="img/first-working-app.png" />
-
-                    <para>Lets see how indeed <emphasis>NKF</emphasis> does all stuff for us:</para>
-
-                    <graphic fileref="img/framework-dom-structure.png" />
-
-                    <para>
-                        Lets pay attention to the following:
-                    </para>
-
-                    <para>
-                        <emphasis>data-nkf-component-type</emphasis> attribute contains information about <emphasis>component</emphasis> type. Available types are: <emphasis>layout</emphasis>, <emphasis>page</emphasis>, <emphasis>widget</emphasis>
-                    </para>
-                    <para>
-                       <emphasis>data-nkf-component-name</emphasis> attribute contains information about <emphasis>component</emphasis> name
-                    </para>
-                </section>
             </section>
+            </section>
+
             <section>
-                <title>Move further. Play around with layout, page and widget components</title>
+                <title>Move further. Play around with layout, page and widget components (app2)</title>
 
                 <para>Now, for best explanation how layout, page and widget works together, lets create something useful.
                     Lets create simple fake login page, and after user will login, he will redirect to "Home" page.
                     In that example we will explain a lot things..</para>
                 <para>First, lets reset all default <emphasis>User Agent</emphasis> CSS styles. For that, just create <filename>reset.scss</filename></para>
                 <filename>impl/extra/style/reset.scss:</filename>
-                <programlisting language="brush: sass"><xi:include href="files/app1/impl/extra/style/reset.scss"
+                <programlisting language="brush: sass"><xi:include href="files/app2/nkf4/impl/extra/style/reset.scss"
                                                                    parse="text" /></programlisting>
 
                 <para>Now, lets create main style file:</para>
                 <filename>impl/extra/style/main.scss:</filename>
-                <programlisting language="brush: sass"><xi:include href="files/app1/impl/extra/style/main.scss"
+                <programlisting language="brush: sass"><xi:include href="files/app2/nkf4/impl/extra/style/main.scss"
                                                                    parse="text" /></programlisting>
 
                 <note>You don't need to define your resource files (xml, xhtml, json, css, scss, svg, etc) into <filename>include.list</filename> except only <emphasis>JavaScript</emphasis>.</note>
-                <para>Next step, create all necessary components. Lets start from <emphasis>widget</emphasis> component.
+                <para>Next step, create all necessary components. Lets start from <emphasis>widget</emphasis> component. </para>
 
-                    <!--<para>-->
+                    <para>
                     Lets create <emphasis>widget</emphasis> component as in the following figure below:
 
                         <graphic fileref="img/login-widget.png" />
@@ -324,25 +271,30 @@
                     <para>
                         <filename>impl/components/widget/Login/dom/index.xhtml:</filename>
                         <programlisting language="brush: html"><xi:include
-                                href="files/impl/components/widget/Login/dom/index.xhtml" parse="text" /></programlisting>
+                                href="files/app2/nkf4/impl/components/widget/Login/dom/index.xhtml" parse="text" /></programlisting>
                     </para>
                     <para>
                         <filename>impl/components/widget/Login/logic/Login.js:</filename>
                         <programlisting language="brush: js"><xi:include
-                                href="files/impl/components/widget/Login/logic/Login.js"
+                                href="files/app2/nkf4/impl/components/widget/Login/logic/Login.js"
                                 parse="text" /></programlisting>
                     </para>
                     <para>
                         <filename>impl/components/widget/Login/style/style.scss:</filename>
                         <programlisting language="brush: sass"><xi:include
-                                href="files/impl/components/widget/Login/style/style.scss"
+                                href="files/app2/nkf4/impl/components/widget/Login/style/style.scss"
                                 parse="text" /></programlisting>
                     </para>
                     <para>
                         <filename>include.list:</filename>
-                        <programlisting language="brush: plain"><xi:include href="files/include-4.list"
+                        <programlisting language="brush: plain"><xi:include href="files/app2/nkf4/build/include.list"
                                                                             parse="text" /></programlisting>
                     </para>
+
+                    <para>And add that widget to <emphasis>page</emphasis> component:</para>
+                    <programlisting language="brush: html"><xi:include href="files/app2/nkf4/impl/components/page/NotLoggedIn/dom/index.xhtml"
+                                                                                                parse="text" /></programlisting>
+
                     <para>Now, rebuild and refresh page. It should be as the following:</para>
                     <!--<graphic fileref="img/page-not-found.png" />-->
 
@@ -373,7 +325,7 @@
 
                 <filename>impl/components/layout/NotLoggedIn/dom/index.xhtml:</filename>
                 <programlisting language="brush: html; highlight: [13, 14]"><xi:include
-                        href="files/app1/impl/components/layout/NotLoggedIn/dom/index.xhtml"
+                        href="files/app2/nkf4/impl/components/layout/NotLoggedIn/dom/index.xhtml"
                         parse="text" /></programlisting>
                 <para>By default, layout component render it's content (<emphasis>page</emphasis>) into <emphasis>section</emphasis> tag. That's why in our layout html presents <emphasis>section</emphasis> tag</para>
 
@@ -382,7 +334,7 @@
                 <para>
                 <filename>impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js:</filename>
                 <programlisting language="brush: js"><xi:include
-                        href="files/app1/impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js"
+                        href="files/app2/nkf4/impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js"
                         parse="text" /></programlisting>
                 </para>
                 <para>It's just typical skeleton <emphasis>JavaScript</emphasis> file</para>
@@ -390,7 +342,7 @@
                 <para>
                 <filename>impl/components/layout/NotLoggedIn/style/style.scss:</filename>
                 <programlisting language="brush: scss; highlight: [3]"><xi:include
-                        href="files/app1/impl/components/layout/NotLoggedIn/style/style.scss"
+                        href="files/app2/nkf4/impl/components/layout/NotLoggedIn/style/style.scss"
                         parse="text" /></programlisting>
                 </para>
                 <para>Here, we just create a red border to indicate that we are not logged in.</para>
@@ -402,7 +354,7 @@
                 <para>
                 <filename>impl/components/layout/LoggedIn/dom/index.xhtml:</filename>
                 <programlisting language="brush: html; highlight: [5, 15]"><xi:include
-                        href="files/app1/impl/components/layout/LoggedIn/dom/index.xhtml"
+                        href="files/app2/nkf4/impl/components/layout/LoggedIn/dom/index.xhtml"
                         parse="text" /></programlisting>
                 </para>
                 <para>Here we have the same as for not logged in <emphasis>layout</emphasis>, except menu. It has another set of items. That we done specially to distinguish difference between logged in and not logged in state.</para>
@@ -410,7 +362,7 @@
                 <para>
                 <filename>impl/components/layout/LoggedIn/style/style.scss:</filename>
                 <programlisting language="brush: scss; highlight: [3]"><xi:include
-                        href="files/app1/impl/components/layout/LoggedIn/style/style.scss"
+                        href="files/app2/nkf4/impl/components/layout/LoggedIn/style/style.scss"
                         parse="text" /></programlisting>
                 </para>
                 <para>Style is also the same, except green border color. That's all for <emphasis>layout</emphasis>. Now, remains to write default <emphasis>page</emphasis> components.</para>
@@ -419,14 +371,14 @@
                 <para>
                 <filename>impl/components/page/NotLoggedIn/dom/index.xhtml:</filename>
                 <programlisting language="brush: html; highlight: [2]"><xi:include
-                        href="files/app1/impl/components/page/NotLoggedIn/dom/index.xhtml"
+                        href="files/app2/nkf4/impl/components/page/NotLoggedIn/dom/index.xhtml"
                         parse="text" /></programlisting>
                 </para>
                 <para>Line #2 says that widget with name <emphasis>Login</emphasis> will be included here.</para>
                 <para>
                 <filename>impl/components/page/NotLoggedIn/logic/NotLoggedIn.js:</filename>
                 <programlisting language="brush: js"><xi:include
-                        href="files/app1/impl/components/page/NotLoggedIn/logic/NotLoggedIn.js"
+                        href="files/app2/nkf4/impl/components/page/NotLoggedIn/logic/NotLoggedIn.js"
                         parse="text" /></programlisting>
                 </para>
                 <para>As other <emphasis>JavaScript</emphasis> skeleton files this one will be the same.</para>
@@ -434,7 +386,7 @@
                 <para>
                      <filename>impl/components/page/Home/dom/index.xhtml:</filename>
                      <programlisting language="brush: html; highlight: [2]"><xi:include
-                             href="files/app1/impl/components/page/Home/dom/index.xhtml"
+                             href="files/app2/nkf4/impl/components/page/Home/dom/index.xhtml"
                              parse="text" /></programlisting>
                 </para>
                 <para>Here we have the same picture. In this <emphasis>page</emphasis> component includes <emphasis>widget</emphasis> with name <emphasis>Controls</emphasis></para>
@@ -442,7 +394,7 @@
                 <para>
                      <filename>impl/components/page/Home/style/style.scss:</filename>
                      <programlisting language="brush: scss"><xi:include
-                             href="files/app1/impl/components/page/Home/style/style.scss"
+                             href="files/app2/nkf4/impl/components/page/Home/style/style.scss"
                              parse="text" /></programlisting>
                 </para>
                 <para>Very simple styling...</para>
@@ -450,7 +402,7 @@
                 <para>
                      <filename>impl/components/widget/Controls/dom/index.xhtml:</filename>
                      <programlisting language="brush: html"><xi:include
-                             href="files/app1/impl/components/widget/Controls/dom/index.xhtml"
+                             href="files/app2/nkf4/impl/components/widget/Controls/dom/index.xhtml"
                              parse="text" /></programlisting>
                 </para>
                 <para>Here will be just <emphasis>logout</emphasis> button.</para>
@@ -460,7 +412,7 @@
                 <para>
                      <filename>impl/components/widget/Controls/logic/Controls.js:</filename>
                      <programlisting language="brush: js; highlight: [32, 34]"><xi:include
-                             href="files/app1/impl/components/widget/Controls/logic/Controls.js"
+                             href="files/app2/nkf4/impl/components/widget/Controls/logic/Controls.js"
                              parse="text" /></programlisting>
                     <para>Here we add listener, and on click we do logout, by</para>
                     <programlisting language="brush: js">$ComponentManager.doLogin(false);</programlisting>
@@ -468,21 +420,21 @@
                 <para>
                      <filename>impl/components/widget/Controls/style/style.scss:</filename>
                      <programlisting language="brush: js"><xi:include
-                             href="files/app1/impl/components/widget/Controls/style/style.scss"
+                             href="files/app2/nkf4/impl/components/widget/Controls/style/style.scss"
                              parse="text" /></programlisting>
                 </para>
                 <para>And the last one <emphasis>widget</emphasis> - <emphasis>Login</emphasis></para>
                 <para>
                      <filename>impl/components/widget/Login/dom/index.xhtml:</filename>
                      <programlisting language="brush: html"><xi:include
-                             href="files/app1/impl/components/widget/Login/dom/index.xhtml"
+                             href="files/app2/nkf4/impl/components/widget/Login/dom/index.xhtml"
                              parse="text" /></programlisting>
                 </para>
                 <para>Here we created a login form, so user can put username and password. Of course we will not check credentials, but to show how it works - it good example.</para>
                 <para>
                      <filename>impl/components/widget/Login/logic/Login.js:</filename>
                      <programlisting language="brush: js; highlight: [38, 40]"><xi:include
-                             href="files/app1/impl/components/widget/Login/logic/Login.js"
+                             href="files/app2/nkf4/impl/components/widget/Login/logic/Login.js"
                              parse="text" /></programlisting>
                 </para>
                 <para>
@@ -494,14 +446,14 @@
                 <para>
                      <filename>impl/components/widget/Login/style/style.scss:</filename>
                      <programlisting language="brush: scss"><xi:include
-                             href="files/app1/impl/components/widget/Login/style/style.scss"
+                             href="files/app2/nkf4/impl/components/widget/Login/style/style.scss"
                              parse="text" /></programlisting>
                 </para>
                 <para>Now lets include all required <emphasis>JavaScript</emphasis> files in appropriate order:</para>
                 <para>
                     <filename>build/include.list:</filename>
                      <programlisting language="brush: plain"><xi:include
-                             href="files/app1/build/include.list"
+                             href="files/app2/nkf4/build/include.list"
                              parse="text" /></programlisting>
                 </para>
                 <note>You should include from <emphasis>widget</emphasis> to <emphasis>layout</emphasis></note>
@@ -514,9 +466,9 @@
                 <graphic fileref="img/app1-logged-in.png" />
 
                 <para>Here a lot information we can learn. Lets considering what HTML was generated for <emphasis>not logged in</emphasis> state.</para>
-                 <programlisting language="brush: html; highlight: [8, 9, 13, 25, 26]"><xi:include
-                         href="files/app1/out/not-logged-in.xhtml"
-                         parse="text" /></programlisting>
+                 <!--<programlisting language="brush: html; highlight: [8, 9, 13, 25, 26]"><xi:include-->
+                         <!--href="files/app1/app1/out/not-logged-in.xhtml"-->
+                         <!--parse="text" /></programlisting>-->
                 <para>In lines 8, 9 we include our generated files by <emphasis>NKF build system</emphasis>.</para>
                 <para>Pay attention for lines 13, 25, 26. <application>NikaFramework</application> creates for each component wrapper and gets it's <emphasis>type</emphasis>
                 and <emphasis>name</emphasis>, with <emphasis>data-nkf-component-type</emphasis> and <emphasis>data-nkf-component-name</emphasis> attributes.
@@ -526,9 +478,9 @@
                 <para>When we entered credentials and press OK, we redirect to <emphasis>LoggedIn</emphasis> layout and <emphasis>Home</emphasis> page respectively</para>
                 <para> Lets see generated <emphasis>HTML</emphasis> for <emphasis>login</emphasis> state.</para>
 
-                <programlisting language="brush: html; highlight: [13, 30, 31]"><xi:include
-                        href="files/app1/out/logged-in.xhtml"
-                        parse="text" /></programlisting>
+                <!--<programlisting language="brush: html; highlight: [13, 30, 31]"><xi:include-->
+                        <!--href="files/app1/app1/out/logged-in.xhtml"-->
+                        <!--parse="text" /></programlisting>-->
 
                 <para>In that case, when we logged in, <emphasis>layout</emphasis> component changed from <emphasis>NotLoggedIn</emphasis> to <emphasis>LoggedIn</emphasis>, thus all <emphasis>HTML</emphasis>
                 under <emphasis>body</emphasis> tag was rewritten. But <emphasis>HTML</emphasis> code above still the same. Later, when you try to change page within the confines of current <emphasis>layout</emphasis>,
@@ -551,6 +503,6 @@
 
                 <para>All settings that could be configured you can find at <filename>conf.json</filename> file.</para>
             </section>
-        </section>
+        <!--</section>-->
     </article>
 </book>
