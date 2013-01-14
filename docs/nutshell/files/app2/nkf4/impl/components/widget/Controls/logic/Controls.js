@@ -15,6 +15,9 @@
 
     this.className = Controls.className;
 
+    this.Constructor = function() {
+    };
+
     this.getRenderedDOM = function() {
       return domComponent;
     };

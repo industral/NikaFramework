@@ -1,6 +1,6 @@
 var __dom__ = {"components/layout/LoggedIn/dom/index.xhtml":"<div>    <div id=\"wrap\">        <div id=\"main\">            <header>                <ul>                    <li>Home</li>                    <li>Profile</li>                    <li>Contacts</li>                    <li>Groups</li>                    <li>Jobs</li>                    <li>Inbox</li>                    <li>Companies</li>                    <li>News</li>                    <li>More</li>                </ul>            </header>            <section>            </section>        </div>    </div>    <footer>    </footer></div>","components/layout/NotLoggedIn/dom/index.xhtml":"<div>    <div id=\"wrap\">        <div id=\"main\">            <header>                <ul>                    <li>Home</li>                    <li>What is NKF</li>                    <li>Join Today</li>                    <li>Sign In</li>                </ul>            </header>            <section>            </section>        </div>    </div>    <footer>    </footer></div>","components/page/Home/dom/index.xhtml":"<div>    <div data-nkf-component-type=\"widget\" data-nkf-component-name=\"Controls\"></div>    Other widgets go here...</div>","components/page/NotLoggedIn/dom/index.xhtml":"<div>    <div data-nkf-component-type=\"widget\" data-nkf-component-name=\"Login\"></div></div>","components/widget/Controls/dom/index.xhtml":"<div class=\"controls-wrapper\">    <button>Logout</button></div>","components/widget/Login/dom/index.xhtml":"<div>    <fieldset>        <form action=\"#\">            <div>                <label for=\"login\">Login</label>                <input type=\"text\" size=\"30\" id=\"login\" name=\"login\"/>            </div>            <div>                <label for=\"password\">Password</label>                <input type=\"password\" size=\"30\" id=\"password\" name=\"password\"/>            </div>            <div id=\"submit-container\">                <input type=\"submit\" value=\"OK\" />            </div>        </form>    </fieldset></div>"}
 var __json__ = {}
-var nkf={"runtime":{},"conf":{"useLogin":true,"defaultLoggedInPage":"Home","defaultNotLoggedInPage":"NotLoggedIn","defaultLoggedInLayout":"LoggedIn","defaultNotLoggedInLayout":"NotLoggedIn","usePageLoadStandardBehaviour":true,"pageURL":"/data/pages","pageNameExtension":"json","loadingMaskSelector":"#page-loading-mask","def":{"xml":{"path":"dom","suffix":"xml"},"html":{"path":"dom","name":"index","suffix":"xhtml"},"svg":{"path":"svg","suffix":"svg"},"css":{"path":"style"},"js":{"name":"logic"},"data":{"path":"data","suffix":"json"},"attr":{"lang":"data-lang-textcontent","component":{"type":"data-nkf-component-type","name":"data-nkf-component-name"},"state":"data-state"}},"storage":{"key":"ks","usersettings":"UserSettings","networkdata":"NetworkData"},"components":"components","render":{"dom":"__dom__","svg":"__dom__","data":"__json__","body":{"selector":"body"},"layout":{"selector":"section"},"dynamic":{"selector":"#dynamic"},"mask":{"selector":"#mask"}},"classes":{"none":"hidden"}},"enumType":{"Component":{"layout":"layout","page":"page","widget":"widget","component":"component"},"Data":{"html":"html","css":"css","data":"data","svg":"svg","xml":"xml"},"DataScope":{"global":"global","widget":"widget"}},"def":{"component":{"action":{"rendered":"rendered","state":"state"},"state":{"normal":"normal","maximized":"maximized","minimized":"minimized","hidden":"hidden"},"render":{"state":{"showed":"showed","closed":"closed","disabled":"disabled"}}},"events":{"type":{"is":"is","make":"make"}}},"version":"4.3.0"};/*!
+var nkf={"runtime":{},"conf":{"useLogin":true,"defaultLoggedInPage":"Home","defaultNotLoggedInPage":"NotLoggedIn","defaultLoggedInLayout":"LoggedIn","defaultNotLoggedInLayout":"NotLoggedIn","usePageLoadStandardBehaviour":true,"pageURL":"/data/pages","pageNameExtension":"json","loadingMaskSelector":"#page-loading-mask","def":{"xml":{"path":"dom","suffix":"xml"},"html":{"path":"dom","name":"index","suffix":"xhtml"},"svg":{"path":"svg","suffix":"svg"},"css":{"path":"style"},"js":{"name":"logic"},"data":{"path":"data","suffix":"json"},"attr":{"lang":"data-lang-textcontent","component":{"type":"data-nkf-component-type","name":"data-nkf-component-name"},"state":"data-state"}},"storage":{"key":"ks","usersettings":"UserSettings","networkdata":"NetworkData"},"components":"components","render":{"dom":"__dom__","svg":"__dom__","data":"__json__","body":{"selector":"body"},"layout":{"selector":"section"},"dynamic":{"selector":"#dynamic"},"mask":{"selector":"#mask"}},"classes":{"none":"hidden"}},"enumType":{"Component":{"layout":"layout","page":"page","widget":"widget","component":"component"},"Data":{"html":"html","css":"css","data":"data","svg":"svg","xml":"xml"},"DataScope":{"global":"global","widget":"widget"}},"def":{"component":{"action":{"rendered":"rendered","state":"state"},"state":{"normal":"normal","maximized":"maximized","minimized":"minimized","hidden":"hidden"},"render":{"state":{"showed":"showed","closed":"closed","disabled":"disabled"}}},"events":{"type":{"is":"is","make":"make"}}},"version":"4.3.1"};/*!
  * jQuery JavaScript Library v1.8.3
  * http://jquery.com/
  *
@@ -11768,8 +11768,13 @@ function makeSingleton(clazz) {
       dom.attr(attr);
 
       if (params.dom) {
-        params.dom.find(nkf.conf.render.layout.selector).contents().detach();
-        params.dom.find(nkf.conf.render.layout.selector).append(dom);
+        var section = params.dom.find(nkf.conf.render.layout.selector);
+        if (section.length) {
+          section.contents().detach();
+          section.append(dom);
+        } else {
+          console.warn("Render layout section not found");
+        }
       } else {
         $ComponentManager.setPreRenderedDOM(dom);
       }
@@ -12056,19 +12061,22 @@ function makeSingleton(clazz) {
 (function() {
   "use strict";
 
-  var ns = "nkf.impl.components.layout";
+  var ns = "nkf.impl.components.widget";
   var self = $.namespace(ns);
 
-  extendClass(NotLoggedIn, nkf.core.components.component.LayoutAbstract);
-  NotLoggedIn.className = "NotLoggedIn";
+  extendClass(Controls, nkf.core.components.component.WidgetAbstract);
+  Controls.className = "Controls";
 
-  function NotLoggedIn() {
+  function Controls() {
 
     // --------------------------------------------------------------------
-    // Public methods/properties
+    // Public methods/variables
     // --------------------------------------------------------------------
 
-    this.className = NotLoggedIn.className;
+    this.className = Controls.className;
+
+    this.Constructor = function() {
+    };
 
     this.getRenderedDOM = function() {
       return domComponent;
@@ -12078,52 +12086,33 @@ function makeSingleton(clazz) {
     // Private methods
     // --------------------------------------------------------------------
 
-    // --------------------------------------------------------------------
-    // Private variables
-    // --------------------------------------------------------------------
+    function constructor() {
+      addEventListeners();
+    }
 
-    var domComponent = this._getComponent();
-  }
+    function addEventListeners() {
+      domComponent.find("button").click(function() {
+        $.cookie("isLogin", null, {path: "/"});
 
-  $.extend(self, {
-    NotLoggedIn: NotLoggedIn
-  });
-
-})();
-(function() {
-  "use strict";
-
-  var ns = "nkf.impl.components.page";
-  var self = $.namespace(ns);
-
-  extendClass(NotLoggedIn, nkf.core.components.component.PageAbstract);
-  NotLoggedIn.className = "NotLoggedIn";
-
-  function NotLoggedIn() {
-
-    // --------------------------------------------------------------------
-    // Public methods/properties
-    // --------------------------------------------------------------------
-
-    this.className = NotLoggedIn.className;
-
-    this.getRenderedDOM = function() {
-      return domComponent;
-    };
-
-    // --------------------------------------------------------------------
-    // Private methods
-    // --------------------------------------------------------------------
+        window.location.reload();
+      });
+    }
 
     // --------------------------------------------------------------------
     // Private variables
     // --------------------------------------------------------------------
 
+    var _this = this;
+
+    var $ComponentManager = nkf.core.components.ComponentManager.getInstance();
+
     var domComponent = this._getComponent();
+
+    constructor();
   }
 
   $.extend(self, {
-    NotLoggedIn: NotLoggedIn
+    Controls: Controls
   });
 
 })();
@@ -12142,6 +12131,9 @@ function makeSingleton(clazz) {
 
   function Login() {
     this.className = Login.className;
+
+    this.Constructor = function() {
+    };
 
     this.getRenderedDOM = function() {
       return domComponent;
@@ -12198,8 +12190,168 @@ function makeSingleton(clazz) {
   });
 
 })();
+(function() {
+  "use strict";
+
+  var ns = "nkf.impl.components.page";
+  var self = $.namespace(ns);
+
+  extendClass(NotLoggedIn, nkf.core.components.component.PageAbstract);
+  NotLoggedIn.className = "NotLoggedIn";
+
+  function NotLoggedIn() {
+
+    // --------------------------------------------------------------------
+    // Public methods/properties
+    // --------------------------------------------------------------------
+
+    this.className = NotLoggedIn.className;
+
+    this.Constructor = function() {
+    };
+
+    this.getRenderedDOM = function() {
+      return domComponent;
+    };
+
+    // --------------------------------------------------------------------
+    // Private methods
+    // --------------------------------------------------------------------
+
+    // --------------------------------------------------------------------
+    // Private variables
+    // --------------------------------------------------------------------
+
+    var domComponent = this._getComponent();
+  }
+
+  $.extend(self, {
+    NotLoggedIn: NotLoggedIn
+  });
+
+})();
+(function() {
+  "use strict";
+
+  var ns = "nkf.impl.components.page";
+  var self = $.namespace(ns);
+
+  extendClass(Home, nkf.core.components.component.PageAbstract);
+  Home.className = "Home";
+
+  function Home() {
+
+    // --------------------------------------------------------------------
+    // Public methods/properties
+    // --------------------------------------------------------------------
+
+    this.className = Home.className;
+
+    this.Constructor = function() {
+    };
+
+    this.getRenderedDOM = function() {
+      return domComponent;
+    };
+
+    // --------------------------------------------------------------------
+    // Private methods
+    // --------------------------------------------------------------------
+
+    // --------------------------------------------------------------------
+    // Private variables
+    // --------------------------------------------------------------------
+
+    var domComponent = this._getComponent();
+  }
+
+  $.extend(self, {
+    Home: Home
+  });
+
+})();
+(function() {
+  "use strict";
+
+  var ns = "nkf.impl.components.layout";
+  var self = $.namespace(ns);
+
+  extendClass(NotLoggedIn, nkf.core.components.component.LayoutAbstract);
+  NotLoggedIn.className = "NotLoggedIn";
+
+  function NotLoggedIn() {
+
+    // --------------------------------------------------------------------
+    // Public methods/properties
+    // --------------------------------------------------------------------
+
+    this.className = NotLoggedIn.className;
+
+    this.Constructor = function() {
+    };
+
+    this.getRenderedDOM = function() {
+      return domComponent;
+    };
+
+    // --------------------------------------------------------------------
+    // Private methods
+    // --------------------------------------------------------------------
+
+    // --------------------------------------------------------------------
+    // Private variables
+    // --------------------------------------------------------------------
+
+    var domComponent = this._getComponent();
+  }
+
+  $.extend(self, {
+    NotLoggedIn: NotLoggedIn
+  });
+
+})();
+(function() {
+  "use strict";
+
+  var ns = "nkf.impl.components.layout";
+  var self = $.namespace(ns);
+
+  extendClass(LoggedIn, nkf.core.components.component.LayoutAbstract);
+  LoggedIn.className = "LoggedIn";
+
+  function LoggedIn() {
+
+    // --------------------------------------------------------------------
+    // Public methods/properties
+    // --------------------------------------------------------------------
+
+    this.className = LoggedIn.className;
+
+    this.Constructor = function() {
+    };
+
+    this.getRenderedDOM = function() {
+      return domComponent;
+    };
+
+    // --------------------------------------------------------------------
+    // Private methods
+    // --------------------------------------------------------------------
+
+    // --------------------------------------------------------------------
+    // Private variables
+    // --------------------------------------------------------------------
+
+    var domComponent = this._getComponent();
+  }
+
+  $.extend(self, {
+    LoggedIn: LoggedIn
+  });
+
+})();
 $(function() {
-//  nkf.conf.usePageLoadStandardBehaviour = false;
+  nkf.conf.pageURL = "/app2" + nkf.conf.pageURL;
 
   $(document).trigger("nkf.core.Controller", {
     type: nkf.def.events.type.make,
@@ -12211,4 +12363,4 @@ $(function() {
   });
 });
 
-nkf.build="1/13 21:49:48"
+nkf.build="1/14 15:55:48"

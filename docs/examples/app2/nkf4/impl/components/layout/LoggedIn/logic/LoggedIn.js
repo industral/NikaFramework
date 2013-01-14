@@ -15,6 +15,9 @@
 
     this.className = LoggedIn.className;
 
+    this.Constructor = function() {
+    };
+
     this.getRenderedDOM = function() {
       return domComponent;
     };

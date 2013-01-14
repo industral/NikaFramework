@@ -14,6 +14,9 @@
   function Login() {
     this.className = Login.className;
 
+    this.Constructor = function() {
+    };
+
     this.getRenderedDOM = function() {
       return domComponent;
     };

@@ -4,9 +4,7 @@ impl/components/widget/Controls/logic/Controls.js
 impl/components/widget/Login/logic/Login.js
 
 impl/components/page/NotLoggedIn/logic/NotLoggedIn.js
-impl/components/page/Home/logic/Home.js
 
 impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js
-impl/components/layout/LoggedIn/logic/LoggedIn.js
 
 impl/app.js
