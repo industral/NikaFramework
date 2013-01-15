@@ -11,6 +11,7 @@
 
         "usePageLoadStandardBehaviour": true,
         "pageURL": "/data/pages",
+        "URLSuffix": "/",
         "pageNameExtension": "json",
         "loadingMaskSelector": "#page-loading-mask",
         "def": {

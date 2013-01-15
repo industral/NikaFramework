@@ -1,6 +1,6 @@
 var __dom__ = {"components/layout/LoggedIn/dom/index.xhtml":"<div>    <div id=\"wrap\">        <div id=\"main\">            <header>                <ul>                    <li>Home</li>                    <li>Profile</li>                    <li>Contacts</li>                    <li>Groups</li>                    <li>Jobs</li>                    <li>Inbox</li>                    <li>Companies</li>                    <li>News</li>                    <li>More</li>                </ul>            </header>            <section>            </section>        </div>    </div>    <footer>    </footer></div>","components/layout/NotLoggedIn/dom/index.xhtml":"<div>    <div id=\"wrap\">        <div id=\"main\">            <header>                <ul>                    <li>Home</li>                    <li>What is NKF</li>                    <li>Join Today</li>                    <li>Sign In</li>                </ul>            </header>            <section>            </section>        </div>    </div>    <footer>    </footer></div>","components/page/Home/dom/index.xhtml":"<div>    <div data-nkf-component-type=\"widget\" data-nkf-component-name=\"Controls\"></div>    Other widgets go here...</div>","components/page/NotLoggedIn/dom/index.xhtml":"<div>    <div data-nkf-component-type=\"widget\" data-nkf-component-name=\"Login\"></div></div>","components/widget/Controls/dom/index.xhtml":"<div class=\"controls-wrapper\">    <button>Logout</button></div>","components/widget/Login/dom/index.xhtml":"<div>    <fieldset>        <form action=\"#\">            <div>                <label for=\"login\">Login</label>                <input type=\"text\" size=\"30\" id=\"login\" name=\"login\"/>            </div>            <div>                <label for=\"password\">Password</label>                <input type=\"password\" size=\"30\" id=\"password\" name=\"password\"/>            </div>            <div id=\"submit-container\">                <input type=\"submit\" value=\"OK\" />            </div>        </form>    </fieldset></div>"}
 var __json__ = {}
-var nkf={"runtime":{},"conf":{"useLogin":true,"defaultLoggedInPage":"Home","defaultNotLoggedInPage":"NotLoggedIn","defaultLoggedInLayout":"LoggedIn","defaultNotLoggedInLayout":"NotLoggedIn","usePageLoadStandardBehaviour":true,"pageURL":"/data/pages","pageNameExtension":"json","loadingMaskSelector":"#page-loading-mask","def":{"xml":{"path":"dom","suffix":"xml"},"html":{"path":"dom","name":"index","suffix":"xhtml"},"svg":{"path":"svg","suffix":"svg"},"css":{"path":"style"},"js":{"name":"logic"},"data":{"path":"data","suffix":"json"},"attr":{"lang":"data-lang-textcontent","component":{"type":"data-nkf-component-type","name":"data-nkf-component-name"},"state":"data-state"}},"storage":{"key":"ks","usersettings":"UserSettings","networkdata":"NetworkData"},"components":"components","render":{"dom":"__dom__","svg":"__dom__","data":"__json__","body":{"selector":"body"},"layout":{"selector":"section"},"dynamic":{"selector":"#dynamic"},"mask":{"selector":"#mask"}},"classes":{"none":"hidden"}},"enumType":{"Component":{"layout":"layout","page":"page","widget":"widget","component":"component"},"Data":{"html":"html","css":"css","data":"data","svg":"svg","xml":"xml"},"DataScope":{"global":"global","widget":"widget"}},"def":{"component":{"action":{"rendered":"rendered","state":"state"},"state":{"normal":"normal","maximized":"maximized","minimized":"minimized","hidden":"hidden"},"render":{"state":{"showed":"showed","closed":"closed","disabled":"disabled"}}},"events":{"type":{"is":"is","make":"make"}}},"version":"4.3.1"};/*!
+var nkf={"runtime":{},"conf":{"useLogin":true,"defaultLoggedInPage":"Home","defaultNotLoggedInPage":"NotLoggedIn","defaultLoggedInLayout":"LoggedIn","defaultNotLoggedInLayout":"NotLoggedIn","usePageLoadStandardBehaviour":true,"pageURL":"/data/pages","URLSuffix":"/","pageNameExtension":"json","loadingMaskSelector":"#page-loading-mask","def":{"xml":{"path":"dom","suffix":"xml"},"html":{"path":"dom","name":"index","suffix":"xhtml"},"svg":{"path":"svg","suffix":"svg"},"css":{"path":"style"},"js":{"name":"logic"},"data":{"path":"data","suffix":"json"},"attr":{"lang":"data-lang-textcontent","component":{"type":"data-nkf-component-type","name":"data-nkf-component-name"},"state":"data-state"}},"storage":{"key":"ks","usersettings":"UserSettings","networkdata":"NetworkData"},"components":"components","render":{"dom":"__dom__","svg":"__dom__","data":"__json__","body":{"selector":"body"},"layout":{"selector":"section"},"dynamic":{"selector":"#dynamic"},"mask":{"selector":"#mask"}},"classes":{"none":"hidden"}},"enumType":{"Component":{"layout":"layout","page":"page","widget":"widget","component":"component"},"Data":{"html":"html","css":"css","data":"data","svg":"svg","xml":"xml"},"DataScope":{"global":"global","widget":"widget"}},"def":{"component":{"action":{"rendered":"rendered","state":"state"},"state":{"normal":"normal","maximized":"maximized","minimized":"minimized","hidden":"hidden"},"render":{"state":{"showed":"showed","closed":"closed","disabled":"disabled"}}},"events":{"type":{"is":"is","make":"make"}}},"version":"4.3.1"};/*!
  * jQuery JavaScript Library v1.8.3
  * http://jquery.com/
  *
@@ -11398,7 +11398,7 @@ function makeSingleton(clazz) {
       //TODO: option to add custom pageName for URL
       //TODO: [conf] option for extension
       var pageNameURL = "{pageURL}/{pageName}".format({
-        pageURL: nkf.conf.pageURL,
+        pageURL: nkf.conf.URLSuffix + nkf.conf.pageURL,
         pageName: params.pageURLName || pageClass.className
       });
 
@@ -11998,8 +11998,8 @@ function makeSingleton(clazz) {
   }
 
   Controller.getCurrentPath = function() {
-    var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(/\/#\//, "").replace(/^\//, "");
-    var ie = window.location.hash.replace(/\#?\/?/, "");
+    var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(nkf.conf.URLSuffix, "").replace(/\/#\//, "").replace(/^\//, "");
+    var ie = window.location.hash.replace(nkf.conf.URLSuffix, "").replace(/\#?\/?/, "");
 
     if ($.browser.msie && $.browser.version < 10) {
       return ie || normalBrowsers;
@@ -12009,7 +12009,8 @@ function makeSingleton(clazz) {
   };
 
   Controller.setCurrentPath = function(data) {
-    var output = data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName;
+    var output = nkf.conf.URLSuffix;
+    output += "/" + data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName;
 
     if (data.params && $Utils.getObjectSize(data.params)) {
       var preparedData = $Utils.prepareURLObject(data.params);
@@ -12023,7 +12024,7 @@ function makeSingleton(clazz) {
 
     previousLogin = $.cookie("isLogin");
 
-    history.pushState({path: "/" + output}, "", "/" + output);
+    history.pushState({path: output}, "", output);
   };
 
   Controller.getNormalizedObject = function(url) {
@@ -12176,11 +12177,7 @@ function makeSingleton(clazz) {
     // Private variables
     // --------------------------------------------------------------------
 
-    var _this = this;
-
     var domComponent = this._getComponent();
-
-    var $ComponentManager = nkf.core.components.ComponentManager.getInstance();
 
     constructor.call(this);
   }
@@ -12351,7 +12348,7 @@ function makeSingleton(clazz) {
 
 })();
 $(function() {
-  nkf.conf.pageURL = "/app2" + nkf.conf.pageURL;
+  nkf.conf.URLSuffix = "/app2";
 
   $(document).trigger("nkf.core.Controller", {
     type: nkf.def.events.type.make,
@@ -12363,4 +12360,4 @@ $(function() {
   });
 });
 
-nkf.build="1/14 15:55:48"
+nkf.build="1/15 14:13:53"

@@ -1,5 +1,5 @@
 $(function() {
-  nkf.conf.pageURL = "/app2" + nkf.conf.pageURL;
+  nkf.conf.URLSuffix = "/app2";
 
   $(document).trigger("nkf.core.Controller", {
     type: nkf.def.events.type.make,

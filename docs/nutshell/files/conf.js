@@ -1,3 +1,5 @@
+nkf.conf.URLSuffix = "/"; // if your application accessible not from root, this should be changed
+
 nkf.conf.useLogin = true; // if you are planning to use authorization at framework
 nkf.conf.defaultLoggedInPage = "Home";
 nkf.conf.defaultNotLoggedInPage = "NotLoggedIn";

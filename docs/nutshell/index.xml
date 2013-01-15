@@ -95,6 +95,9 @@
                     For more detail information see <ulink
                         url="http://webresourcebundle.org/">Web Resource Bundle</ulink>
                 </para>
+                <note>If your application accessible not from root URL, e.g. http://localhost but from http://localhost/app1,
+                    you should add <code>nkf.conf.URLSuffix = "/app1";</code> to <filename>nkf4/impl/app.js</filename>
+                </note>
                 <para>
                     Now hit <ulink url="http://localhost">http://localhost</ulink> in browser. Yes, nothing will happend.
                     We need to write more code to get it works.
@@ -173,7 +176,8 @@
                         <para>
                             <filename>impl/components/layout/NotLoggedIn/dom/index.xhtml:</filename>
                             <programlisting language="brush: html"><xi:include
-                                    href="files/app1/nkf4/impl/components/layout/NotLoggedIn/dom/index.xhtml" parse="text" /></programlisting>
+                                    href="files/app1/nkf4/impl/components/layout/NotLoggedIn/dom/index.xhtml"
+                                    parse="text" /></programlisting>
                         </para>
                         <para>
                             <filename>index.xhtml</filename> file could be any content, but by default layout will render into
@@ -247,7 +251,8 @@
                     <para>Lets create a folder, <filename class="folder">data/pages</filename> and under that directory create <filename>NotLoggedIn.json</filename> file with empty <emphasis>JSON</emphasis> content</para>
                     <programlisting language="brush: js"><![CDATA[{ }]]></programlisting>
                     <para>and change data JSON path at <filename>nkf4/impl/app.js</filename> if your application not accessable from root</para>
-                    <programlisting language="brush: js; highlight: [2]"><xi:include href="files/app1/nkf4/impl/app2.js" parse="text" /></programlisting>
+                    <programlisting language="brush: js; highlight: [2]"><xi:include href="files/app1/nkf4/impl/app2.js"
+                                                                                     parse="text" /></programlisting>
 
                     <para>and refresh page. Now you have to see as the following:</para>
                     <graphic fileref="img/app1/first-working-app.png" />
@@ -306,8 +311,9 @@
 
                     <para>And add that widget to <emphasis>NotLoggedIn</emphasis> <emphasis>page</emphasis> component</para>
                     <filename>nkf4/impl/components/page/NotLoggedIn/dom/index.xhtml:</filename>
-                    <programlisting language="brush: html"><xi:include href="files/app2/nkf4/impl/components/page/NotLoggedIn/dom/index.xhtml"
-                                                                                                parse="text" /></programlisting>
+                    <programlisting language="brush: html"><xi:include
+                            href="files/app2/nkf4/impl/components/page/NotLoggedIn/dom/index.xhtml"
+                            parse="text" /></programlisting>
 
                     <para>Now, rebuild and refresh page. It should be as the following:</para>
                     <graphic fileref="img/app2/working-app.png" />
@@ -400,8 +406,6 @@
                              parse="text" /></programlisting>
                 </para>
 
-                <programlisting language="brush: js">$ComponentManager.doLogin(true);</programlisting>
-
                 <para>
                      <filename>impl/components/widget/Login/style/style.scss:</filename>
                      <programlisting language="brush: scss"><xi:include
@@ -421,15 +425,19 @@
                 <graphic fileref="img/app2/working-app.png" />
 
                 <para>Now enter any login and password and press OK. You will be immediately redirected to logged in page called <emphasis>Home</emphasis></para>
+                <note>
+                    If your application accessible not from root, e.g. http://localhost but http://localhost/app2, change .htaccess
+                    to <code>RewriteRule ^(Home)/?(.+)?$ /app2/ [L]</code>
+                </note>
 
-                <graphic fileref="img/app1-logged-in.png" />
+                <graphic fileref="img/app2/working-app-home.png" />
 
                 <para>Here a lot information we can learn. Lets considering what HTML was generated for <emphasis>not logged in</emphasis> state.</para>
-                 <!--<programlisting language="brush: html; highlight: [8, 9, 13, 25, 26]"><xi:include-->
-                         <!--href="files/app1/app1/out/not-logged-in.xhtml"-->
-                         <!--parse="text" /></programlisting>-->
-                <para>In lines 8, 9 we include our generated files by <emphasis>NKF build system</emphasis>.</para>
-                <para>Pay attention for lines 13, 25, 26. <application>NikaFramework</application> creates for each component wrapper and gets it's <emphasis>type</emphasis>
+                 <programlisting language="brush: html; highlight: [7, 8, 12, 24, 25]"><xi:include
+                         href="files/app2/out/not-logged-in.xhtml"
+                         parse="text" /></programlisting>
+                <para>In lines 7, 8 included all <emphasis>JavaScript</emphasis> and <emphasis>CSS</emphasis> content generated by <emphasis>NKF Build System</emphasis>.</para>
+                <para>Pay attention for lines 12, 24, 25. <application>NikaFramework</application> creates for each component wrapper and gets it's <emphasis>type</emphasis>
                 and <emphasis>name</emphasis>, with <emphasis>data-nkf-component-type</emphasis> and <emphasis>data-nkf-component-name</emphasis> attributes.
                 </para>
                 <para>Also, note that <emphasis>page</emphasis> component renders into <emphasis>section</emphasis>. But you can change that behaviour.</para>
@@ -437,9 +445,9 @@
                 <para>When we entered credentials and press OK, we redirect to <emphasis>LoggedIn</emphasis> layout and <emphasis>Home</emphasis> page respectively</para>
                 <para> Lets see generated <emphasis>HTML</emphasis> for <emphasis>login</emphasis> state.</para>
 
-                <!--<programlisting language="brush: html; highlight: [13, 30, 31]"><xi:include-->
-                        <!--href="files/app1/app1/out/logged-in.xhtml"-->
-                        <!--parse="text" /></programlisting>-->
+                <programlisting language="brush: html; highlight: [12, 29, 30]"><xi:include
+                        href="files/app2/out/logged-in.xhtml"
+                        parse="text" /></programlisting>
 
                 <para>In that case, when we logged in, <emphasis>layout</emphasis> component changed from <emphasis>NotLoggedIn</emphasis> to <emphasis>LoggedIn</emphasis>, thus all <emphasis>HTML</emphasis>
                 under <emphasis>body</emphasis> tag was rewritten. But <emphasis>HTML</emphasis> code above still the same. Later, when you try to change page within the confines of current <emphasis>layout</emphasis>,
@@ -449,19 +457,10 @@
             <section>
                 <title>Configure NKF</title>
                 <para>You can easy change default settings of <emphasis>NKF</emphasis> by redefining them.</para>
-                <para>Examples:</para>
-                <programlisting language="brush: js">nkf.conf.defaultNonLoginPage = "AccessDenied";</programlisting>
-                <para>Add this line in <filename>app.js</filename> before trigger <emphasis>Controller</emphasis>, rebuild application, logout and refresh browser page. You should find
-                that <emphasis>URL</emphasis> changed to <emphasis>/#path=AccessDenied</emphasis> and <emphasis>JavaScript</emphasis> exception threw, as we don't have
-                that class defined.
-                </para>
 
-                <para>You can also change render <emphasis>layout</emphasis> and <emphasis>page</emphasis> components render selector:</para>
-                <programlisting language="brush: js">nkf.conf.render.layout.selector = "#container";</programlisting>
-                <para>in that case instead of <emphasis>section</emphasis> tag <emphasis>page</emphasis> component will render into <emphasis>#container</emphasis> selector.</para>
+                <programlisting language="brush: js"><xi:include href="files/conf.js" parse="text" /></programlisting>
 
-                <para>All settings that could be configured you can find at <filename>conf.json</filename> file.</para>
+                <para>All settings that could be configured you can find at <filename>core/conf.json</filename> at <emphasis>NikaFramework</emphasis> source code file.</para>
             </section>
-        <!--</section>-->
     </article>
 </book>

@@ -18,4 +18,4 @@ DirectoryIndex index.xhtmlz index.xhtml
 </Files>
 
 RewriteEngine On
-RewriteRule ^(Home)/?(.+)?$ / [L]
+RewriteRule ^(Home)/?(.+)?$ /app1/ [L]

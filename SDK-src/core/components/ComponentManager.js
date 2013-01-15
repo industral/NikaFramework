@@ -356,7 +356,7 @@
       //TODO: option to add custom pageName for URL
       //TODO: [conf] option for extension
       var pageNameURL = "{pageURL}/{pageName}".format({
-        pageURL: nkf.conf.pageURL,
+        pageURL: nkf.conf.URLSuffix + nkf.conf.pageURL,
         pageName: params.pageURLName || pageClass.className
       });
 

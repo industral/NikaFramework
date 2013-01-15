@@ -58,11 +58,7 @@
     // Private variables
     // --------------------------------------------------------------------
 
-    var _this = this;
-
     var domComponent = this._getComponent();
-
-    var $ComponentManager = nkf.core.components.ComponentManager.getInstance();
 
     constructor.call(this);
   }

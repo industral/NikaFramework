@@ -84,8 +84,8 @@
   }
 
   Controller.getCurrentPath = function() {
-    var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(/\/#\//, "").replace(/^\//, "");
-    var ie = window.location.hash.replace(/\#?\/?/, "");
+    var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(nkf.conf.URLSuffix, "").replace(/\/#\//, "").replace(/^\//, "");
+    var ie = window.location.hash.replace(nkf.conf.URLSuffix, "").replace(/\#?\/?/, "");
 
     if ($.browser.msie && $.browser.version < 10) {
       return ie || normalBrowsers;
@@ -95,7 +95,8 @@
   };
 
   Controller.setCurrentPath = function(data) {
-    var output = data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName;
+    var output = nkf.conf.URLSuffix;
+    output += "/" + data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName;
 
     if (data.params && $Utils.getObjectSize(data.params)) {
       var preparedData = $Utils.prepareURLObject(data.params);
@@ -109,7 +110,7 @@
 
     previousLogin = $.cookie("isLogin");
 
-    history.pushState({path: "/" + output}, "", "/" + output);
+    history.pushState({path: output}, "", output);
   };
 
   Controller.getNormalizedObject = function(url) {
