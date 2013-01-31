@@ -26,8 +26,9 @@
 
       if (params.dom) {
         var section = params.dom.find(nkf.conf.render.layout.selector);
+
         if (section.length) {
-          section.contents().detach();
+          section.contents().remove();
           section.append(dom);
         } else {
           console.warn("Render layout section not found");

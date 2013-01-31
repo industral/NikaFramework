@@ -8,6 +8,7 @@
   }
 
   Utils.getComponentPart = function(data) {
+    //todo: html?
     data.componentPart = data.componentPart ? data.componentPart : "html";
 
     var pathToComponentPart = "{componentsPath}/{componentType}/{componentName}/{componentPartPath}/{componentPartName}.{componentPartSuffix}";
@@ -21,7 +22,7 @@
     });
 
     var componentData = eval(nkf.conf.render[nkf.conf.def[data.componentPart].path])[pathToComponentPart];
-
+    //TODO: $.parseHTML
     if (componentData) {
       if (data.componentPart === nkf.enumType.Data.svg) {
         return self.Utils.parseSVG(componentData);
@@ -94,6 +95,30 @@
 
   Utils.getComponentByNS = function(ns) {
     return eval("nkf.impl.components." + ns);
+  };
+
+  Utils.getComponentInstanceByNS = function(ns) {
+    var split = ns.split(/\.|#/);
+
+    var type = split[0];
+    var name = split[1];
+    var id = split[2];
+
+    var selector;
+    if (id) {
+      selector = "[data-nkf-component-type={type}][data-nkf-component-name={name}][data-nkf-component-id={id}]]".format({
+        type: type,
+        name: name,
+        id: id
+      });
+    } else {
+      selector = "[data-nkf-component-type={type}][data-nkf-component-name={name}]".format({
+        type: type,
+        name: name
+      });
+    }
+
+    return $(selector).data("instance");
   };
 
   Utils.firstLetterUpperCase = function(string) {

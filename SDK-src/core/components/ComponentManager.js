@@ -58,13 +58,13 @@
     this.getPageName = function(name) {
       var login = isLogin();
 
-      return login ? (name ? name : nkf.conf.defaultLoggedInPage) : nkf.conf.defaultNotLoggedInPage;
+      return name ? name : (login ? nkf.conf.defaultLoggedInPage : nkf.conf.defaultNotLoggedInPage);
     };
 
     this.getLayoutName = function(name) {
       var login = isLogin();
 
-      return login ? (name ? name : nkf.conf.defaultLoggedInLayout) : nkf.conf.defaultNotLoggedInLayout;
+      return name ? name : (login ? nkf.conf.defaultLoggedInLayout : nkf.conf.defaultNotLoggedInLayout);
     };
 
     this.localize = function(inputData) {
@@ -76,6 +76,7 @@
 
         if (!translateData || currentLanguageName !== inputData.lang) {
           $.ajax({
+            //TODO: move /data/lang/, .json to settings
             url: "/data/lang/" + inputData.lang + ".json",
             async: false,
             success: function(data) {
@@ -142,6 +143,7 @@
 
         //CSS
         //TODO: will be perform in each action when localize does.. should be fixed
+        //TODO: document.styleSheets[0] ? hack
         var strings = [];
         var matched = $.map(document.styleSheets[0].cssRules, function(value, key) {
           if (value.selectorText) {
@@ -176,7 +178,7 @@
         });
 
         $("html").attr({
-          dir: translateData.settings.dir || "ltr"
+          dir: translateData.settings && translateData.settings.dir || "ltr"
         });
 
         $(document).trigger("nkf.core.components.ComponentManager", {
@@ -221,7 +223,9 @@
 
         var componentType = $Utils.getComponentType(value);
 
-        var componentSettings = pageData.components && pageData.components[componentType] && pageData.components[componentType][value.className] && pageData.components[componentType][value.className].settings || {};
+        var componentSettings = pageData.components && pageData.components[componentType] &&
+          pageData.components[componentType][value.className] &&
+          pageData.components[componentType][value.className].settings || {};
 
         if ($Utils.getComponentType(value) === nkf.enumType.Component.widget) {
           value.setState({
@@ -267,7 +271,6 @@
       $("body").attr({
         "data-status": "loaded"
       });
-
     }
 
     function postRenderScreen() {
@@ -285,9 +288,11 @@
         component: nkf.conf.def.attr.component.type
       });
 
-      $.each($(componentSelector, params.dom), function(key, value) {
-        var componentType = $(value).attr(nkf.conf.def.attr.component.type);
-        var componentName = $(value).attr(nkf.conf.def.attr.component.name);
+      $.each(params.dom.find(componentSelector), function(key, value) {
+        var dom = $(value);
+
+        var componentType = dom.attr(nkf.conf.def.attr.component.type);
+        var componentName = dom.attr(nkf.conf.def.attr.component.name);
         var componentClass = $Utils.getComponentByNS("{componentType}.{componentName}".format({
           componentType: componentType,
           componentName: componentName
@@ -298,7 +303,7 @@
           if (renderClass) {
             renderClass({
               component: componentClass,
-              dom: $(value),
+              dom: dom,
               parent: params.component
             });
           }
@@ -442,6 +447,10 @@
         component.init();
       }
 
+      params.dom.data({
+        rendered: true
+      });
+
       var dom = component.render({
         dom: params.dom
       });
@@ -455,31 +464,46 @@
     };
 
     Render.widget = function(params) {
-      var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
+      if (!params.dom.data("rendered")) {
+        var widgetName = params.dom.attr("data-nkf-component-name");
+        var layout = nkf.conf.layoutSettings[widgetName];
 
-      if (component.reInit && component.isConstructed) {
-        component.reInit();
+        if (layout && layout !== currentLayoutName) {
+          preRenderedDOM.find("[data-nkf-component-type=widget][data-nkf-component-name={name}]".format({
+            name: widgetName
+          })).remove();
+        } else {
+          var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
+
+          if (component.reInit && component.isConstructed) {
+            component.reInit();
+          }
+
+          if (component.Constructor && !component.isConstructed) {
+            component.Constructor();
+            component.isConstructed = true;
+          }
+
+          if (component.init) {
+            component.init();
+          }
+
+          params.dom.data({
+            rendered: true
+          });
+
+          var dom = component.render({
+            dom: params.dom
+          });
+
+          componentsList.push(component);
+
+          checkIncludedComponents({
+            dom: dom,
+            component: params.component
+          });
+        }
       }
-
-      if (component.Constructor && !component.isConstructed) {
-        component.Constructor();
-        component.isConstructed = true;
-      }
-
-      if (component.init) {
-        component.init();
-      }
-
-      var dom = component.render({
-        dom: params.dom
-      });
-
-      componentsList.push(component);
-
-      checkIncludedComponents({
-        dom: dom,
-        component: params.component
-      });
     };
 
     function constructor() {
@@ -529,15 +553,7 @@
     var originalStrings = null;
   }
 
-  ComponentManager.instance = null;
-
-  ComponentManager.getInstance = function() {
-    if (!ComponentManager.instance) {
-      ComponentManager.instance = new ComponentManager();
-    }
-
-    return ComponentManager.instance;
-  };
+  makeSingleton(ComponentManager);
 
   $.extend(self, {
     ComponentManager: ComponentManager

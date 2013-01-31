@@ -1,130 +1,132 @@
 {
-    "runtime": {},
-    "conf": {
-        "useLogin": true,
+  "runtime": {},
+  "conf": {
+    "useLogin": true,
 
-        "defaultLoggedInPage": "Home",
-        "defaultNotLoggedInPage": "NotLoggedIn",
+    "defaultLoggedInPage": "Home",
+    "defaultNotLoggedInPage": "NotLoggedIn",
 
-        "defaultLoggedInLayout": "LoggedIn",
-        "defaultNotLoggedInLayout": "NotLoggedIn",
+    "defaultLoggedInLayout": "LoggedIn",
+    "defaultNotLoggedInLayout": "NotLoggedIn",
 
-        "usePageLoadStandardBehaviour": true,
-        "pageURL": "/data/pages",
-        "URLSuffix": "/",
-        "pageNameExtension": "json",
-        "loadingMaskSelector": "#page-loading-mask",
-        "def": {
-            "xml": {
-                "path": "dom",
-                "suffix": "xml"
-            },
-            "html": {
-                "path": "dom",
-                "name": "index",
-                "suffix": "xhtml"
-            },
-            "svg": {
-                "path": "svg",
-                "suffix": "svg"
-            },
-            "css": {
-                "path": "style"
-            },
-            "js": {
-                "name": "logic"
-            },
-            "data": {
-                "path": "data",
-                "suffix": "json"
-            },
-            "attr": {
-                "lang": "data-lang-textcontent",
-                "component": {
-                    "type": "data-nkf-component-type",
-                    "name": "data-nkf-component-name"
-                },
-                "state": "data-state"
-            }
-        },
+    "layoutSettings": {},
 
-        "storage": {
-            "key": "ks",
-            "usersettings": "UserSettings",
-            "networkdata": "NetworkData"
-        },
-
-        "components": "components",
-
-        "render": {
-            "dom": "__dom__",
-            "svg": "__dom__",
-            "data": "__json__",
-            "body": {
-                "selector": "body"
-            },
-            "layout": {
-                "selector": "section"
-            },
-            "dynamic": {
-                "selector": "#dynamic"
-            },
-            "mask": {
-                "selector": "#mask"
-            }
-        },
-
-        "classes": {
-            "none": "hidden"
-        }
-    },
-
-    "enumType": {
-        "Component": {
-            "layout": "layout",
-            "page": "page",
-            "widget": "widget",
-            "component": "component"
-        },
-        "Data": {
-            "html": "html",
-            "css": "css",
-            "data": "data",
-            "svg": "svg",
-            "xml": "xml"
-        },
-        "DataScope": {
-            "global": "global",
-            "widget": "widget"
-        }
-    },
-
+    "usePageLoadStandardBehaviour": true,
+    "pageURL": "/data/pages",
+    "URLSuffix": "",
+    "pageNameExtension": "json",
+    "loadingMaskSelector": "#page-loading-mask",
     "def": {
+      "xml": {
+        "path": "dom",
+        "suffix": "xml"
+      },
+      "html": {
+        "path": "dom",
+        "name": "index",
+        "suffix": "xhtml"
+      },
+      "svg": {
+        "path": "svg",
+        "suffix": "svg"
+      },
+      "css": {
+        "path": "style"
+      },
+      "js": {
+        "name": "logic"
+      },
+      "data": {
+        "path": "data",
+        "suffix": "json"
+      },
+      "attr": {
+        "lang": "data-lang-textcontent",
         "component": {
-            "action": {
-                "rendered": "rendered",
-                "state": "state"
-            },
-            "state": {
-                "normal": "normal",
-                "maximized": "maximized",
-                "minimized": "minimized",
-                "hidden": "hidden"
-            },
-            "render": {
-                "state": {
-                    "showed": "showed",
-                    "closed": "closed",
-                    "disabled": "disabled"
-                }
-            }
+          "type": "data-nkf-component-type",
+          "name": "data-nkf-component-name"
         },
+        "state": "data-state"
+      }
+    },
 
-        "events": {
-            "type": {
-                "is": "is",
-                "make": "make"
-            }
-        }
+    "storage": {
+      "key": "ks",
+      "usersettings": "UserSettings",
+      "networkdata": "NetworkData"
+    },
+
+    "components": "components",
+
+    "render": {
+      "dom": "__dom__",
+      "svg": "__dom__",
+      "data": "__json__",
+      "body": {
+        "selector": "body"
+      },
+      "layout": {
+        "selector": "section"
+      },
+      "dynamic": {
+        "selector": "#dynamic"
+      },
+      "mask": {
+        "selector": "#mask"
+      }
+    },
+
+    "classes": {
+      "none": "hidden"
     }
+  },
+
+  "enumType": {
+    "Component": {
+      "layout": "layout",
+      "page": "page",
+      "widget": "widget",
+      "component": "component"
+    },
+    "Data": {
+      "html": "html",
+      "css": "css",
+      "data": "data",
+      "svg": "svg",
+      "xml": "xml"
+    },
+    "DataScope": {
+      "global": "global",
+      "widget": "widget"
+    }
+  },
+
+  "def": {
+    "component": {
+      "action": {
+        "rendered": "rendered",
+        "state": "state"
+      },
+      "state": {
+        "normal": "normal",
+        "maximized": "maximized",
+        "minimized": "minimized",
+        "hidden": "hidden"
+      },
+      "render": {
+        "state": {
+          "showed": "showed",
+          "closed": "closed",
+          "disabled": "disabled"
+        }
+      }
+    },
+
+    "events": {
+      "type": {
+        "is": "is",
+        "make": "make"
+      }
+    }
+  }
 }

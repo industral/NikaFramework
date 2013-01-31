@@ -26,7 +26,7 @@
 
       if ($ComponentManager.getPreRenderedDOM()) {
         var layout = $("body > [data-nkf-component-type=layout]");
-        layout.detach();
+        layout.remove();
         $(nkf.conf.render.body.selector).append(dom);
       }
 

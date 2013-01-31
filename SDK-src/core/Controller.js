@@ -43,7 +43,7 @@
           }
 
           if (isInit) {
-            object.data.pageName = object.data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName || "Home";
+            object.data.pageName = object.data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName;
             object.data.params = object.data.clear ? object.data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, object.data.params);
 
             $(document).trigger("nkf.core.Controller", {
@@ -87,7 +87,7 @@
     var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(nkf.conf.URLSuffix, "").replace(/\/#\//, "").replace(/^\//, "");
     var ie = window.location.hash.replace(nkf.conf.URLSuffix, "").replace(/\#?\/?/, "");
 
-    if ($.browser.msie && $.browser.version < 10) {
+    if (!!history.pushState) {
       return ie || normalBrowsers;
     } else {
       return normalBrowsers;
