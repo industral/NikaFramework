@@ -340,12 +340,13 @@
       currentLayoutName = layoutName;
       currentPageName = pageName;
 
-      function callback() {
+      function callback(data) {
         $(document).trigger(ns + "." + ComponentManager.className, {
           type: nkf.def.events.type.is,
           name: "dataFetched",
           data: {
-            pageName: pageName
+            pageName: pageName,
+            data: data
           }
         });
 
@@ -378,7 +379,7 @@
             200: function(data) {
               pageData = $.extend(true, {}, data);
 
-              callback();
+              callback(pageData);
             },
             401: function(data) {
 //            renderScreen({
@@ -394,7 +395,7 @@
             callback: callback
           });
         } else {
-          callback();
+          callback({});
         }
       }
     }

@@ -1,9 +1,9 @@
 /*
- * history API JavaScript Library v3.2.1
+ * history API JavaScript Library v3.2.5
  *
- * Support: IE6+, FF3+, Opera 9+, Safari, Chrome
+ * Support: IE6+, FF3+, Opera 9+, Safari, Chrome, Firefox and other
  *
- * Copyright 2011-2012, Dmitriy Pakhtinov ( spb.piksel@gmail.com )
+ * Copyright 2011-2013, Dmitrii Pakhtinov ( spb.piksel@gmail.com )
  *
  * http://spb-piksel.ru/
  *
@@ -11,9 +11,8 @@
  *   http://www.opensource.org/licenses/mit-license.php
  *   http://www.gnu.org/licenses/gpl.html
  *
- * Update: 17-11-2012
+ * Update: 14-02-2013
  */
-
 (function( window, True, False, Null, undefined ) {
 
 	"use strict";
@@ -83,7 +82,7 @@
 
 		// parse GET parameters for internal settings.
 		for( i = 0; el[ i ]; i++ ) {
-			if ( m = /(.*)\/(?:history|spike)(?:-\d\.\d(?:\.\d)?\w?)?(?:\.min)?.js\?(.*)$/i.exec( el[ i ].src ) ||
+			if ( m = /(.*)\/(?:history|spike)(?:\.iegte8)?(?:-\d\.\d(?:\.\d)?\w?)?(?:\.min)?.js\?(.*)$/i.exec( el[ i ].src ) ||
 				( i === el.length - 1 && ( m = el[ i ].src.split( "?" ) ).length === 2 && ( m[ 2 ] = m[ 1 ] ) && m ) ) {
 				for( i = 0, s = m[ 2 ].split( "&" ); s[ i ]; ) {
 					m = s[ i++ ].split( "=" );
@@ -99,10 +98,11 @@
 	// function for the preparation of URL-links for further work
 	normalizeUrl = (function( a ) {
 
-		var _href, relative, special, nohash, host, port, pathname,
-		    re = new RegExp( "^" + sets["basepath"], "i" );
+		var _href, relative, special, nohash, host, port, pathname;
 
 		return function( href, test ) {
+
+			var re = new RegExp( "^" + sets["basepath"], "i" );
 
 			if ( !href ) {
 
@@ -578,8 +578,8 @@
 
 		History["redirect"] = function( type, basepath ) {
 
-			sets["type"] = type === undefined ? sets["type"] : type;
-			sets["basepath"] = basepath === undefined ? sets["basepath"] : basepath;
+			sets["type"] = type == Null ? sets["type"] : type;
+			sets["basepath"] = basepath == Null ? sets["basepath"] : basepath;
 
 			if ( window.top == window.self ) {
 
@@ -620,7 +620,7 @@
 		Location = createStaticObject( Location, LocationAccessors );
 
 		// overwrite addEventListener/attachEvent
-		window[ _a ] = function( event, listener, capture, aWantsUntrusted ) {
+		window[ _a ] = function( event, listener, capture ) {
 
 			if ( eventsList[ event ] ) {
 				eventsList[ event ].push( listener );
@@ -628,7 +628,13 @@
 					fireInitialState();
 				}
 			} else {
-				addEvent( event, listener, capture, aWantsUntrusted );
+				// FireFox support non-standart four argument aWantsUntrusted
+				// https://github.com/devote/HTML5-History-API/issues/13
+				if (arguments.length > 3) {
+					addEvent( event, listener, capture, arguments[3] );
+				} else {
+					addEvent( event, listener, capture );
+				}
 			}
 		}
 
@@ -746,19 +752,24 @@
 					}
 				}
 			}, False );
+		} else {
+			addEvent(eventPrefix + "load", function() {
+				setTimeout(function() {
+					initialFire = 0
+				},0);
+			}, False);
 		}
 
 		return change;
 	})();
 
-	History.pushState = function( state, title, url, replace ) {
+	var pushState = function( state, title, url, replace ) {
 
 		var
 			stateObject = historyStorage(),
 			currentHref = normalizeUrl()._href,
 			urlObject = url && normalizeUrl( url );
 
-		initialFire = 0;
 		url = urlObject ? urlObject._href : currentHref;
 
 		if ( replace && stateObject[ currentHref ] ) {
@@ -788,7 +799,7 @@
 	}
 
 	History.replaceState = function( state, title, url ) {
-		History.pushState( state, title, url, 1 );
+		pushState( state, title, url, 1 );
 	}
 
 	if ( VBInc ) {
@@ -800,7 +811,7 @@
 
 			if ( !iframe ) return;
 
-			var pushState, hashCheckerHandler,
+			var hashCheckerHandler,
 
 			checker = function() {
 				var href = normalizeUrl()._href;
@@ -818,7 +829,7 @@
 			iframe.src = "javascript:true;";
 			iframe = documentElement.firstChild.appendChild( iframe ).contentWindow;
 
-			History.pushState = pushState = function( state, title, url, replace, lfirst ) {
+			pushState = function( state, title, url, replace, lfirst ) {
 
 				var i = iframe.document,
 					content = [ '<script>', 'lfirst=1;', ,'storage=' + JSONStringify( state ) + ';', '</script>' ],
@@ -886,5 +897,7 @@
 		// If the browser has native support for working with history
 		window.history["emulate"] = !api;
 	}
+
+	History.pushState = pushState;
 
 })( window, true, false, null );

@@ -96,7 +96,7 @@
 
   Controller.setCurrentPath = function(data) {
     var output = nkf.conf.URLSuffix;
-    output += "/" + data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName;
+    output += "/" + (data.pageName || Controller.getNormalizedObject().pageName || "Home");
 
     if (data.params && $Utils.getObjectSize(data.params)) {
       var preparedData = $Utils.prepareURLObject(data.params);
