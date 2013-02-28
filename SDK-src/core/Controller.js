@@ -132,6 +132,10 @@
     return historyCounter;
   };
 
+  Controller.getLanguage = function() {
+    return $.cookie("lang") || "en";
+  };
+
   $.extend(self, {
     Controller: Controller
   });

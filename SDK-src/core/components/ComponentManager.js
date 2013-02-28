@@ -70,7 +70,7 @@
     this.localize = function(inputData) {
       inputData.lang = inputData.lang || $.cookie("lang") || "en";
 
-      if (inputData.lang !== "en") {
+//      if (inputData.lang !== "en") {
 
         $("body").attr("data-lang", inputData.lang);
 
@@ -91,16 +91,16 @@
 
           doLocalize(inputData);
         }
-      } else {
-        currentLanguageName = inputData.lang;
-
-        translateData = {
-          translate: {},
-          settings: {}
-        };
-
-        doLocalize(inputData);
-      }
+//      } else {
+//        currentLanguageName = inputData.lang;
+//
+//        translateData = {
+//          translate: {},
+//          settings: {}
+//        };
+//
+//        doLocalize(inputData);
+//      }
 
       function doLocalize(inputData) {
         //TODO: using $.each(*, ... ) search all nodes in root element. But if you have only root - nothing will be searched
