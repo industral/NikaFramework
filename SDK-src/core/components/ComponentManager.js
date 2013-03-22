@@ -68,40 +68,6 @@
     };
 
     this.localize = function(inputData) {
-      inputData.lang = inputData.lang || $.cookie("lang") || "en";
-
-//      if (inputData.lang !== "en") {
-
-        $("body").attr("data-lang", inputData.lang);
-
-        if (!translateData || currentLanguageName !== inputData.lang) {
-          $.ajax({
-            //TODO: move /data/lang/, .json to settings
-            url: "/data/lang/" + inputData.lang + ".json",
-            async: false,
-            success: function(data) {
-              currentLanguageName = inputData.lang;
-              translateData = data;
-
-              doLocalize(inputData);
-            }
-          });
-        } else {
-          currentLanguageName = inputData.lang;
-
-          doLocalize(inputData);
-        }
-//      } else {
-//        currentLanguageName = inputData.lang;
-//
-//        translateData = {
-//          translate: {},
-//          settings: {}
-//        };
-//
-//        doLocalize(inputData);
-//      }
-
       function doLocalize(inputData) {
         //TODO: using $.each(*, ... ) search all nodes in root element. But if you have only root - nothing will be searched
         $.each($("*", inputData.dom || preRenderedDOM), function(key, value) {
@@ -189,6 +155,42 @@
           }
         });
       }
+
+      if (nkf.conf.localization) {
+        inputData.lang = inputData.lang || $.cookie("lang") || "en";
+
+//      if (inputData.lang !== "en") {
+
+        $("body").attr("data-lang", inputData.lang);
+
+        if (!translateData || currentLanguageName !== inputData.lang) {
+          $.ajax({
+            //TODO: move /data/lang/, .json to settings
+            url: "/data/lang/" + inputData.lang + ".json",
+            async: false,
+            success: function(data) {
+              currentLanguageName = inputData.lang;
+              translateData = data;
+
+              doLocalize(inputData);
+            }
+          });
+        } else {
+          currentLanguageName = inputData.lang;
+
+          doLocalize(inputData);
+        }
+//      } else {
+//        currentLanguageName = inputData.lang;
+//
+//        translateData = {
+//          translate: {},
+//          settings: {}
+//        };
+//
+//        doLocalize(inputData);
+//      }
+      }
     };
 
     function getSettings() {
@@ -224,8 +226,8 @@
         var componentType = $Utils.getComponentType(value);
 
         var componentSettings = pageData.components && pageData.components[componentType] &&
-          pageData.components[componentType][value.className] &&
-          pageData.components[componentType][value.className].settings || {};
+            pageData.components[componentType][value.className] &&
+            pageData.components[componentType][value.className].settings || {};
 
         if ($Utils.getComponentType(value) === nkf.enumType.Component.widget) {
           value.setState({
@@ -243,9 +245,19 @@
         lang: $.cookie("lang") || $("body").attr("data-lang") || "en"
       });
 
+      $(document).trigger(ns + "." + ComponentManager.className, {
+        type: nkf.def.events.type.is,
+        name: "preAppend"
+      });
+
       if (!$("body > [data-nkf-component-type=layout]").length) {
         $(nkf.conf.render.body.selector).append(preRenderedDOM);
       }
+
+      $(document).trigger(ns + "." + ComponentManager.className, {
+        type: nkf.def.events.type.is,
+        name: "appended"
+      });
 
       $.each(componentsList, function(key, value) {
         var component = $Utils.getComponentNS(value);

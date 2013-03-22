@@ -15,6 +15,7 @@
     "pageURL": "/data/pages",
     "URLSuffix": "",
     "pageNameExtension": "json",
+    "localization": true,
     "loadingMaskSelector": "#page-loading-mask",
     "def": {
       "xml": {
