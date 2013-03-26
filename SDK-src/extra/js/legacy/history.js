@@ -830,9 +830,8 @@
 			iframe = documentElement.firstChild.appendChild( iframe ).contentWindow;
 
 			pushState = function( state, title, url, replace, lfirst ) {
-
 				var i = iframe.document,
-					content = [ '<script>', 'lfirst=1;', ,'storage=' + JSONStringify( state ) + ';', '</script>' ],
+					content = [ '<script>', 'lfirst=1;','storage=' + JSONStringify( state ) + ';', '</script>' ],
 					urlObject = url && normalizeUrl( url );
 
 				if ( !urlObject ) {

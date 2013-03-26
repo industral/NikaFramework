@@ -1,6 +1,8 @@
 (function() {
   "use strict";
 
+  $.namespace("nkf.core.components.component");
+
   var ns = "nkf.core.components";
   var self = $.namespace(ns);
 
@@ -29,7 +31,7 @@
       pageData.components = pageData.components || {};
 
       pageData.components[type] = pageData.components[type] || {};
-      pageData.components[type][(params && params.className) || this.className] = data;
+      pageData.components[type][(params && params.className) || this.constructor.className] = data;
     };
 
     this.getPreRenderedDOM = function() {

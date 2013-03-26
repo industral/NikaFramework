@@ -1,8 +1,6 @@
 function extendClass(extendClass, superClass) {
   extendClass.prototype = new superClass();
-  extendClass.prototype.superClass = function() {
-    return extendClass.prototype;
-  }
+  extendClass.prototype.constructor = extendClass;
 }
 
 function makeSingleton(clazz) {

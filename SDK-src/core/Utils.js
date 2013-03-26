@@ -228,6 +228,40 @@
   Utils.os.win = navigator.platform.match(/win/i);
   Utils.os.mac = navigator.platform.match(/mac/i);
 
+  Utils.initClass = function(type, clazz, className) {
+    var ns;
+
+    switch (true) {
+      case type == nkf.core.components.component.LayoutAbstract:
+        ns = "nkf.impl.components.layout";
+        break;
+      case type == nkf.core.components.component.PageAbstract:
+        ns = "nkf.impl.components.page";
+        break;
+      case type == nkf.core.components.component.WidgetAbstract:
+        ns = "nkf.impl.components.widget";
+        break;
+      case type == nkf.core.components.component.ComponentAbstract:
+        ns = "nkf.impl.components.component";
+        break;
+      case type == nkf.core.components.ComponentAbstract:
+          ns = "nkf.core.components.component";
+        break;
+      default:
+        console.warn("Looks like using wrong instance", type);
+    }
+
+    var self = $.namespace(ns);
+
+    extendClass(clazz, type);
+    clazz.className = className;
+
+    var o = {};
+    o[className] = clazz;
+
+    $.extend(self, o);
+  };
+
   $.extend(self, {
     Utils: Utils
   });

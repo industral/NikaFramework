@@ -18,6 +18,20 @@
       console.error("This method doesn't redefined");
     };
 
+    this.wrapDOM = function(dom) {
+      if (!dom.is("[{componentType}]".format({
+        componentType: nkf.conf.def.attr.component.type
+      }))) {
+        var dom = this.getRenderedDOM();
+
+        var obj = {};
+        obj[nkf.conf.def.attr.component.name] = this.constructor.className;
+        obj[nkf.conf.def.attr.component.type] = $Utils.getComponentType(this);
+
+        dom.attr(obj);
+      }
+    };
+
     this.setState = function(data) {
       var dom = this.getRenderedDOM();
 
@@ -58,7 +72,7 @@
 
       $.extend(resultObj, {
         componentType: $Utils.getComponentType(this),
-        componentName: this.className,
+        componentName: this.constructor.className,
         wrap: true
       }, data);
 
@@ -72,7 +86,7 @@
         return screenData;
       } else {
         var componentType = data && data.componentType || $Utils.getComponentType(this);
-        var componentName = data && data.componentName || this.className;
+        var componentName = data && data.componentName || this.constructor.className;
 
         return screenData && screenData.components && screenData.components[componentType] && screenData.components[componentType][componentName] || {};
       }
