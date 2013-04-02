@@ -75,7 +75,7 @@
         $.each($("*", inputData.dom || preRenderedDOM), function(key, value) {
 
           $.each($(value).getAttributes(), function(aKey, text) {
-            var matched = aKey.match(/^data-lang-(.+)/);
+            var matched = aKey.match(/^data-nkf-lang-(.+)/);
 
             if (matched) {
               var attributeName = matched[1];
@@ -87,7 +87,7 @@
                   var string4translate = aValue.replace(/[{}]/g, "");
                   var translatedString = translateData.translate[string4translate];
 
-                  var output = $(value).attr("data-lang-" + attributeName).replace(aValue, translatedString || string4translate);
+                  var output = $(value).attr("data-nkf-lang-" + attributeName).replace(aValue, translatedString || string4translate);
 
                   if (attributeName === "textcontent") {
                     $(value).text(output);
@@ -96,7 +96,7 @@
                   }
                 });
               } else {
-                var output = $(value).attr("data-lang-" + attributeName);
+                var output = $(value).attr("data-nkf-lang-" + attributeName);
 
                 if (attributeName === "textcontent") {
                   $(value).text(output);
@@ -163,7 +163,7 @@
 
 //      if (inputData.lang !== "en") {
 
-        $("body").attr("data-lang", inputData.lang);
+        $("body").attr("data-nkf-lang", inputData.lang);
 
         if (!translateData || currentLanguageName !== inputData.lang) {
           $.ajax({
@@ -244,7 +244,7 @@
       });
 
       _this.localize({
-        lang: $.cookie("lang") || $("body").attr("data-lang") || "en"
+        lang: $.cookie("lang") || $("body").attr("data-nkf-lang") || "en"
       });
 
       $(document).trigger(ns + "." + ComponentManager.className, {

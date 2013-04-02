@@ -1,0 +1,17 @@
+html.debug {
+    [data-nkf-component-type="widget"] {
+        margin: 14px 3px;
+        outline: 2px dashed red;
+        padding: 2px;
+        position: relative;
+
+        &:after {
+            content: attr(data-nkf-component-name);
+            font-size: 25px;
+            position: absolute;
+            text-align: center;
+            top: 45%;
+            width: 100%;
+        }
+    }
+}

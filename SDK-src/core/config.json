@@ -42,7 +42,7 @@
         "suffix": "json"
       },
       "attr": {
-        "lang": "data-lang-textcontent",
+        "lang": "data-nkf-lang-textcontent",
         "component": {
           "type": "data-nkf-component-type",
           "name": "data-nkf-component-name"
