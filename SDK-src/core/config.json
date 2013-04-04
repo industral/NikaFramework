@@ -19,11 +19,11 @@
     "loadingMaskSelector": "#page-loading-mask",
     "def": {
       "xml": {
-        "path": "dom",
+        "path": "templates",
         "suffix": "xml"
       },
       "html": {
-        "path": "dom",
+        "path": "templates",
         "name": "index",
         "suffix": "xhtml"
       },
@@ -32,10 +32,10 @@
         "suffix": "svg"
       },
       "css": {
-        "path": "style"
+        "path": "styles"
       },
       "js": {
-        "name": "logic"
+        "name": "scripts"
       },
       "data": {
         "path": "data",
@@ -60,7 +60,8 @@
     "components": "components",
 
     "render": {
-      "dom": "__dom__",
+      "html": "__dom__",
+      "xml": "__dom__",
       "svg": "__dom__",
       "data": "__json__",
       "body": {

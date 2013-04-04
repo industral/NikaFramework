@@ -1,0 +1,9 @@
+{
+  "name": "NikaFramework",
+  "author": "Alex Ivasyuv <alex@itherz.com>",
+  "dependencies": {
+    "mime": "",
+    "libxmljs": "",
+    "optimist": ""
+  }
+}

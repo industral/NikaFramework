@@ -21,8 +21,8 @@
       componentPartSuffix: nkf.conf.def[data.componentPart].suffix
     });
 
-    var componentData = eval(nkf.conf.render[nkf.conf.def[data.componentPart].path])[pathToComponentPart];
-    //TODO: $.parseHTML
+    var componentData = window[nkf.conf.render[data.componentPart]][pathToComponentPart];
+
     if (componentData) {
       if (data.componentPart === nkf.enumType.Data.svg) {
         return self.Utils.parseSVG(componentData);

@@ -1,12 +1,12 @@
-extra/js/jquery-1.9.1.js
-extra/js/bowser.js
-extra/js/plugins/jquery.namespace.js
-extra/js/plugins/string.format.js
-extra/js/plugins/jquery.cookie.js
-extra/js/plugins/jquery.attributes.js
-extra/js/helper.js
+assets/scripts/jquery-1.9.1.js
+assets/scripts/bowser.js
+assets/scripts/plugins/jquery.namespace.js
+assets/scripts/plugins/string.format.js
+assets/scripts/plugins/jquery.cookie.js
+assets/scripts/plugins/jquery.attributes.js
+assets/scripts/helper.js
 
-extra/js/legacy/history.js
+assets/scripts/legacy/history.js
 
 core/Utils.js
 

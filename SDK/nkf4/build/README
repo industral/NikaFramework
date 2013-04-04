@@ -1,25 +1,16 @@
 TO INSTALL:
 
-NodeJS >= 0.6.5
-SASS >= 3.2.1 (http://sass-lang.com/download.html)
-
-#http://npmjs.org/
-#Mac OS X: $ sudo npm install haml
-
-#Ubuntu 10.10: sudo apt-get install libhaml-ruby1.8
-#Ubuntu 11.04: sudo apt-get install ruby-sass
-#Fedora 14:    yum install rubygems
-#              gem install haml
+NodeJS >= v0.10
 
 $ sudo gem install sass
-$ sudo npm install mime -g
-$ sudo npm install libxmljs -g
+$ sudo npm install
 
 TO BUILD:
 
 $ cd build
 $ node build.js
 
-or for production mode
-
-$ node build.js production
+OPTIONS:
+--js-source-map JavaScript Source Maps version 3
+--js-optimization=[simple|advanced]
+--sass-debug for FireSass
