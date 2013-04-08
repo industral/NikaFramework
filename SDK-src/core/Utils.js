@@ -7,6 +7,25 @@
   function Utils() {
   }
 
+  Utils.template = function(dom, obj) {
+    var html = dom[0].outerHTML;
+
+    (function go(obj, ns) {
+      $.each(obj, function(key, value) {
+        if (typeof value !== "object") {
+          var _ns = ns.join(".");
+          var _key = _ns + (_ns ? "." : "") + key;
+
+          html = html.replace(new RegExp("##" + _key + "##", "g"), value);
+        } else {
+          go(value, ns.concat(key));
+        }
+      });
+    })(obj, []);
+
+    dom.html(html);
+  };
+
   Utils.getComponentPart = function(data) {
     //todo: html?
     data.componentPart = data.componentPart ? data.componentPart : "html";
