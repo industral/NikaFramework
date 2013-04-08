@@ -31,8 +31,8 @@
     var i = 0, l = descs.length;
     for (l; i < l; i++) {
       var now = Date.now();
-      runNTimes(performanceTests[descs[i]], 100);
-      console.log('Test "', descs[i], '" runned 100 times and take', Date.now() - now, 'ms to run');
+      runNTimes(performanceTests[descs[i]], 1000);
+      console.log('Test "', descs[i], '" runned 1000 times and take', Date.now() - now, 'ms to run');
     }
   }
 

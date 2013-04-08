@@ -1,6 +1,6 @@
-;(function() {
+(function() {
   'use strict';
-  
+
   // some shortcuts
   var assertTrue = TSpec.assertTrue;
   var Utils = nkf.core.Utils;
@@ -26,9 +26,11 @@
   function createPassElement() {
     return $('<p>##an.obj.with.non.trivial.structure##</p>');
   }
+
   function simpleEl() {
     return $('<p>##simple##</p>');
   }
+
   function createFailElement() {
     return $(wrongKeyStr);
   }
@@ -44,6 +46,7 @@
     assertTrue(passEl.html() == resStr, 'Should replace values correctly fro non-trivial keys');
     assertTrue(failEl.html() == wrongKeyStr, 'Should leave non-existent keys in string');
   });
+
   TSpec.addTest('Utils.template2 tests', function() {
     var passEl = createPassElement();
     var sEl = simpleEl();
@@ -55,6 +58,7 @@
     assertTrue(passEl.html() == resStr, 'Should replace values correctly fro non-trivial keys');
     assertTrue(failEl.html() == wrongKeyStr, 'Should leave non-existent keys in string');
   });
+
   TSpec.addPerformanceTest('Utils.template perf test', function() {
     var passEl = createPassElement();
     return Utils.template(passEl, params);
@@ -64,7 +68,5 @@
     var passEl = createPassElement();
     return Utils.template2(passEl, params);
   });
-
-
 
 })();
