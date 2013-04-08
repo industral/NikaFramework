@@ -8,3 +8,14 @@ $ sudo npm install libxmljs -g
 TO BUILD:
 
 $ node build.js
+
+
+==================
+
+You can build your own custom jQuery:
+
+$ git clone git://github.com/jquery/jquery.git
+$ cd jquery
+$ git checkout 1.9-stable
+$ npm install # first time
+$ grunt custom:-ajax/script,ajax/jsonp,-deprecated,-effects
