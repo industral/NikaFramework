@@ -202,13 +202,25 @@ function processOtherComponents(componentName) {
     processedComponentSpace[componentName] = {};
 
     components[componentName].forEach(function(value, key) {
-      processedComponentSpace[componentName][value.replace("app/", "")] = $fs.readFileSync("../" + value).toString();
+      var content = $fs.readFileSync("../" + value).toString();
+
+      if (ARGV["data-optimization"]) {
+        content = content.replace(/\s+/g, " ").replace(/\n/g, " ");
+      }
+
+      processedComponentSpace[componentName][value.replace("app/", "")] = content;
     });
   } else if (componentName === "xml") {
     processedComponentSpace[componentName] = {};
 
     components[componentName].forEach(function(value, key) {
-      processedComponentSpace[componentName][value.replace("app/", "")] = $fs.readFileSync("../" + value).toString();
+      var content = $fs.readFileSync("../" + value).toString();
+
+      if (ARGV["xml-optimization"]) {
+        content = content.replace(/\s+/g, " ").replace(/\n/g, " ");
+      }
+
+      processedComponentSpace[componentName][value.replace("app/", "")] = content;
     });
 
     transformToBase64(componentName);
@@ -298,15 +310,15 @@ function writeFiles() {
   });
   cssTag.cdata(processedComponentSpace.css);
 
-//    nkfVersion = jsData.match(/,"version":"(.\..\..)/)[1];
-//  var metaTag = $libxmljs.Element(xmlDoc, "meta");
-//  metaTag.attr({
-//    name: "generator",
-//      content: "NikaFramework " + nkfVersion
-//  });
+  var nkfVersion = processedComponentSpace.js.match(/,"version":"(.\..\..)/)[1];
+  var metaTag = $libxmljs.Element(xmlDoc, "meta");
+  metaTag.attr({
+    name: "generator",
+    content: "NikaFramework " + nkfVersion
+  });
 
   var head = xmlDoc.get('//xmlns:html/xmlns:head', "http://www.w3.org/1999/xhtml");
-//  head.addChild(metaTag);
+  head.addChild(metaTag);
   head.addChild(cssTag);
   head.addChild(scriptTag);
 
