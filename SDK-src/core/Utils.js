@@ -26,6 +26,24 @@
     dom.html(html);
   };
 
+  // Andy Zhupanov
+  Utils.template2 = function(template, obj) {
+    var html = template[0].outerHTML;
+
+    var a = html.replace(/##[\w\.]+?##/g, function(matched) {
+      var chunks = matched.replace(/##/g, '').split('.');
+      var root = obj;
+      var i = 0;
+      while (chunks[i] && root) {
+        root = root[chunks[i++]] || matched;
+      }
+
+      return root;
+    });
+
+    template.html(a);
+  };
+
   Utils.getComponentPart = function(data) {
     //todo: html?
     data.componentPart = data.componentPart ? data.componentPart : "html";
