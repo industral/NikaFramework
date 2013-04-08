@@ -35,10 +35,10 @@
       var root = obj;
       var i = 0;
       while (chunks[i] && root) {
-        root = root[chunks[i++]] || matched;
+        root = root[chunks[i++]] || null;
       }
 
-      return root;
+      return root || matched;
     });
 
     template.html(a);
