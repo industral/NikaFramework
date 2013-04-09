@@ -85,7 +85,7 @@
               if (strings4translate) {
                 $.each(strings4translate, function(aKey, aValue) {
                   var string4translate = aValue.replace(/[{}]/g, "");
-                  var translatedString = translateData.translate[string4translate];
+                  var translatedString = languageCache[inputData.lang].translate[string4translate];
 
                   var output = $(value).attr("data-nkf-lang-" + attributeName).replace(aValue, translatedString || string4translate);
 
@@ -137,7 +137,7 @@
             if (strings4translate) {
               $.each(strings4translate, function(aKey, aValue) {
                 var string4translate = aValue.replace(/[{}]/g, "");
-                var translatedString = translateData.translate[string4translate];
+                var translatedString = languageCache[inputData.lang].translate[string4translate];
 
                 value.style.content = content.replace(aValue, translatedString || string4translate);
               });
@@ -146,7 +146,7 @@
         });
 
         $("html").attr({
-          dir: translateData.settings && translateData.settings.dir || "ltr"
+          dir: languageCache[inputData.lang].settings && languageCache[inputData.lang].settings.dir || "ltr"
         });
 
         $(document).trigger("nkf.core.components.ComponentManager", {
@@ -161,18 +161,17 @@
       if (nkf.conf.localization) {
         inputData.lang = inputData.lang || $.cookie("lang") || "en";
 
-//      if (inputData.lang !== "en") {
-
         $("body").attr("data-nkf-lang", inputData.lang);
 
-        if (!translateData || currentLanguageName !== inputData.lang) {
+        if (!languageCache[inputData.lang]) {
           $.ajax({
             //TODO: move /data/lang/, .json to settings
             url: "/data/lang/" + inputData.lang + ".json",
             async: false,
             success: function(data) {
               currentLanguageName = inputData.lang;
-              translateData = data;
+
+              languageCache[currentLanguageName] = data;
 
               doLocalize(inputData);
             }
@@ -182,16 +181,6 @@
 
           doLocalize(inputData);
         }
-//      } else {
-//        currentLanguageName = inputData.lang;
-//
-//        translateData = {
-//          translate: {},
-//          settings: {}
-//        };
-//
-//        doLocalize(inputData);
-//      }
       }
     };
 
@@ -549,7 +538,6 @@
       components: {}
     };
 
-    var translateData = null;
     var currentLanguageName = "en";
 
     var userSettings = null;
@@ -566,6 +554,8 @@
     var $StorageManager = nkf.core.storage.StorageManager.getInstance();
 
     var originalStrings = null;
+
+    var languageCache = {};
   }
 
   makeSingleton(ComponentManager);
