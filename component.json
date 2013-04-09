@@ -1,0 +1,22 @@
+{
+  "name": "NikaFramework",
+  "version": "0.0.1",
+  "dependencies": {
+    "mocha": "1.9.x",
+    "jquery": "1.9.x",
+    "expect": "0.2.x",
+    "benchmark": "git://github.com/bestiejs/benchmark.js.git"
+  },
+  "exportsOverride": {
+    "mocha": {
+      "scripts/..": "mocha.js",
+      "styles/..": "mocha.css"
+    },
+    "expect": {
+      ".": "expect.js"
+    },
+    "jquery": {
+      ".": "jquery.js"
+    }
+  }
+}

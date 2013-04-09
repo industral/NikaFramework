@@ -1,0 +1,22 @@
+{
+  "name": "NikaFramework",
+  "author": "Alex Ivasyuv <alex@itherz.com>",
+  "version": "0.0.1",
+  "engines" :{
+    "node": ">= v0.10"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/.bin/bower install && npm run-script build",
+    "test": "./node_modules/.bin/karma start tests/karma-config.js --single-run",
+    "build": "cd SDK-src/build/ && node build.js"
+  },
+  "dependencies": {
+    "node-sass": "",
+    "phantomjs": ""
+  },
+  "devDependencies": {
+    "bower": "*",
+    "karma": "*"
+  }
+}
+
