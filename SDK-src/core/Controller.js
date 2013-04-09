@@ -7,65 +7,112 @@
   Controller.className = "Controller";
 
   function Controller() {
-    addEventHandler();
+
+    // --------------------------------------------------------------------
+    // Public methods/variables
+    // --------------------------------------------------------------------
+
+    this.load = function(params) {
+      if (!isInit) {
+        init();
+      }
+
+      if (!params) {
+        params = {};
+      }
+
+      if (isInit) {
+        params.pageName = params.pageName || _this.getNormalizedObject(_this.getCurrentPath()).pageName;
+        params.params = params.clear ? params.params : $.extend({}, _this.getNormalizedObject(_this.getCurrentPath()).params, params.params);
+
+        $(document).trigger("nkf.core.Controller", {
+          type: nkf.def.events.type.is,
+          name: "load",
+          data: {
+            init: params.init
+          }
+        });
+
+        if (!params.appInit && params.type !== "popstate") {
+          _this.setCurrentPath(params);
+        }
+
+        if (params.init) {
+          ++historyCounter;
+
+          componentManager.load(params);
+        }
+      }
+    };
+
+    this.getCurrentPath = function() {
+      var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(nkf.conf.URLSuffix, "").replace(/\/#\//, "").replace(/^\//, "");
+      var ie = window.location.hash.replace(nkf.conf.URLSuffix, "").replace(/\#?\/?/, "");
+
+      if (!!history.pushState) {
+        return ie || normalBrowsers;
+      } else {
+        return normalBrowsers;
+      }
+    };
+
+    this.setCurrentPath = function(data) {
+      var output = nkf.conf.URLSuffix;
+      output += "/" + (data.pageName || _this.getNormalizedObject().pageName || "Home");
+
+      if (data.params && $Utils.getObjectSize(data.params)) {
+        var preparedData = $Utils.prepareURLObject(data.params);
+
+        if ($Utils.getObjectSize(preparedData)) {
+          var serializedData = $Utils.getSerializeObject(preparedData);
+
+          output += "/" + serializedData;
+        }
+      }
+
+      previousLogin = $.cookie("isLogin");
+
+      history.pushState({path: output}, "", output);
+    };
+
+    this.getNormalizedObject = function(url) {
+      var output = {};
+
+      var resultURL = (url || _this.getCurrentPath()).replace(/^\//, "");
+      var splited = resultURL.split("/");
+
+      var pageName = splited[0];
+      var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
+
+      output.pageName = pageName;
+      output.params = $Utils.getDeserializedObject(parameters);
+
+      return output;
+    };
+
+    this.getHistoryCounter = function() {
+      return historyCounter;
+    };
+
+    this.getLanguage = function() {
+      return $.cookie("lang") || "en";
+    };
+
+    // --------------------------------------------------------------------
+    // Private methods
+    // --------------------------------------------------------------------
 
     function addEventHandler() {
       window.onpopstate = function(event) {
         if (!event.state.init) {
-          $(document).trigger("nkf.core.Controller", {
-            type: nkf.def.events.type.make,
-            name: "load",
-            data: {
-              pageName: Controller.getNormalizedObject(event.state.path).pageName,
-              params: Controller.getNormalizedObject(event.state.path).params,
-              init: true,
-              type: "popstate"
-            }
+          _this.load({
+            pageName: _this.getNormalizedObject(event.state.path).pageName,
+            params: _this.getNormalizedObject(event.state.path).params,
+            init: true,
+            type: "popstate"
           });
         }
       };
-
-      $(document).bind("{ns}.{className}".format({
-        ns: ns,
-        className: Controller.className
-      }), function(e, object) {
-        if (object.type === nkf.def.events.type.make && object.name === "load") {
-          if (!isInit) {
-            init();
-          }
-
-          if (!object) {
-            object = {};
-          }
-
-          if (!object.data) {
-            object.data = {};
-          }
-
-          if (isInit) {
-            object.data.pageName = object.data.pageName || Controller.getNormalizedObject(Controller.getCurrentPath()).pageName;
-            object.data.params = object.data.clear ? object.data.params : $.extend({}, Controller.getNormalizedObject(Controller.getCurrentPath()).params, object.data.params);
-
-            $(document).trigger("nkf.core.Controller", {
-              type: nkf.def.events.type.is,
-              name: "load",
-              data: {
-                init: object.data.init
-              }
-            });
-
-            if (!object.data.appInit && object.data.type !== "popstate") {
-              Controller.setCurrentPath(object.data);
-            }
-
-            if (object.data.init) {
-              ++historyCounter;
-
-              componentManager.load(object.data);
-            }
-          }
-        }
-      });
     }
 
     function init() {
@@ -81,71 +128,26 @@
 
       isInit = true;
     }
+
+    addEventHandler();
+
+    // --------------------------------------------------------------------
+    // Private variables
+    // --------------------------------------------------------------------
+
+    var _this = this;
+
+    var componentManager = self.components.ComponentManager.getInstance();
+    var $Utils = nkf.core.Utils;
+
+    var historyCounter = -1;
+    var previousLogin = false;
+
+    var isInit = false;
   }
 
-  Controller.getCurrentPath = function() {
-    var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(nkf.conf.URLSuffix, "").replace(/\/#\//, "").replace(/^\//, "");
-    var ie = window.location.hash.replace(nkf.conf.URLSuffix, "").replace(/\#?\/?/, "");
-
-    if (!!history.pushState) {
-      return ie || normalBrowsers;
-    } else {
-      return normalBrowsers;
-    }
-  };
-
-  Controller.setCurrentPath = function(data) {
-    var output = nkf.conf.URLSuffix;
-    output += "/" + (data.pageName || Controller.getNormalizedObject().pageName || "Home");
-
-    if (data.params && $Utils.getObjectSize(data.params)) {
-      var preparedData = $Utils.prepareURLObject(data.params);
-
-      if ($Utils.getObjectSize(preparedData)) {
-        var serializedData = $Utils.getSerializeObject(preparedData);
-
-        output += "/" + serializedData;
-      }
-    }
-
-    previousLogin = $.cookie("isLogin");
-
-    history.pushState({path: output}, "", output);
-  };
-
-  Controller.getNormalizedObject = function(url) {
-    var output = {};
-
-    var resultURL = (url || Controller.getCurrentPath()).replace(/^\//, "");
-    var splited = resultURL.split("/");
-
-    var pageName = splited[0];
-    var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
-
-    output.pageName = pageName;
-    output.params = $Utils.getDeserializedObject(parameters);
-
-    return output;
-  };
-
-  Controller.getHistoryCounter = function() {
-    return historyCounter;
-  };
-
-  Controller.getLanguage = function() {
-    return $.cookie("lang") || "en";
-  };
-
   $.extend(self, {
-    Controller: Controller
+    Controller: new Controller()
   });
 
-  var controller = new Controller();
-  var componentManager = new self.components.ComponentManager.getInstance();
-  var $Utils = nkf.core.Utils;
-
-  var historyCounter = -1;
-  var previousLogin = false;
-
-  var isInit = false;
 })();
