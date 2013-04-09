@@ -1,12 +1,16 @@
 NikaFramework - Architectural WebUI JavaScript SPA Framework
+------------------------------------------------------------
 
-WWW: http://nikaframework.com/
-Forum: http://nikaframework.com/forum/
-Blog: http://nikaframework.com/blog/
+- [WWW](http://nikaframework.com/)
+
+- [Forum](http://nikaframework.com/forum/)
+
+- [Blog](http://nikaframework.com/blog/)
 
 
-SDK - NikaFramework
-SDK-src - source code of NikaFramework
+`SDK` - NikaFramework
+
+`SDK-src` - source code of NikaFramework
 
 Installation
 ------------
