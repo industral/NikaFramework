@@ -3,14 +3,20 @@
     <head>
         <meta charset="UTF-8">
         <title>Simple test runner</title>
-
-        <script src="tspec/tspec.js"></script>
-        <script src="../SDK-src/assets/scripts/jquery-1.9.1.js"></script>
-        <script src="../SDK-src/assets/scripts/plugins/jquery.namespace.js"></script>
-        <script src="../SDK-src/core/Utils.js"></script>
-        <script src="tests/Utils/templates.js"></script>
+        <link rel="stylesheet" href="../components/mocha/mocha.css">
+        <script src="../components/mocha/mocha.js"></script>
+        <script src="../components/expect/expect.js"></script>
+        <script src="../nkf.js"></script>
+    </head>
     </head>
     <body>
-        <script>TSpec.runAll();</script>
+      <div id="mocha"></div>
+      <script>
+        if (window.mochaPhantomJS) {
+          mochaPhantomJS.run();
+        } else {
+          mocha.run();
+        }
+      </script>
     </body>
 </html>
