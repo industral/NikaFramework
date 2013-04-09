@@ -13,4 +13,5 @@ port = 8081
 
 reporters = ['progress']
 
-browsers = ['PhantomJS', 'Chrome']
+// Possible values: Chrome, ChromeCanary, Firefox, IE (Windows Only), Safari (Mac Only)
+browsers = ['PhantomJS']

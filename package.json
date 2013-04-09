@@ -6,17 +6,20 @@
     "node": ">= v0.10"
   },
   "scripts": {
-    "postinstall": "./node_modules/.bin/bower install && npm run-script build",
-    "test": "./node_modules/.bin/karma start tests/karma-config.js --single-run",
-    "build": "cd SDK-src/build/ && node build.js"
+    "install-components": "./node_modules/.bin/bower install",
+    "build": "cd SDK-src/build/ && node build.js",
+    "test": "npm run-script build && ./node_modules/.bin/karma start tests/karma-config.js --single-run",
+    "node-test": "./node_modules/.bin/mocha --recursive tests/node-tests/"
   },
   "dependencies": {
-    "node-sass": "",
-    "phantomjs": ""
+    "node-sass": "0.4.x"
   },
   "devDependencies": {
-    "bower": "*",
-    "karma": "*"
+    "bower": "0.8.x",
+    "karma": "0.8.x",
+    "mocha": "1.9.x",
+    "expect.js": "*",
+    "phantomjs": "1.9.x"
   }
 }
 

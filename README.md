@@ -8,17 +8,25 @@ Blog: http://nikaframework.com/blog/
 SDK - NikaFramework
 SDK-src - source code of NikaFramework
 
-Building
---------
+Installation
+------------
 
-Just run `npm install` in directory.
+Run `npm install` to install required node modules.
 
-Additional dependencies: `brew install phantomjs`
+Run `npm run-script install-components` to install required components.
+
+Run `brew install phantomjs` to install PhantomJS
 
 Tests
 -----
 
+To run framework test:
+
     npm test
+
+Test builder.js:
+
+    npm run-script node-test
 
 Rebuild `nkf.js`
 ----------------
