@@ -31,11 +31,13 @@
     var html = template[0].outerHTML;
 
     var a = html.replace(/##[\w\.]+?##/g, function(matched) {
-      var chunks = matched.replace(/##/g, '').split('.');
+      var chunks = matched.slice(2, -2).split('.');
       var root = obj;
       var i = 0;
-      while (chunks[i] && root) {
-        root = root[chunks[i++]] || null;
+      var chunk;
+
+      while ((chunk = chunks[i++]) && root != null) {
+        root = root[chunk] || null;
       }
 
       return root || matched;
