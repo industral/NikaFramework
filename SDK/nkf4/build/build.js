@@ -2,7 +2,6 @@ var $fs = require("fs");
 var $exec = require("child_process").exec;
 var $libxmljs = require("libxmljs");
 var $mime = require("mime");
-var ARGV = require("optimist").argv;
 var $zlib = require("zlib");
 
 var BUFFER = 5120000; //5000 * 1024
@@ -14,6 +13,26 @@ var components = {
   js: [],
   data: []
 };
+
+var isNpm = 'npm_package_name' in process.env;
+
+var sassExecutable = isNpm ? 'node-sass' : 'sass';
+
+var CONFIG = (function() {
+  if (isNpm) {
+    var prefix = 'npm_package_configure_';
+
+    return {
+      'js-source-map': process.env[prefix + 'js_source_map'], 
+      'js-optimization': process.env[prefix + 'js_optimization'],
+      'xml-optimization': process.env[prefix + 'xml_optimization'] == 'true',
+      'sass-debug': process.env[prefix + 'sass_debug'] == 'true',
+      'data-optimization': process.env[prefix + 'data_optimization'] == 'true'
+    };
+  }
+
+  return require("optimist").argv;
+})();
 
 var processedComponentSpace = {};
 
@@ -96,7 +115,7 @@ function findAllFiles() {
 
 function processJS(callback) {
   // FAST
-  if (!ARGV["js-source-map"] && !ARGV["js-optimization"]) {
+  if (!CONFIG["js-source-map"] && !CONFIG["js-optimization"]) {
     var output = "";
 
     components.js.forEach(function(value, key) {
@@ -115,12 +134,12 @@ function processJS(callback) {
       compileLineString += " --js=nkf4/" + value;
     });
 
-    if (ARGV["js-source-map"]) {
+    if (CONFIG["js-source-map"]) {
       options += " --create_source_map=source.map --source_map_format=V3 ";
     }
 
-    if (ARGV["js-optimization"]) {
-      switch (ARGV["js-optimization"]) {
+    if (CONFIG["js-optimization"]) {
+      switch (CONFIG["js-optimization"]) {
         case "simple":
           options += " --compilation_level=SIMPLE_OPTIMIZATIONS ";
 
@@ -150,7 +169,7 @@ function processJS(callback) {
 function processSass(callback) {
   var commandLineString = "";
 
-  if (ARGV["sass-debug"]) {
+  if (CONFIG["sass-debug"]) {
     components.scss.forEach(function(value, key) {
       var match = value.split("/").pop().match(/^_/);
 
@@ -159,7 +178,7 @@ function processSass(callback) {
           commandLineString += " && ";
         }
 
-        commandLineString += "sass " + value + " -I app/assets/styles/inc -g --cache-location=/tmp/.sass-cache --stop-on-error";
+        commandLineString += sassExecutable + " " + value + " -I app/assets/styles/inc -g --cache-location=/tmp/.sass-cache --stop-on-error";
       }
     });
 
@@ -184,7 +203,7 @@ function processSass(callback) {
       }
     });
 
-    $exec("cd ../ && echo '" + output + "' | sass -t compressed -I app/assets/styles/inc --cache-location=/tmp/.sass-cache --stop-on-error --scss -s", {maxBuffer: BUFFER},
+    $exec("cd ../ && echo '" + output + "' | " + sassExecutable + " -t compressed -I app/assets/styles/inc --cache-location=/tmp/.sass-cache --stop-on-error --scss -s", {maxBuffer: BUFFER},
         function(error, stdout, stderr) {
           if (error || stderr) {
             console.error(error, stderr);
@@ -204,7 +223,7 @@ function processOtherComponents(componentName) {
     components[componentName].forEach(function(value, key) {
       var content = $fs.readFileSync("../" + value).toString();
 
-      if (ARGV["data-optimization"]) {
+      if (CONFIG["data-optimization"]) {
         content = content.replace(/\s+/g, " ").replace(/\n/g, " ");
       }
 
@@ -216,7 +235,7 @@ function processOtherComponents(componentName) {
     components[componentName].forEach(function(value, key) {
       var content = $fs.readFileSync("../" + value).toString();
 
-      if (ARGV["xml-optimization"]) {
+      if (CONFIG["xml-optimization"]) {
         content = content.replace(/\s+/g, " ").replace(/\n/g, " ");
       }
 
@@ -297,7 +316,7 @@ function writeFiles() {
   //SCRIPT TAG
   processedComponentSpace.js = "var __dom__ = " + processedComponentSpace.xml + "; var __json__ = " + JSON.stringify(processedComponentSpace.data) + "; " + processedComponentSpace.js;
 
-  if (ARGV["js-source-map"]) {
+  if (CONFIG["js-source-map"]) {
     processedComponentSpace.js += "//@ sourceMappingURL=/source.map";
   }
 
