@@ -23,7 +23,7 @@ var CONFIG = (function() {
     var prefix = 'npm_package_configure_';
 
     return {
-      'js-source-map': process.env[prefix + 'js_source_map'], 
+      'js-source-map': process.env[prefix + 'js_source_map'] == 'true',
       'js-optimization': process.env[prefix + 'js_optimization'],
       'xml-optimization': process.env[prefix + 'xml_optimization'] == 'true',
       'sass-debug': process.env[prefix + 'sass_debug'] == 'true',
@@ -115,7 +115,7 @@ function findAllFiles() {
 
 function processJS(callback) {
   // FAST
-  if (!CONFIG["js-source-map"] && !CONFIG["js-optimization"]) {
+  if (!CONFIG["js-source-map"] && (!CONFIG["js-optimization"] || CONFIG["js-optimization"] === "whitespace")) {
     var output = "";
 
     components.js.forEach(function(value, key) {
@@ -329,15 +329,16 @@ function writeFiles() {
   });
   cssTag.cdata(processedComponentSpace.css);
 
-  var nkfVersion = processedComponentSpace.js.match(/,"version":"(.\..\..)/)[1];
-  var metaTag = $libxmljs.Element(xmlDoc, "meta");
-  metaTag.attr({
-    name: "generator",
-    content: "NikaFramework " + nkfVersion
-  });
+  //TODO: in simple mode optimization version coudn't be found. Need to think how to do it better
+//  var nkfVersion = processedComponentSpace.js.match(/,"version":"(.\..\..)/)[1];
+//  var metaTag = $libxmljs.Element(xmlDoc, "meta");
+//  metaTag.attr({
+//    name: "generator",
+//    content: "NikaFramework " + nkfVersion
+//  });
 
   var head = xmlDoc.get('//xmlns:html/xmlns:head', "http://www.w3.org/1999/xhtml");
-  head.addChild(metaTag);
+//  head.addChild(metaTag);
   head.addChild(cssTag);
   head.addChild(scriptTag);
 

@@ -1,14 +1,6 @@
-TO INSTALL:
-
-NodeJS >= v0.10
-
-$ sudo gem install sass
-$ sudo npm install
-
 TO BUILD:
 
-$ cd build
-$ node build.js
+$ npm run-script build
 
 OPTIONS:
 --js-source-map JavaScript Source Maps version 3

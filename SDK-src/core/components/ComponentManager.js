@@ -166,7 +166,7 @@
         if (!languageCache[inputData.lang]) {
           $.ajax({
             //TODO: move /data/lang/, .json to settings
-            url: "/data/lang/" + inputData.lang + ".json",
+            url: nkf.conf.URLSuffix + "/data/lang/" + inputData.lang + ".json",
             async: false,
             success: function(data) {
               currentLanguageName = inputData.lang;

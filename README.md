@@ -21,6 +21,11 @@ Run `npm run-script install-components` to install required components.
 
 Run `brew install phantomjs` to install PhantomJS
 
+Build/Rebuild `nkf.js`
+----------------
+
+    npm run-script build
+
 Tests
 -----
 
@@ -31,8 +36,3 @@ To run framework test:
 Test builder.js:
 
     npm run-script node-test
-
-Rebuild `nkf.js`
-----------------
-
-    npm run-script build

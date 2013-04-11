@@ -1,7 +1,6 @@
 (function() {
 
   var $fs = require("fs");
-  var $url = require("url");
 
   var out = [];
 
