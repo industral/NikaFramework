@@ -1,6 +1,7 @@
 /.idea
 /*.iml
 /nkf.js
-/node_modules
+node_modules
+docbook-xsl
 /components
 index.xhtmlz

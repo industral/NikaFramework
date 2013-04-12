@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NikaFramework 4.5.0 Release Notes</title>
+    </head>
+    <body>
+        <ul>
+            <li>
+                <h2>Code structure changed</h2>
+
+                <div class="descr">
+                    <ul>
+                        <li>
+                            <strong>logic</strong>
+                            now is called
+                            <strong>scripts</strong>
+                            . There could be JavaScript files and maybe preprocessor scripts, like CoffeeScript in
+                            future
+                        </li>
+                        <li>
+                            <strong>dom</strong>
+                            now is called
+                            <strong>templates</strong>
+                            . Here could be not only xhtml files but templates also
+                        </li>
+                        <li>
+                            <strong>style</strong>
+                            now is called
+                            <strong>styles</strong>
+                            . Moved to multiplicity
+                        </li>
+                        <li>
+                            <strong>img</strong>
+                            now is called
+                            <strong>images</strong>
+                            . Better to have full name
+                        </li>
+                        <li>
+                            <strong>impl</strong>
+                            now is
+                            <strong>app</strong>
+                        </li>
+                        <li>
+                            <strong>extra</strong>
+                            now is
+                            <strong>assets</strong>
+                        </li>
+                        <li>
+                           <strong>index.template.xhtml</strong> moved to <strong>nkf4</strong> folder
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <h2>New build system</h2>
+
+                <div class="descr">
+                    BS was refactored. Dropped functionality creating out folder and saving there files. Decreased build time.
+
+                    <ul>
+                        <li>
+                            YUI Compressor was replaced with Google Closure
+                        </li>
+                        <li>
+                            Added package.json
+                        </li>
+                        <li>Now it support the
+                            following options:
+                            <ul>
+                                <li>
+                                    <strong>--js-source-map</strong>
+                                    - JavaScript Source Maps version 3. Now you can easy debug JavaScript
+                                </li>
+                                <li>
+                                    <strong>--js-optimization</strong>
+                                    - "simple" or "advanced" JavaScript optimization
+                                </li>
+                                <li>
+                                    <strong>--xml-optimization</strong>
+                                    - remove extra spaces from XML
+                                </li>
+                                <li>
+                                    <strong>--sass-debug</strong>
+                                    - now use can use FireSass
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </li>
+            <li>
+                <h2>API changed</h2>
+
+                <ul>
+                    <li>EDD to load/change page replaced with
+
+                        <code>
+                            nkf.core.Controller.load({
+                            init: true
+                            });
+                        </code>
+                    </li>
+                    <li>
+                        Added new helper for components. How instead of writing:
+
+                        <code>
+                            var ns = "nkf.impl.components.page";
+                            var self = $.namespace(ns);
+
+                            extendClass(Login, nkf.core.components.component.PageAbstract);
+                            Login.className = "Login";
+
+                            function Login() {
+
+                            this.className = Login.className;
+                        </code>
+                        you can use
+                        <code>
+                            nkf.core.Utils.initClass(nkf.core.components.component.PageAbstract, Login, "Login");
+                        </code>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <h2>Added sample tests</h2>
+
+                <div class="descr">Thanks for Andy Zhupanow, now we have tests :)</div>
+            </li>
+            <li>
+                <h2>Updated documentation</h2>
+            </li>
+
+        </ul>
+    </body>
+</html>
