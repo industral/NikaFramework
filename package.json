@@ -1,27 +1,19 @@
 {
   "name": "NikaFramework",
   "author": "Alex Ivasyuv <alex@itherz.com>",
-  "version": "0.0.1",
+  "version": "4.5.0",
   "private": true,
   "engines" :{
     "node": ">= v0.10"
   },
-  "configure": {
-    "js-source-map": false,
-    "js-optimization": false,
-    "xml-optimization": false,
-    "sass-debug": false,
-    "data-optimization": false
-  },
   "scripts": {
     "install-components": "./node_modules/.bin/bower install",
     "test": "npm run-script build && ./node_modules/.bin/karma start tests/karma-config.js --single-run",
-    "build": "cd SDK-src/build/ && node build.js",
+    "build": "cd src/build/ && node build.js",
     "node-test": "./node_modules/.bin/mocha --recursive tests/node-tests/"
   },
   "dependencies": {
-    "node-sass": "0.4.x",
-    "optimist": ""
+    "node-sass": "0.4.x"
   },
   "devDependencies": {
     "bower": "0.8.x",

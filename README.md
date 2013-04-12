@@ -8,9 +8,14 @@ NikaFramework - Architectural WebUI JavaScript SPA Framework
 - [Blog](http://nikaframework.com/blog/)
 
 
-`SDK` - NikaFramework
+`SDK` - NikaFramework SDK
 
-`SDK-src` - source code of NikaFramework
+`src` - source code of NikaFramework SDK
+
+Build/Rebuild `NikaFramework SDK` from source code
+----------------
+
+    npm run-script build
 
 Installation
 ------------
@@ -21,18 +26,13 @@ Run `npm run-script install-components` to install required components.
 
 Run `brew install phantomjs` to install PhantomJS
 
-Build/Rebuild `nkf.js`
-----------------
-
-    npm run-script build
-
 Tests
 -----
 
 To run framework test:
 
-    npm test
+    npm test #for that you need all node modules and PhantomJS installed
 
-Test builder.js:
+To run node test:
 
     npm run-script node-test
