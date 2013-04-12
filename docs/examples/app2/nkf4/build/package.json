@@ -1,0 +1,23 @@
+{
+  "name": "NikaFramework",
+  "author": "Alex Ivasyuv <alex@itherz.com>",
+  "version": "0.0.1",
+  "private": true,
+  "engines" :{
+    "node": ">= v0.10"
+  },
+  "configure": {
+    "js-source-map": false,
+    "js-optimization": "whitespace",
+    "xml-optimization": false,
+    "sass-debug": false,
+    "data-optimization": false
+  },
+  "scripts": {
+    "build": "node build.js"
+  },
+  "dependencies": {
+    "node-sass": "0.4.x",
+    "optimist": ""
+  }
+}
