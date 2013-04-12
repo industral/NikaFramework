@@ -1,0 +1,21 @@
+NodeJS >= 0.6.5
+SASS >= 3.2.1 (http://sass-lang.com/download.html)
+
+$ sudo gem install sass
+$ sudo npm install mime -g
+$ sudo npm install libxmljs -g
+
+TO BUILD:
+
+$ node build.js
+
+
+==================
+
+You can build your own custom jQuery:
+
+$ git clone git://github.com/jquery/jquery.git
+$ cd jquery
+$ git checkout 1.9-stable
+$ npm install # first time
+$ grunt custom:-ajax/script,ajax/jsonp,-deprecated,-effects

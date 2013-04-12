@@ -1,6 +1,5 @@
-.idea
-project.iml
-nkf.js
-node_modules
-components
-build
+/.idea
+/*.iml
+/nkf.js
+/node_modules
+/components
