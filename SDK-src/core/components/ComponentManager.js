@@ -63,7 +63,7 @@
       if (login) {
         return name ? name : nkf.conf.defaultLoggedInPage;
       } else {
-        return nkf.conf.useLogin ? nkf.conf.defaultNotLoggedInPage : nkf.conf.defaultLoggedInPage;
+        return nkf.conf.useLogin ? nkf.conf.defaultNotLoggedInPage : name || nkf.conf.defaultLoggedInPage;
       }
     };
 
@@ -73,7 +73,7 @@
       if (login) {
         return name ? name : nkf.conf.defaultLoggedInLayout;
       } else {
-        return nkf.conf.useLogin ?  nkf.conf.defaultNotLoggedInLayout : nkf.conf.defaultLoggedInLayout;
+        return nkf.conf.useLogin ? nkf.conf.defaultNotLoggedInLayout : name || nkf.conf.defaultLoggedInLayout;
       }
     };
 
