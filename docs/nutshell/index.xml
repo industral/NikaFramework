@@ -28,7 +28,7 @@
                 <graphic fileref="img/initial-structure.png" />
             </para>
             <para>
-                <emphasis>data</emphasis> - JSON stub for testing purpose
+                <emphasis>data</emphasis> - JSON stub for testing purpose/localization files
             </para>
             <para>
                 <emphasis>localization</emphasis> - tool to helps localize text found in xhtml files
@@ -40,7 +40,7 @@
                 <emphasis>nkf4/build</emphasis> - build system
             </para>
             <para>
-                <emphasis>nkf4/impl</emphasis> - components implementation
+                <emphasis>nkf4/app</emphasis> - components implementation
             </para>
             <para>
                 <emphasis>nkf4/nkf.js</emphasis> - SDK file
@@ -49,7 +49,7 @@
                 <emphasis>.htaccess</emphasis> - need for correct working framework
             </para>
             <para>
-                <emphasis>index.template.xhtml</emphasis> - template of index file, which content will be used to render
+                <emphasis>nkf4/index.template.xhtml</emphasis> - template of index file, which content will be used to render
                 HTML into.
             </para>
 
@@ -113,15 +113,12 @@
                                                                         parse="text" /></programlisting>
 
                     and look at content of that file:
-                    <programlisting
-                            language="brush: js">$(function() {
-  $(document).trigger("nkf.core.Controller", {
-    type: nkf.def.events.type.make,
-    name: "load",
-    data: {
-      init: true
-    }
-  });
+                    <programlisting language="brush: js">$(function() {
+
+    nkf.core.Controller.load({
+        init: true
+    });
+
 });</programlisting>
 
                     then run build again under build directory

@@ -1,4 +1,4 @@
-Download docbook-xsl from http://sourceforge.net/projects/docbook/files/docbook-xsl and unpack it into that folder (1.78.0)
+Download docbook-xsl from http://sourceforge.net/projects/docbook/files/docbook-xsl/ and unpack it into that folder (1.78.0)
 and rename folder to docbook-xsl
 
-$ xsltproc --nonet --xinclude build.xsl index.xml
+$ xsltproc --nonet --novalid --xinclude build.xsl index.xml
