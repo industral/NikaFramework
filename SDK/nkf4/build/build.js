@@ -3,6 +3,7 @@ var $exec = require("child_process").exec;
 var $libxmljs = require("libxmljs");
 var $mime = require("mime");
 var $zlib = require("zlib");
+var CONFIG = require("optimist").argv;
 
 var BUFFER = 5120000; //5000 * 1024
 
@@ -13,26 +14,6 @@ var components = {
   js: [],
   data: []
 };
-
-var isNpm = 'npm_package_name' in process.env;
-
-var sassExecutable = isNpm ? 'node-sass' : 'sass';
-
-var CONFIG = (function() {
-  if (isNpm) {
-    var prefix = 'npm_package_configure_';
-
-    return {
-      'js-source-map': process.env[prefix + 'js_source_map'] == 'true',
-      'js-optimization': process.env[prefix + 'js_optimization'],
-      'xml-optimization': process.env[prefix + 'xml_optimization'] == 'true',
-      'sass-debug': process.env[prefix + 'sass_debug'] == 'true',
-      'data-optimization': process.env[prefix + 'data_optimization'] == 'true'
-    };
-  }
-
-  return require("optimist").argv;
-})();
 
 var processedComponentSpace = {};
 
@@ -178,7 +159,7 @@ function processSass(callback) {
           commandLineString += " && ";
         }
 
-        commandLineString += sassExecutable + " " + value + " -I app/assets/styles/inc -g --cache-location=/tmp/.sass-cache --stop-on-error";
+        commandLineString += " sass" + value + " -I app/assets/styles/inc -g --cache-location=/tmp/.sass-cache --stop-on-error";
       }
     });
 
@@ -203,7 +184,7 @@ function processSass(callback) {
       }
     });
 
-    $exec("cd ../ && echo '" + output + "' | " + sassExecutable + " -t compressed -I app/assets/styles/inc --cache-location=/tmp/.sass-cache --stop-on-error --scss -s", {maxBuffer: BUFFER},
+    $exec("cd ../ && echo '" + output + "' | sass " + " -t compressed -I app/assets/styles/inc --cache-location=/tmp/.sass-cache --stop-on-error --scss -s", {maxBuffer: BUFFER},
         function(error, stdout, stderr) {
           if (error || stderr) {
             console.error(error, stderr);

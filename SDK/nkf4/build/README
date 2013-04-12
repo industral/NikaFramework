@@ -1,6 +1,6 @@
 TO BUILD:
 
-$ npm run-script build
+$ node build.js
 
 OPTIONS:
 --js-source-map JavaScript Source Maps version 3
