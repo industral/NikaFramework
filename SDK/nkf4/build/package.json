@@ -17,7 +17,8 @@
     "build": "cd SDK-src/build/ && node build.js"
   },
   "dependencies": {
-    "node-sass": "0.4.x"
+    "node-sass": "0.4.x",
+    "optimist": ""
   }
 }
 

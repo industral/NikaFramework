@@ -1,12 +1,12 @@
 nkf.js
 
-impl/components/widget/Controls/logic/Controls.js
-impl/components/widget/Login/logic/Login.js
+app/components/widget/Controls/scripts/Controls.js
+app/components/widget/Login/scripts/Login.js
 
-impl/components/page/NotLoggedIn/logic/NotLoggedIn.js
-impl/components/page/Home/logic/Home.js
+app/components/page/NotLoggedIn/scripts/NotLoggedIn.js
+app/components/page/Home/scripts/Home.js
 
-impl/components/layout/NotLoggedIn/logic/NotLoggedIn.js
-impl/components/layout/LoggedIn/logic/LoggedIn.js
+app/components/layout/NotLoggedIn/scripts/NotLoggedIn.js
+app/components/layout/LoggedIn/scripts/LoggedIn.js
 
-impl/app.js
+app/app.js

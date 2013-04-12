@@ -20,7 +20,8 @@
     "node-test": "./node_modules/.bin/mocha --recursive tests/node-tests/"
   },
   "dependencies": {
-    "node-sass": "0.4.x"
+    "node-sass": "0.4.x",
+    "optimist": ""
   },
   "devDependencies": {
     "bower": "0.8.x",

@@ -60,13 +60,21 @@
     this.getPageName = function(name) {
       var login = isLogin();
 
-      return name ? name : (login ? nkf.conf.defaultLoggedInPage : nkf.conf.defaultNotLoggedInPage);
+      if (login) {
+        return name ? name : nkf.conf.defaultLoggedInPage;
+      } else {
+        return nkf.conf.defaultNotLoggedInPage;
+      }
     };
 
     this.getLayoutName = function(name) {
       var login = isLogin();
 
-      return name ? name : (login ? nkf.conf.defaultLoggedInLayout : nkf.conf.defaultNotLoggedInLayout);
+      if (login) {
+        return name ? name : nkf.conf.defaultLoggedInLayout;
+      } else {
+        return nkf.conf.defaultNotLoggedInLayout;
+      }
     };
 
     this.localize = function(inputData) {
@@ -527,7 +535,7 @@
     }
 
     function isLogin() {
-      return nkf.conf.useLogin ? $.cookie("isLogin") : true;
+      return !!(nkf.conf.useLogin ? $.cookie("isLogin") : false);
     }
 
     constructor.call(this);
