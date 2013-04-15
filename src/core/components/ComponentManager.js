@@ -12,7 +12,6 @@
     this.className = ComponentManager.className;
 
     constructor();
-    addEventsHandler();
 
     this.load = function(data) {
       userSettings = getSettings();
@@ -53,9 +52,11 @@
       return componentsList;
     };
 
-//    this.getGlobalComponentsData = function() {
-//      return $StorageManager.getData("nkf3.global");
-//    };
+    this.localize = function(object) {
+      _this.localize({
+        lang: object.lang
+      });
+    };
 
     this.getPageName = function(name) {
       var login = isLogin();
@@ -158,7 +159,6 @@
         });
 
         $(document).trigger("nkf.core.components.ComponentManager", {
-          type: nkf.def.events.type.is,
           name: "localize",
           data: {
             lang: inputData.lang
@@ -220,32 +220,11 @@
         dom: preRenderedDOM
       });
 
-      $.each(componentsList, function(key, value) {
-
-        var componentType = $Utils.getComponentType(value);
-
-        var componentSettings = pageData.components && pageData.components[componentType] &&
-            pageData.components[componentType][value.className] &&
-            pageData.components[componentType][value.className].settings || {};
-
-        if ($Utils.getComponentType(value) === nkf.enumType.Component.widget) {
-          value.setState({
-            type: nkf.def.events.type.is,
-            name: nkf.def.component.action.state,
-            data: {
-              state: componentSettings.state,
-              "state-effect": componentSettings["state-effect"]
-            }
-          });
-        }
-      });
-
       _this.localize({
         lang: $.cookie("lang") || $("body").attr("data-nkf-lang") || "en"
       });
 
       $(document).trigger(ns + "." + ComponentManager.className, {
-        type: nkf.def.events.type.is,
         name: "preAppend"
       });
 
@@ -254,7 +233,6 @@
       }
 
       $(document).trigger(ns + "." + ComponentManager.className, {
-        type: nkf.def.events.type.is,
         name: "appended"
       });
 
@@ -262,21 +240,12 @@
         var component = $Utils.getComponentNS(value);
 
         $(document).trigger(component, {
-          //TODO: check with settings
-          type: nkf.def.events.type.is,
-          name: nkf.def.component.action.rendered,
-          data: {
-            state: nkf.def.component.render.state.showed
-          }
+          name: nkf.def.component.action.rendered
         });
       });
 
       $(document).trigger(ns + "." + ComponentManager.className, {
-        type: nkf.def.events.type.is,
-        name: nkf.def.component.action.rendered,
-        data: {
-          state: nkf.def.component.render.state.showed
-        }
+        name: nkf.def.component.action.rendered
       });
 
       $("body").attr({
@@ -353,7 +322,6 @@
 
       function callback(data) {
         $(document).trigger(ns + "." + ComponentManager.className, {
-          type: nkf.def.events.type.is,
           name: "dataFetched",
           data: {
             pageName: pageName,
@@ -522,16 +490,6 @@
       if (ComponentManager.instance) {
         console.error("Please use getInstance method instead of creating new instance");
       }
-    }
-
-    function addEventsHandler() {
-      $(document).bind(ns + "." + ComponentManager.className, function(e, object) {
-        if (object.type === nkf.def.events.type.make && object.name === "localize") {
-          _this.localize({
-            lang: object.data.lang
-          });
-        }
-      });
     }
 
     function isLogin() {

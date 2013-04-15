@@ -26,7 +26,6 @@
         params.params = params.clear ? params.params : $.extend({}, _this.getNormalizedObject(_this.getCurrentPath()).params, params.params);
 
         $(document).trigger("nkf.core.Controller", {
-          type: nkf.def.events.type.is,
           name: "load",
           data: {
             init: params.init

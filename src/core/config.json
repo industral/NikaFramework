@@ -96,10 +96,6 @@
       "data": "data",
       "svg": "svg",
       "xml": "xml"
-    },
-    "DataScope": {
-      "global": "global",
-      "widget": "widget"
     }
   },
 
@@ -108,26 +104,6 @@
       "action": {
         "rendered": "rendered",
         "state": "state"
-      },
-      "state": {
-        "normal": "normal",
-        "maximized": "maximized",
-        "minimized": "minimized",
-        "hidden": "hidden"
-      },
-      "render": {
-        "state": {
-          "showed": "showed",
-          "closed": "closed",
-          "disabled": "disabled"
-        }
-      }
-    },
-
-    "events": {
-      "type": {
-        "is": "is",
-        "make": "make"
       }
     }
   }

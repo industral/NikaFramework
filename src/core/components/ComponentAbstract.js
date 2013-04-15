@@ -32,36 +32,6 @@
       }
     };
 
-    this.setState = function(data) {
-      var dom = this.getRenderedDOM();
-
-      if ($Utils.getComponentType(this) !== nkf.enumType.Component.component) {
-        dom = dom.parent();
-      }
-
-      var attrObj = {};
-      attrObj[nkf.conf.def.attr.state] = data.state;
-      attrObj["data-state-effect"] = data["state-effect"];
-
-      dom.attr(attrObj);
-
-      if (!data.isSilent) {
-        var resultObj = {};
-
-        var passedObj = {
-          type: nkf.def.events.type.is,
-          name: nkf.def.component.action.state,
-          data: {
-            state: data.state
-          }
-        };
-
-        $.extend(resultObj, data, passedObj);
-
-        $(document).trigger($Utils.getComponentNS(this), resultObj);
-      }
-    };
-
     this.getRenderedDOM = function() {
       console.error("This method doesn't redefined");
     };
