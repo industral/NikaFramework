@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NikaFramework 4.5.1 Release Notes</title>
+
+        <style>
+            code {
+                white-space: pre-line;
+            }
+        </style>
+    </head>
+    <body>
+        <ul>
+            <li>
+                <h2>Dropped EDD from localization.</h2>
+
+                <div class="descr">
+                    Now, to localize you should use
+
+                    <code>
+                        nkf.core.components.ComponentManager.getInstance().localize({
+                            lang: "ru" // <-- YOUR LANGUAGE CODE HERE
+                        });
+                    </code>
+                </div>
+
+            </li>
+
+            <li>
+                <h2>Dropped type is from events</h2>
+            </li>
+
+            <li>
+                <h2>Dropped states from components</h2>
+            </li>
+        </ul>
+    </body>
+</html>
