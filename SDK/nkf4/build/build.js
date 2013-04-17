@@ -227,6 +227,12 @@ function processOtherComponents(componentName) {
 
     //TODO: XML JSON OPTIMIZATION
   } else if (componentName === "css") {
+    components[componentName].forEach(function(value, key) {
+      var content = $fs.readFileSync("../" + value).toString();
+
+      processedComponentSpace[componentName] += content;
+    });
+
     transformToBase64(componentName);
   }
 }
@@ -301,14 +307,40 @@ function writeFiles() {
     processedComponentSpace.js += "//@ sourceMappingURL=/source.map";
   }
 
-  scriptTag.cdata(processedComponentSpace.js);
+  if (CONFIG["separate-files"]) {
+    var isOutExist = $fs.existsSync("../../out");
+    if (!isOutExist) {
+      $fs.mkdirSync("../../out");
+    }
+
+    $fs.writeFileSync("../../out/scripts.js", processedComponentSpace.js);
+    $fs.writeFileSync("../../out/styles.css", processedComponentSpace.css);
+  }
+
+  if (CONFIG["separate-files"]) {
+    scriptTag.attr({
+      src: "out/scripts.js"
+    }).text("");
+  } else {
+    scriptTag.cdata(processedComponentSpace.js);
+  }
 
   // STYLE TAG
   var cssTag = $libxmljs.Element(xmlDoc, "style");
   cssTag.attr({
     type: "text/css"
   });
-  cssTag.cdata(processedComponentSpace.css);
+
+  if (CONFIG["separate-files"]) {
+    cssTag = $libxmljs.Element(xmlDoc, "link");
+
+    cssTag.attr({
+      rel: "stylesheet",
+      href: "out/styles.css"
+    });
+  } else {
+    cssTag.cdata(processedComponentSpace.css);
+  }
 
   //TODO: in simple mode optimization version coudn't be found. Need to think how to do it better
 //  var nkfVersion = processedComponentSpace.js.match(/,"version":"(.\..\..)/)[1];
