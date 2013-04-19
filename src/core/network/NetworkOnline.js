@@ -7,7 +7,7 @@
   NetworkOnline.prototype = new self.NetworkAbstract();
 
   function NetworkOnline() {
-    init();
+//    init();
 
     this.get = function(param) {
       $.ajax(param);
