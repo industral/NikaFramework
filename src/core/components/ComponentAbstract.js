@@ -18,18 +18,15 @@
       console.error("This method doesn't redefined");
     };
 
-    this.wrapDOM = function(dom) {
-      if (!dom.is("[{componentType}]".format({
-        componentType: nkf.conf.def.attr.component.type
-      }))) {
-        var dom = this.getRenderedDOM();
+    this.identificate = function(dynamic) {
+      var dom = this.getRenderedDOM();
 
-        var obj = {};
-        obj[nkf.conf.def.attr.component.name] = this.constructor.className;
-        obj[nkf.conf.def.attr.component.type] = $Utils.getComponentType(this);
+      var obj = {};
+      obj[nkf.conf.def.attr.component.name] = this.constructor.className;
+      obj[nkf.conf.def.attr.component.type] = $Utils.getComponentType(this);
+      obj[nkf.conf.def.attr.component.dynamic] = dynamic;
 
-        dom.attr(obj);
-      }
+      dom.attr(obj);
     };
 
     this.getRenderedDOM = function() {

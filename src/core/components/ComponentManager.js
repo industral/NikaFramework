@@ -18,7 +18,7 @@
       getData(data);
     };
 
-    this.getData = function() {
+    this.getData = function(params) {
       return pageData;
     };
 
@@ -30,7 +30,11 @@
       pageData.components = pageData.components || {};
 
       pageData.components[type] = pageData.components[type] || {};
-      pageData.components[type][(params && params.className) || this.constructor.className] = data;
+      var currentData = pageData.components[type][(params && params.className) || this.constructor.className];
+
+      var resultData = $.extend({}, currentData, data);
+
+      pageData.components[type][(params && params.className) || this.constructor.className] = resultData;
     };
 
     this.getPreRenderedDOM = function() {
@@ -264,7 +268,7 @@
     }
 
     function checkIncludedComponents(params) {
-      var componentSelector = "[{component}]".format({
+      var componentSelector = "[{component}]:not([data-nkf-component-dynamic=true])".format({
         component: nkf.conf.def.attr.component.type
       });
 

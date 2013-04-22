@@ -45,7 +45,8 @@
         "lang": "data-nkf-lang-textcontent",
         "component": {
           "type": "data-nkf-component-type",
-          "name": "data-nkf-component-name"
+          "name": "data-nkf-component-name",
+          "dynamic": "data-nkf-component-dynamic"
         },
         "state": "data-state"
       }

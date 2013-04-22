@@ -43,7 +43,7 @@
       return root || matched;
     });
 
-    template.html(a);
+    return $(a);
   };
 
   Utils.getComponentPart = function(data) {
