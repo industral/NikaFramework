@@ -25,13 +25,6 @@
         params.pageName = params.pageName || _this.getNormalizedObject(_this.getCurrentPath()).pageName;
         params.params = params.clear ? params.params : $.extend({}, _this.getNormalizedObject(_this.getCurrentPath()).params, params.params);
 
-        $(document).trigger("nkf.core.Controller", {
-          name: "load",
-          data: {
-            init: params.init
-          }
-        });
-
         if (!params.appInit && params.type !== "popstate") {
           _this.setCurrentPath(params);
         }
@@ -42,6 +35,13 @@
           componentManager.load(params);
         }
       }
+
+      $(document).trigger("nkf.core.Controller", {
+        name: "load",
+        data: {
+          init: params.init
+        }
+      });
     };
 
     this.getCurrentPath = function() {
