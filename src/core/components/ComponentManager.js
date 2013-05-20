@@ -406,6 +406,8 @@
         component.init();
       }
 
+      nkf.instances.layout[params.component.className] = component;
+
       var dom = component.render({
         dom: params.dom
       });
@@ -433,6 +435,8 @@
       if (component.init) {
         component.init();
       }
+
+      nkf.instances.page[params.component.className] = component;
 
       params.dom.data({
         rendered: true
@@ -474,6 +478,8 @@
           if (component.init) {
             component.init();
           }
+
+          nkf.instances.widget[params.component.className] = component;
 
           params.dom.data({
             rendered: true
