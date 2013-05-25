@@ -1,3 +1,5 @@
+$ npm install
+
 TO BUILD:
 
 $ node build.js

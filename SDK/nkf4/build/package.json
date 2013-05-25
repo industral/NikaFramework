@@ -1,7 +1,6 @@
 {
-  "name": "NikaFramework",
-  "author": "Alex Ivasyuv <alex@itherz.com>",
-  "version": "4.5.0",
+  "name": "MyApp",
+  "version": "0.0.1",
   "private": true,
   "engines" :{
     "node": ">= v0.10"

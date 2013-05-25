@@ -45,7 +45,7 @@ body {
     display: none;
 }
 
-.toc {
+div.toc {
     float: right;
     background: #E4EDF7;
     border: 1px solid #ddd;
@@ -101,6 +101,7 @@ img {
     max-width: 1024px;
 }
 
-.note code {
+.note .code {
     display: block;
+    margin: 10px 0;
 }

@@ -5,15 +5,6 @@ function extendClass(extendClass, superClass) {
   extendClass.prototype.superClass = superClass.prototype;
 }
 
-function Grandpa() {}
-Grandpa.prototype.age = 100;
-function Pa() {}
-extendClass(Pa, Grandpa)
-Pa.prototype.age = 50;
-function Child() {}
-extendClass(Child, Pa)
-Child.prototype.age = 15;
-
 function makeSingleton(clazz) {
   clazz.getInstance = function() {
     if (!clazz.instance) {
