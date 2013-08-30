@@ -9,7 +9,8 @@
     this.get = function(param) {
       //TODO: just for testing...
       var networkInstance = new self.NetworkOnline();
-      networkInstance.get(param);
+
+      return networkInstance.get(param);
     }
   }
 

@@ -360,21 +360,26 @@
         $NetworkManager.get({
           url: pageNameURL,
           data: params.params,
-          type: params.type ? params.type : "get",
-          statusCode: {
-            200: function(data) {
-              pageData = $.extend(true, {}, data);
+          type: params.type || "get"
+        }).always(function(a1, statusText, a2) {
+            var jqXHR = statusText === "error" ? a1 : a2;
 
-              callback(pageData);
-            },
-            401: function(data) {
-//            renderScreen({
-//              layout: nkf.impl.layout.NotLogin,
-//              page: nkf.impl.page.Index
-//            });
+            var data = JSON.parse(jqXHR.responseText);
+
+            if (jqXHR.status === 200 || jqXHR.status === 401) {
+              if (jqXHR.status === 200) {
+                pageCode = jqXHR.status;
+
+                pageData = $.extend(true, {}, data);
+
+                callback(pageData);
+              } else if (pageCode !== jqXHR.status) {
+                pageCode = jqXHR.status;
+
+                _this.load({});
+              }
             }
-          }
-        });
+          });
       } else {
         if (pageClass.dataProvider) {
           pageClass.dataProvider({
@@ -506,7 +511,19 @@
     }
 
     function isLogin() {
-      return !!(nkf.conf.useLogin ? $.cookie("isLogin") : false);
+      if (nkf.conf.useLogin) {
+        if (nkf.conf.trackRealResponse) {
+          if (nkf.conf.trackCookie) {
+            return !!$.cookie(nkf.conf.trackCookie);
+          } else {
+            return pageCode === 200;
+          }
+        } else {
+          return !!$.cookie("isLogin");
+        }
+      } else {
+        return false;
+      }
     }
 
     constructor.call(this);
@@ -516,6 +533,8 @@
     var pageData = {
       components: {}
     };
+
+    var pageCode = 200;
 
     var currentLanguageName = "en";
 

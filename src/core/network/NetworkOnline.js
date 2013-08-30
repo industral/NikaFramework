@@ -10,7 +10,7 @@
 //    init();
 
     this.get = function(param) {
-      $.ajax(param);
+      return $.ajax(param);
     };
 
     function init() {
