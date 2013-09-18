@@ -66,23 +66,7 @@
     };
 
     this.getPageName = function(name) {
-      var login = isLogin();
-
-      if (login) {
-        return name ? name : nkf.conf.defaultLoggedInPage;
-      } else {
-        return nkf.conf.useLogin && !nkf.conf.allowNotLoggedIn ? nkf.conf.defaultNotLoggedInPage : name || nkf.conf.defaultLoggedInPage;
-      }
-    };
-
-    this.getLayoutName = function(name) {
-      var login = isLogin();
-
-      if (login) {
-        return name ? name : nkf.conf.defaultLoggedInLayout;
-      } else {
-        return nkf.conf.useLogin && !nkf.conf.allowNotLoggedIn ? nkf.conf.defaultNotLoggedInLayout : name || nkf.conf.defaultLoggedInLayout;
-      }
+      return name || $("[data-nkf-default-page]").attr("data-nkf-default-page");
     };
 
     this.localize = function(inputData) {
@@ -302,7 +286,7 @@
     }
 
     function getData(params) {
-      var layoutName = _this.getLayoutName(params && params.layoutName);
+      var layoutName = $("[data-nkf-component-type=layout]").attr("data-nkf-component-name");
       var pageName = _this.getPageName(params && params.pageName);
 
       var layoutClass = nkf.impl.components.layout[layoutName];
@@ -356,39 +340,29 @@
         pageNameURL += "." + nkf.conf.pageNameExtension;
       }
 
-      if (nkf.conf.usePageLoadStandardBehaviour) {
-        $NetworkManager.get({
-          url: pageNameURL,
-          data: params.params,
-          type: params.type || "get"
-        }).always(function(a1, statusText, a2) {
-            var jqXHR = statusText === "error" ? a1 : a2;
+      $NetworkManager.get({
+        url: pageNameURL,
+        data: params.params,
+        type: params.type || "get"
+      }).always(function(a1, statusText, a2) {
+          var jqXHR = statusText === "error" ? a1 : a2;
 
-            var data = JSON.parse(jqXHR.responseText);
+          var data = JSON.parse(jqXHR.responseText);
 
-            if (jqXHR.status === 200 || jqXHR.status === 401) {
-              if (jqXHR.status === 200) {
-                pageCode = jqXHR.status;
+          if (jqXHR.status === 200 || jqXHR.status === 401) {
+            if (jqXHR.status === 200) {
+              pageCode = jqXHR.status;
 
-                pageData = $.extend(true, {}, data);
+              pageData = $.extend(true, {}, data);
 
-                callback(pageData);
-              } else if (pageCode !== jqXHR.status) {
-                pageCode = jqXHR.status;
+              callback(pageData);
+            } else if (pageCode !== jqXHR.status) {
+              pageCode = jqXHR.status;
 
-                _this.load({});
-              }
+              _this.load({});
             }
-          });
-      } else {
-        if (pageClass.dataProvider) {
-          pageClass.dataProvider({
-            callback: callback
-          });
-        } else {
-          callback({});
-        }
-      }
+          }
+        });
     }
 
     function Render() {
@@ -461,68 +435,43 @@
 
     Render.widget = function(params) {
       if (!params.dom.data("rendered")) {
-        var widgetName = params.dom.attr("data-nkf-component-name");
-        var layout = nkf.conf.layoutSettings[widgetName];
+        var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
 
-        if (layout && layout !== currentLayoutName) {
-          preRenderedDOM.find("[data-nkf-component-type=widget][data-nkf-component-name={name}]".format({
-            name: widgetName
-          })).remove();
-        } else {
-          var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
-
-          if (component.reInit && component.isConstructed) {
-            component.reInit();
-          }
-
-          if (component.Constructor && !component.isConstructed) {
-            component.Constructor();
-            component.isConstructed = true;
-          }
-
-          if (component.init) {
-            component.init();
-          }
-
-          nkf.instances.widget[params.component.className] = component;
-
-          params.dom.data({
-            rendered: true
-          });
-
-          var dom = component.render({
-            dom: params.dom
-          });
-
-          componentsList.push(component);
-
-          checkIncludedComponents({
-            dom: dom,
-            component: params.component
-          });
+        if (component.reInit && component.isConstructed) {
+          component.reInit();
         }
+
+        if (component.Constructor && !component.isConstructed) {
+          component.Constructor();
+          component.isConstructed = true;
+        }
+
+        if (component.init) {
+          component.init();
+        }
+
+        nkf.instances.widget[params.component.className] = component;
+
+        params.dom.data({
+          rendered: true
+        });
+
+        var dom = component.render({
+          dom: params.dom
+        });
+
+        componentsList.push(component);
+
+        checkIncludedComponents({
+          dom: dom,
+          component: params.component
+        });
       }
     };
 
     function constructor() {
       if (ComponentManager.instance) {
         console.error("Please use getInstance method instead of creating new instance");
-      }
-    }
-
-    function isLogin() {
-      if (nkf.conf.useLogin) {
-        if (nkf.conf.trackRealResponse) {
-          if (nkf.conf.trackCookie) {
-            return !!$.cookie(nkf.conf.trackCookie);
-          } else {
-            return pageCode === 200;
-          }
-        } else {
-          return !!$.cookie("isLogin");
-        }
-      } else {
-        return false;
       }
     }
 

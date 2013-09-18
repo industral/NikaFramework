@@ -6,20 +6,8 @@
     "widget": {}
   },
   "conf": {
-    "useLogin": true,
-    "trackRealResponse": false,
-    "trackCookie": "",
-    "allowNotLoggedIn": false,
+    "defaultPage": "Home",
 
-    "defaultLoggedInPage": "Home",
-    "defaultNotLoggedInPage": "NotLoggedIn",
-
-    "defaultLoggedInLayout": "LoggedIn",
-    "defaultNotLoggedInLayout": "NotLoggedIn",
-
-    "layoutSettings": {},
-
-    "usePageLoadStandardBehaviour": true,
     "pageURL": "/data/pages",
     "URLSuffix": "",
     "pageNameExtension": "json",

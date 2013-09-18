@@ -57,7 +57,7 @@
 
     this.setCurrentPath = function(data) {
       var output = nkf.conf.URLSuffix;
-      output += "/" + (data.pageName || _this.getNormalizedObject().pageName || "Home");
+      output += "/" + (data.pageName || _this.getNormalizedObject().pageName || "");
 
       if (data.params && $Utils.getObjectSize(data.params)) {
         var preparedData = $Utils.prepareURLObject(data.params);
@@ -68,8 +68,6 @@
           output += "/" + serializedData;
         }
       }
-
-      previousLogin = $.cookie("isLogin");
 
       history.pushState({path: output}, "", output);
     };
@@ -140,7 +138,6 @@
     var $Utils = nkf.core.Utils;
 
     var historyCounter = -1;
-    var previousLogin = false;
 
     var isInit = false;
   }

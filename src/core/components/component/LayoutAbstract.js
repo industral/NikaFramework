@@ -18,11 +18,12 @@
 
       dom.attr(attr);
 
-      if ($ComponentManager.getPreRenderedDOM()) {
+//      if ($ComponentManager.getPreRenderedDOM()) {
         var layout = $("body > [data-nkf-component-type=layout]");
         layout.remove();
         $(nkf.conf.render.body.selector).append(dom);
-      }
+//      }
+
 
       $ComponentManager.setPreRenderedDOM(dom);
 
