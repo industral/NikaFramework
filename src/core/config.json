@@ -9,6 +9,7 @@
     "useLogin": true,
     "trackRealResponse": false,
     "trackCookie": "",
+    "allowNotLoggedIn": false,
 
     "defaultLoggedInPage": "Home",
     "defaultNotLoggedInPage": "NotLoggedIn",
