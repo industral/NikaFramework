@@ -85,7 +85,8 @@
       "layout": "layout",
       "page": "page",
       "widget": "widget",
-      "component": "component"
+      "component": "component",
+      "context": "context"
     },
     "Data": {
       "html": "html",

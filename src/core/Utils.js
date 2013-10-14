@@ -91,6 +91,9 @@
       case instance instanceof nkf.core.components.component.ComponentAbstract:
         return nkf.enumType.Component.component;
         break;
+      case instance instanceof nkf.core.components.component.ContextAbstract:
+        return nkf.enumType.Component.context;
+        break;
       default:
         console.warn("Looks like using wrong instance", instance);
     }
@@ -285,6 +288,9 @@
         break;
       case type == nkf.core.components.ComponentAbstract:
           ns = "nkf.core.components.component";
+        break;
+      case type == nkf.core.components.component.ContextAbstract:
+        ns = "nkf.core.components.component";
         break;
       default:
         console.warn("Looks like using wrong instance", type);
