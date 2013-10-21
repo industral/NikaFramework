@@ -6,7 +6,7 @@ assets/scripts/plugins/jquery.cookie.js
 assets/scripts/plugins/jquery.attributes.js
 assets/scripts/helper.js
 
-assets/scripts/legacy/history.js
+;assets/scripts/legacy/history.js
 
 core/Utils.js
 

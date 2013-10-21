@@ -32,6 +32,7 @@
         if (params.init) {
           ++historyCounter;
 
+          delete params.type;
           componentManager.load(params);
         }
       }

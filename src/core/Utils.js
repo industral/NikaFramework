@@ -214,12 +214,14 @@
   Utils.prepareURLObject = function(data) {
     if (data && Utils.getObjectSize(data)) {
       $.each(data, function(key, value) {
-        if (typeof value === "object" && value._custom) {
+        if (typeof value === "object" && value && value._custom) {
           if (value.isDelete) {
             delete data[key];
           } else {
             data[key] = value.value;
           }
+        } else if (value === null) {
+          delete data[key];
         }
       });
 
@@ -287,7 +289,7 @@
         ns = "nkf.impl.components.component";
         break;
       case type == nkf.core.components.ComponentAbstract:
-          ns = "nkf.core.components.component";
+        ns = "nkf.core.components.component";
         break;
       case type == nkf.core.components.component.ContextAbstract:
         ns = "nkf.core.components.component";
