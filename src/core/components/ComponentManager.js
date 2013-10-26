@@ -355,7 +355,11 @@
 
               pageData = $.extend(true, {}, data);
 
-              callback(pageData);
+              if (!params.noRedraw) {
+                callback(pageData);
+              } else {
+                params.noRedraw();
+              }
             } else if (pageCode !== jqXHR.status) {
               pageCode = jqXHR.status;
 

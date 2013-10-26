@@ -37,12 +37,14 @@
         }
       }
 
-      $(document).trigger("nkf.core.Controller", {
-        name: "load",
-        data: {
-          init: params.init
-        }
-      });
+      if (!params.noRedraw) {
+        $(document).trigger("nkf.core.Controller", {
+          name: "load",
+          data: {
+            init: params.init
+          }
+        });
+      }
     };
 
     this.getCurrentPath = function() {

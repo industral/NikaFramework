@@ -47,15 +47,38 @@
     };
 
     this._getData = function(data) {
+      var requestedComponent = this;
+
       var screenData = $ComponentManager.getData();
+      var result = null;
 
       if (data && data.all) {
-        return screenData;
+        result = screenData;
       } else {
         var componentType = data && data.componentType || $Utils.getComponentType(this);
         var componentName = data && data.componentName || this.constructor.className;
 
-        return screenData && screenData.components && screenData.components[componentType] && screenData.components[componentType][componentName] || {};
+        result = screenData && screenData.components && screenData.components[componentType] && screenData.components[componentType][componentName] || {};
+      }
+
+      if (data && data.callback) {
+        if (!nkf.core.Utils.getObjectSize(result)) {
+          console.debug("Load additional resources");
+
+          nkf.core.Controller.load({
+            init: true,
+            noRedraw: function() {
+              var requestObj = $.extend({}, data, true);
+              delete requestObj.callback;
+
+              data.callback(requestedComponent._getData(requestObj));
+            }
+          });
+        } else {
+          data.callback(result);
+        }
+      } else {
+        return result;
       }
     };
 
