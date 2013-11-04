@@ -22,8 +22,8 @@
       }
 
       if (isInit) {
-        params.pageName = params.pageName || _this.getNormalizedObject(_this.getCurrentPath()).pageName;
-        params.params = params.clear ? params.params : $.extend({}, _this.getNormalizedObject(_this.getCurrentPath()).params, params.params);
+        params.pageName = params.pageName || _this.getNormalizedObject().pageName;
+        params.params = params.clear ? params.params : $.extend({}, _this.getNormalizedObject().params, params.params);
 
         if (!params.appInit && params.type !== "popstate") {
           _this.setCurrentPath(params);
@@ -33,6 +33,11 @@
           ++historyCounter;
 
           delete params.type;
+
+          if (params.init && nkf.impl.components.page[params.pageName].getURLParams) {
+            params.params = nkf.impl.components.page[params.pageName].getURLParams(_this.getNormalizedObject());
+          }
+
           componentManager.load(params);
         }
       }
