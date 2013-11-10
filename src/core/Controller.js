@@ -34,7 +34,7 @@
 
           delete params.type;
 
-          if (params.init && nkf.impl.components.page[params.pageName].getURLParams) {
+          if (params.init && nkf.impl.components.page[params.pageName] && nkf.impl.components.page[params.pageName] .getURLParams) {
             params.params = nkf.impl.components.page[params.pageName].getURLParams(_this.getNormalizedObject());
           }
 
@@ -89,7 +89,7 @@
       var pageName = splited[0];
       var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
 
-      output.pageName = pageName;
+      output.pageName = pageName || nkf.conf.defaultPage;
       output.params = $Utils.getDeserializedObject(parameters);
 
       return output;
@@ -109,10 +109,10 @@
 
     function addEventHandler() {
       window.onpopstate = function(event) {
-        if (!event.state.init) {
+        if (!event.state || !event.state.init) {
           _this.load({
-            pageName: _this.getNormalizedObject(event.state.path).pageName,
-            params: _this.getNormalizedObject(event.state.path).params,
+            pageName: _this.getNormalizedObject().pageName,
+            params: _this.getNormalizedObject().params,
             init: true,
             type: "popstate"
           });
