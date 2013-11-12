@@ -160,7 +160,7 @@
       });
     }
 
-    return $(selector).data("instance");
+    return $(selector);
   };
 
   Utils.firstLetterUpperCase = function(string) {
