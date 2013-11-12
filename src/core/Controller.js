@@ -25,6 +25,11 @@
         params.pageName = params.pageName || _this.getNormalizedObject().pageName;
         params.params = params.clear ? params.params : $.extend({}, _this.getNormalizedObject().params, params.params);
 
+        if ($("body").attr("data-edit-mode") == "true") {
+          params.params = params.params || {};
+          params.params.mode = "edit";
+        }
+
         if (!params.appInit && params.type !== "popstate") {
           _this.setCurrentPath(params);
         }

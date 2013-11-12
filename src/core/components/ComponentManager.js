@@ -16,7 +16,7 @@
     this.load = function(data) {
       userSettings = getSettings();
 
-      $(document).unbind(".nkfRemove");
+      $(document).off(".nkfRemove");
 
       getData(data);
     };
