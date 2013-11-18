@@ -42,6 +42,7 @@
         "component": {
           "type": "data-nkf-component-type",
           "name": "data-nkf-component-name",
+          "id": "data-nkf-component-id",
           "dynamic": "data-nkf-component-dynamic"
         },
         "state": "data-state"

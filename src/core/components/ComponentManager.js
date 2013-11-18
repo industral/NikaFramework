@@ -18,6 +18,21 @@
 
       $(document).off(".nkfRemove");
 
+      if (preRenderedDOM) {
+        var components = preRenderedDOM.find("section [data-nkf-component-type='widget']");
+
+        $.each(components, function(key, value) {
+             var componentName = $(value).attr("data-nkf-component-name");
+
+          console.info(componentName);
+
+          delete nkf.instances.widget[componentName];
+        });
+
+      }
+
+
+
       getData(data);
     };
 
@@ -286,6 +301,7 @@
     }
 
     function getData(params) {
+      console.info(params);
       var layoutName = $("[data-nkf-component-type=layout]").attr("data-nkf-component-name");
       var pageName = _this.getPageName(params && params.pageName);
 
@@ -438,6 +454,7 @@
     };
 
     Render.widget = function(params) {
+      console.log(params, params.dom.data("rendered"));
       if (!params.dom.data("rendered")) {
         var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
 

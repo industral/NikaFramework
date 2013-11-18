@@ -16,6 +16,9 @@
 
       var dom = this.getRenderedDOM();
 
+
+//      if (dom.attr())
+
       params.dom.append(dom);
 
       params.dom.data({

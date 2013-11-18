@@ -94,7 +94,7 @@
       var pageName = splited[0];
       var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
 
-      output.pageName = pageName || nkf.conf.defaultPage;
+      output.pageName = pageName;
       output.params = $Utils.getDeserializedObject(parameters);
 
       return output;
