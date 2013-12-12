@@ -39,7 +39,7 @@
 
           delete params.type;
 
-          if (params.init && nkf.impl.components.page[params.pageName] && nkf.impl.components.page[params.pageName] .getURLParams) {
+          if (params.init && nkf.impl.components.page[params.pageName] && nkf.impl.components.page[params.pageName].getURLParams) {
             params.params = nkf.impl.components.page[params.pageName].getURLParams(_this.getNormalizedObject());
           }
 
@@ -78,7 +78,11 @@
         if ($Utils.getObjectSize(preparedData)) {
           var serializedData = $Utils.getSerializeObject(preparedData);
 
-          output += "/" + serializedData;
+          if (output === "/") {
+            output += serializedData;
+          } else {
+            output += "/" + serializedData;
+          }
         }
       }
 
