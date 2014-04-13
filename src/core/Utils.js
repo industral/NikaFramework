@@ -307,6 +307,8 @@
     o[className] = clazz;
 
     $.extend(self, o);
+    
+    return o;
   };
 
   $.extend(self, {

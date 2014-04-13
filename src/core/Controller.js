@@ -89,6 +89,7 @@
       history.pushState({path: output}, "", output);
     };
 
+    //TODO: unit tests
     this.getNormalizedObject = function(url) {
       var output = {};
 
@@ -96,7 +97,12 @@
       var splited = resultURL.split("/");
 
       var pageName = splited[0];
-      var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
+      if (decodeURIComponent(pageName)[0] === "{") {
+        parameters = decodeURIComponent(decodeURIComponent(pageName));
+        pageName = "Home";
+      } else {
+        var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
+      }
 
       output.pageName = pageName;
       output.params = $Utils.getDeserializedObject(parameters);
