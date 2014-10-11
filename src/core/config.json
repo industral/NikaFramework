@@ -1,5 +1,4 @@
 {
-  "runtime": {},
   "instances": {
     "layout": {},
     "page": {},
@@ -9,9 +8,10 @@
     "defaultPage": "Home",
 
     "pageURL": "/data/pages",
+    "pageFormatter": "{pageURL}?_name={pageName}",
     "URLSuffix": "",
     "pageNameExtension": "json",
-    "localization": true,
+    "localization": false,
     "loadingMaskSelector": "#page-loading-mask",
     "def": {
       "xml": {
@@ -21,7 +21,7 @@
       "html": {
         "path": "templates",
         "name": "index",
-        "suffix": "xhtml"
+        "suffix": "html"
       },
       "svg": {
         "path": "svg",
@@ -95,15 +95,6 @@
       "data": "data",
       "svg": "svg",
       "xml": "xml"
-    }
-  },
-
-  "def": {
-    "component": {
-      "action": {
-        "rendered": "rendered",
-        "state": "state"
-      }
     }
   }
 }

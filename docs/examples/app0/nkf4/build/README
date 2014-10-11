@@ -1,0 +1,15 @@
+$ npm install
+
+TO BUILD:
+
+$ node build.js
+
+OPTIONS:
+--js-source-map JavaScript Source Maps version 3
+--js-optimization=[simple|advanced]
+--xml-optimization
+--sass-debug for FireSass
+
+Production:
+
+$ node build.js --js-optimization=simple --xml-optimization

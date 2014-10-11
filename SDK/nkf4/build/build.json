@@ -1,3 +1,96 @@
 {
-  "0": []
+  "LI": [
+    "file#nkf.js",
+
+    "file#../../UIC/output/UIC.css",
+    "file#../../UIC/output/UIC.js",
+
+    "file#app/assets/scripts/ajax.js",
+    "file#app/assets/scripts/showdown.js",
+    "file#app/assets/styles/markdown.scss",
+    "file#app/assets/styles/main.scss",
+    "file#app/assets/styles/utils.scss",
+
+    "file#app/components/context/User/User.js",
+    "file#app/assets/scripts/init.js",
+
+    "component#context/Breadcrumbs",
+
+    "component#component/Notification",
+    "component#widget/LI/Professional",
+    "component#component/Modal",
+
+    "component#widget/Footer",
+    "component#widget/LI/ProfileIndustry",
+    "component#widget/LI/Profile",
+    "component#widget/LI/ProfilePhoto",
+    "component#widget/LI/Navigation",
+
+    "component#widget/LI/WebSiteArticle",
+    "component#widget/LI/WebSiteController",
+    "component#widget/LI/WebSiteEdit",
+    "component#widget/LI/WebSiteList",
+    "component#widget/LI/WebSiteMenu",
+    "component#widget/LI/WebSitePage",
+    "component#widget/LI/WebSite",
+
+    "component#widget/LI/GlobalEdit",
+    "component#widget/LI/Storage",
+    "component#widget/Login",
+
+    "component#page/LI/Home",
+    "component#page/LI/Professional",
+    "component#page/LI/WebSite",
+    "component#page/LI/WebSiteList",
+
+    "component#layout/LoggedIn",
+
+    "file#app/app.js"
+  ],
+
+  "PUB": [
+    "file#nkf.js",
+
+    "file#../../UIC/output/UIC.css",
+    "file#../../UIC/output/UIC.js",
+
+    "file#app/assets/scripts/ajax.js",
+    "file#app/assets/scripts/showdown.js",
+    "file#app/assets/styles/markdown.scss",
+    "file#app/assets/styles/main.scss",
+    "file#app/assets/styles/utils.scss",
+
+    "file#app/components/context/User/User.js",
+    "file#app/assets/scripts/init.js",
+
+    "component#context/Breadcrumbs",
+
+    "component#component/Notification",
+    "component#widget/LI/Professional",
+    "component#component/Modal",
+
+    "component#widget/Footer",
+    "component#widget/PUB/ProfileIndustry",
+    "component#widget/PUB/Profile",
+    "component#widget/LI/ProfilePhoto",
+    "component#widget/LI/Navigation",
+    "component#widget/Login",
+
+    "component#widget/PUB/WebSiteArticle",
+    "component#widget/PUB/WebSiteController",
+    "component#widget/PUB/WebSiteList",
+    "component#widget/PUB/WebSiteMenu",
+    "component#widget/PUB/WebSitePage",
+    "component#widget/PUB/WebSite",
+
+    "component#page/LI/Home",
+    "component#page/LI/Professional",
+    "component#page/PUB/WebSite",
+    "component#page/PUB/WebSiteList",
+    "component#page/PUB/Welcome",
+
+    "component#layout/Public",
+
+    "file#app/app.js"
+  ]
 }

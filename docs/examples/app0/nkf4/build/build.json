@@ -1,0 +1,11 @@
+{
+  "PUB": [
+    "file#nkf.js",
+
+    "component#layout/Public",
+
+    "component#page/Home",
+
+    "file#app/app.js"
+  ]
+}

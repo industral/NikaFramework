@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.WidgetAbstract, Login, "Login");
+  nkf.core.Utils.extend(nkf.core.components.component.WidgetAbstract, Login, "Login");
 
   // --------------------------------------------------------------------
   // Private methods
@@ -13,7 +13,7 @@
       init();
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -46,7 +46,7 @@
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
   }
 
 })();

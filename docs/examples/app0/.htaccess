@@ -1,0 +1,4 @@
+AddType application/json .json
+
+RewriteEngine On
+RewriteRule ^(Home)?$ /nkf4/generated/PUB.html [L]

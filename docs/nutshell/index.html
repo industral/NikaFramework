@@ -129,7 +129,7 @@ app/app.js
                             </p><pre class="brush: js programlisting">(function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.LayoutAbstract, LoggedIn, "LoggedIn");
+  nkf.core.Utils.extend(nkf.core.components.component.Layout, LoggedIn, "LoggedIn");
 
   function LoggedIn() {
 
@@ -140,7 +140,7 @@ app/app.js
     this.Constructor = function() {
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -152,7 +152,7 @@ app/app.js
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
   }
 
 })();
@@ -205,7 +205,7 @@ app/app.js
                         </p><pre class="brush: js programlisting">(function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.PageAbstract, Home, "Home");
+  nkf.core.Utils.extend(nkf.core.components.component.Page, Home, "Home");
 
   function Home() {
 
@@ -216,7 +216,7 @@ app/app.js
     this.Constructor = function() {
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -228,7 +228,7 @@ app/app.js
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
   }
 
 })();
@@ -289,7 +289,7 @@ body {
                         </p><pre class="brush: js programlisting">(function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.WidgetAbstract, Login, "Login");
+  nkf.core.Utils.extend(nkf.core.components.component.WidgetAbstract, Login, "Login");
 
   // --------------------------------------------------------------------
   // Private methods
@@ -301,7 +301,7 @@ body {
       init();
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -334,7 +334,7 @@ body {
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
   }
 
 })();
@@ -461,7 +461,7 @@ app/app.js
                      </p><pre class="brush: js; highlight: [29, 31] programlisting">(function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.WidgetAbstract, Controls, "Controls");
+  nkf.core.Utils.extend(nkf.core.components.component.WidgetAbstract, Controls, "Controls");
 
   function Controls() {
 
@@ -472,7 +472,7 @@ app/app.js
     this.Constructor = function() {
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -496,7 +496,7 @@ app/app.js
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
 
     constructor();
   }
@@ -536,7 +536,7 @@ app/app.js
                      </p><pre class="brush: js; highlight: [33, 35, 36, 37] programlisting">(function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.WidgetAbstract, Login, "Login");
+  nkf.core.Utils.extend(nkf.core.components.component.WidgetAbstract, Login, "Login");
 
   // --------------------------------------------------------------------
   // Private methods
@@ -548,7 +548,7 @@ app/app.js
       init();
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -581,7 +581,7 @@ app/app.js
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
   }
 
 })();

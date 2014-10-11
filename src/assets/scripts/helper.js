@@ -1,8 +1,20 @@
+$.ajaxSetup({
+  dataType: "json",
+  statusCode: {
+    200: function(data) {
+      //            console.debug(data);
+    },
+    404: function(data) {
+      console.warn("page not found");
+    }
+  }
+});
+
 function extendClass(extendClass, superClass) {
   extendClass.prototype = new superClass();
   extendClass.prototype.constructor = extendClass;
 
-  extendClass.prototype.superClass = superClass.prototype;
+  //extendClass.prototype.superClass = superClass.prototype;
 }
 
 function makeSingleton(clazz) {

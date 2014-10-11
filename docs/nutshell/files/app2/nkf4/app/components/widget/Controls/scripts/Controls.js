@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.WidgetAbstract, Controls, "Controls");
+  nkf.core.Utils.extend(nkf.core.components.component.WidgetAbstract, Controls, "Controls");
 
   function Controls() {
 
@@ -12,7 +12,7 @@
     this.Constructor = function() {
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -36,7 +36,7 @@
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
 
     constructor();
   }

@@ -14,8 +14,6 @@
     constructor();
 
     this.load = function(data) {
-      userSettings = getSettings();
-
       $(document).off(".nkfRemove");
 
       if (preRenderedDOM) {
@@ -195,10 +193,6 @@
       }
     };
 
-    function getSettings() {
-      userSettings = $UserSettings.getSettings();
-    }
-
     function renderScreen(data) {
       $("body").attr({
         "data-status": "loading"
@@ -243,17 +237,26 @@
         var component = $Utils.getComponentNS(value);
 
         $(document).trigger(component, {
-          name: nkf.def.component.action.rendered
+          name: "rendered"
         });
       });
 
       $(document).trigger(ns + "." + ComponentManager.className, {
-        name: nkf.def.component.action.rendered
+        name: "rendered"
       });
 
       $("body").attr({
         "data-status": "loaded"
       });
+
+      if (nkf.impl.components.context) {
+        nkf.instances.context = {};
+
+        $.each(nkf.impl.components.context, function(key, value) {
+          nkf.instances.context[key] = new value();
+          nkf.instances.context[key].Constructor();
+        });
+      }
     }
 
     function postRenderScreen() {
@@ -271,7 +274,7 @@
         component: nkf.conf.def.attr.component.type
       });
 
-      $.each(params.dom.find(componentSelector), function(key, value) {
+      $.each($(params.dom).find(componentSelector), function(key, value) {
         var dom = $(value);
 
         var componentType = dom.attr(nkf.conf.def.attr.component.type);
@@ -343,7 +346,7 @@
       //TODO: option to add additional params
       //TODO: option to add custom pageName for URL
       //TODO: [conf] option for extension
-      var pageNameURL = "{pageURL}?_name={pageName}".format({
+      var pageNameURL = nkf.conf.pageFormatter.format({
         pageURL: nkf.conf.URLSuffix + nkf.conf.pageURL,
         pageName: params.pageURLName || pageClass.className
       });
@@ -352,33 +355,48 @@
         pageNameURL += "." + nkf.conf.pageNameExtension;
       }
 
-      $NetworkManager.get({
+      $.ajax({
         url: pageNameURL,
         data: params.params,
         type: params.type || "get"
       }).always(function(a1, statusText, a2) {
-          var jqXHR = statusText === "error" ? a1 : a2;
+        var jqXHR = statusText === "error" ? a1 : a2;
 
-          var data = JSON.parse(jqXHR.responseText);
+        var data = null;
 
-          if (jqXHR.status === 200 || jqXHR.status === 401) {
-            if (jqXHR.status === 200) {
-              pageCode = jqXHR.status;
+        try {
+          data = JSON.parse(jqXHR.responseText);
+        } catch (e) {
+        }
 
-              pageData = $.extend(true, {}, data);
+        if (jqXHR.status === 200 || jqXHR.status === 401) {
+          if (jqXHR.status === 200) {
+            pageCode = jqXHR.status;
 
-              if (!params.noRedraw) {
-                callback(pageData);
-              } else {
-                params.noRedraw();
-              }
-            } else if (pageCode !== jqXHR.status) {
-              pageCode = jqXHR.status;
+            pageData = $.extend(true, {}, data);
 
-              _this.load({});
+            if (!params.noRedraw) {
+              callback(pageData);
+            } else {
+              params.noRedraw();
             }
+          } else if (pageCode !== jqXHR.status) {
+            pageCode = jqXHR.status;
+
+            _this.load({});
+          } else {
+            nkf.core.Controller.load({
+              pageName: "Welcome",
+              init: true,
+              clear: true
+            });
           }
-        });
+        } else {
+          if (nkf.pageError) {
+            nkf.pageError(jqXHR);
+          }
+        }
+      });
     }
 
     function Render() {
@@ -503,7 +521,6 @@
 
     var currentLanguageName = "en";
 
-    var userSettings = null;
     var preRenderedDOM = null;
     var componentsList = [];
     var currentComponents = {};
@@ -511,10 +528,7 @@
     var currentLayoutName;
     var currentPageName;
 
-    var $UserSettings = new nkf.core.UserSettings();
-    var $NetworkManager = new nkf.core.network.NetworkManager();
     var $Utils = nkf.core.Utils;
-    var $StorageManager = nkf.core.storage.StorageManager.getInstance();
 
     var originalStrings = null;
 

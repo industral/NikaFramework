@@ -70,7 +70,10 @@
       } else if (data.componentPart === nkf.enumType.Data.data) {
         return JSON.parse(componentData);
       } else {
-        return data.wrap ? $(componentData) : componentData;
+        var o = document.createElement("div");
+        o.innerHTML = componentData;
+
+        return data.wrap ? $(componentData) : o.childNodes[0];
       }
     } else {
       console.warn(pathToComponentPart, "doesn't exist");
@@ -79,19 +82,19 @@
 
   Utils.getComponentType = function(instance) {
     switch (true) {
-      case instance instanceof nkf.core.components.component.LayoutAbstract:
+      case instance instanceof nkf.core.components.component.Layout:
         return nkf.enumType.Component.layout;
         break;
-      case instance instanceof nkf.core.components.component.PageAbstract:
+      case instance instanceof nkf.core.components.component.Page:
         return nkf.enumType.Component.page;
         break;
-      case instance instanceof nkf.core.components.component.WidgetAbstract:
+      case instance instanceof nkf.core.components.component.Widget:
         return nkf.enumType.Component.widget;
         break;
-      case instance instanceof nkf.core.components.component.ComponentAbstract:
+      case instance instanceof nkf.core.components.component.Component:
         return nkf.enumType.Component.component;
         break;
-      case instance instanceof nkf.core.components.component.ContextAbstract:
+      case instance instanceof nkf.core.components.component.Context:
         return nkf.enumType.Component.context;
         break;
       default:
@@ -272,26 +275,26 @@
   Utils.os.win = navigator.platform.match(/win/i);
   Utils.os.mac = navigator.platform.match(/mac/i);
 
-  Utils.initClass = function(type, clazz, className) {
+  Utils.extend = function(type, clazz, className) {
     var ns;
 
     switch (true) {
-      case type == nkf.core.components.component.LayoutAbstract:
+      case type == nkf.core.components.component.Layout:
         ns = "nkf.impl.components.layout";
         break;
-      case type == nkf.core.components.component.PageAbstract:
+      case type == nkf.core.components.component.Page:
         ns = "nkf.impl.components.page";
         break;
-      case type == nkf.core.components.component.WidgetAbstract:
+      case type == nkf.core.components.component.Widget:
         ns = "nkf.impl.components.widget";
         break;
-      case type == nkf.core.components.component.ComponentAbstract:
+      case type == nkf.core.components.component.Context:
+        ns = "nkf.impl.components.context";
+        break;
+      case type == nkf.core.components.component.Component:
         ns = "nkf.impl.components.component";
         break;
-      case type == nkf.core.components.ComponentAbstract:
-        ns = "nkf.core.components.component";
-        break;
-      case type == nkf.core.components.component.ContextAbstract:
+      case type == nkf.core.components.Component:
         ns = "nkf.core.components.component";
         break;
       default:

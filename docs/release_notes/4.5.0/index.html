@@ -114,7 +114,7 @@
                             var ns = "nkf.impl.components.page";
                             var self = $.namespace(ns);
 
-                            extendClass(Login, nkf.core.components.component.PageAbstract);
+                            extendClass(Login, nkf.core.components.component.Page);
                             Login.className = "Login";
 
                             function Login() {
@@ -125,7 +125,7 @@
                         you can use
 
                         <code>
-                            nkf.core.Utils.initClass(nkf.core.components.component.PageAbstract, Login, "Login");
+                            nkf.core.Utils.extend(nkf.core.components.component.Page, Login, "Login");
                         </code>
                     </li>
                 </ul>

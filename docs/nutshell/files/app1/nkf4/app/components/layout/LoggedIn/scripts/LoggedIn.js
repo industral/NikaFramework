@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  nkf.core.Utils.initClass(nkf.core.components.component.LayoutAbstract, LoggedIn, "LoggedIn");
+  nkf.core.Utils.extend(nkf.core.components.component.Layout, LoggedIn, "LoggedIn");
 
   function LoggedIn() {
 
@@ -12,7 +12,7 @@
     this.Constructor = function() {
     };
 
-    this.getRenderedDOM = function() {
+    this.getDOM = function() {
       return domComponent;
     };
 
@@ -24,7 +24,7 @@
     // Private variables
     // --------------------------------------------------------------------
 
-    var domComponent = this._getComponent();
+    var domComponent = this.getTemplate();
   }
 
 })();

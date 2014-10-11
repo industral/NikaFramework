@@ -9,3 +9,7 @@ OPTIONS:
 --js-optimization=[simple|advanced]
 --xml-optimization
 --sass-debug for FireSass
+
+Production:
+
+$ node build.js --js-optimization=simple --xml-optimization

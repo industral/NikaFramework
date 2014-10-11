@@ -1,0 +1,12 @@
+{
+  "name": "build",
+  "private": true,
+  "engines" :{
+    "node": ">= v0.10"
+  },
+  "devDependencies": {
+    "optimist": "",
+    "jsdom": "",
+    "mime": ""
+  }
+}

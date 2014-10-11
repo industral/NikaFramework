@@ -1,13 +1,12 @@
 {
-  "name": "MyApp",
-  "version": "0.0.1",
+  "name": "build",
   "private": true,
   "engines" :{
     "node": ">= v0.10"
   },
-  "dependencies": {
+  "devDependencies": {
     "optimist": "",
-    "libxmljs": "",
+    "jsdom": "",
     "mime": ""
   }
 }

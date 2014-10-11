@@ -1,46 +1,72 @@
 var $fs = require("fs");
 var $exec = require("child_process").exec;
-var $libxmljs = require("libxmljs");
 var $mime = require("mime");
 var $zlib = require("zlib");
 var CONFIG = require("optimist").argv;
+var jsdom = require('jsdom');
+var os = require('os');
 
 var BUFFER = 5120000; //5000 * 1024
 
-var components = {
-  css: [],
-  scss: [],
-  xml: [],
-  js: [],
-  data: []
-};
+var components = {};
 
 var processedComponentSpace = {};
 
+var includes = JSON.parse($fs.readFileSync("build.json").toString());
+var profiles = Object.keys(includes);
+
 function init() {
-  readIncludeList();
-  findAllFiles();
+  if (profiles.length) {
+    processProfile(profiles[profiles.length - 1]);
+  }
+}
+
+function processProfile(profileId) {
+  components = {
+    css: [],
+    scss: [],
+    xml: [],
+    js: [],
+    data: []
+  };
+
+  processedComponentSpace = {
+    css: ""
+  };
+
+  var includeFiles = includes[profileId];
+
+  includeFiles.forEach(function(value, key) {
+    if (value.match(/file#/)) {
+      var file = value.replace(/file#/, "");
+      var fileType = file.match(/.(js|css|scss)/);
+
+      components[fileType[1]].push(file);
+    } else if (value.match(/component#/)) {
+      var component = value.replace(/component#/, "");
+
+      findAllFiles("../app/components/" + component);
+    }
+  });
 
   processJS(function() {
+    processOtherComponents("css");
+
     processSass(function() {
       processOtherComponents("data");
       processOtherComponents("xml");
-      processOtherComponents("css");
 
-      writeFiles();
+      if (!CONFIG["no-base64"]) {
+        transformToBase64("css");
+      }
+
+      writeFiles(profileId);
     });
   });
 }
 
-function readIncludeList() {
-  var fileArray = $fs.readFileSync("include.list").toString();
 
-  components.js = fileArray.split("\n").filter(function(e) {
-    return e && e[0] !== ";"
-  });
-}
-
-function findAllFiles() {
+function findAllFiles(path) {
 
   (function process(dir) {
     var dirList = $fs.readdirSync(dir);
@@ -53,15 +79,20 @@ function findAllFiles() {
         if (stat.isDirectory()) {
           process(fileName);
         } else if (stat.isFile()) {
-          var match = fileName.match(/json|xml|xhtml|svg|css|scss$/);
+          var match = fileName.match(/js|json|xml|html|svg|css|scss$/);
 
           if (match) {
             var ext = match[0];
 
             var fileKey = fileName.replace("../", "");
+
             var container = null;
 
             switch (ext) {
+              case "js":
+                container = components.js;
+
+                break;
               case "json":
                 container = components.data;
 
@@ -75,11 +106,13 @@ function findAllFiles() {
 
                 break;
               case "xml":
-              case "xhtml":
+              case "html":
               case "svg":
                 container = components.xml;
 
                 break;
+              default:
+                container = components.data;
             }
 
             if (container.indexOf(fileKey) === -1) {
@@ -90,7 +123,7 @@ function findAllFiles() {
         }
       }
     });
-  })("../app");
+  })(path);
 
 }
 
@@ -112,7 +145,7 @@ function processJS(callback) {
     var options = "";
 
     components.js.forEach(function(value, key) {
-      compileLineString += " --js=nkf4/" + value;
+      compileLineString += " --js=" + value;
     });
 
     if (CONFIG["js-source-map"]) {
@@ -134,16 +167,16 @@ function processJS(callback) {
       options += " --compilation_level=WHITESPACE_ONLY ";
     }
 
-    $exec("cd ../../ && java -jar nkf4/build/closure.jar --jscomp_off=internetExplorerChecks --warning_level=QUIET " + options + compileLineString, {maxBuffer: BUFFER},
-        function(error, stdout, stderr) {
-          if (error || stderr) {
-            console.error(error, stderr);
-          } else {
-            processedComponentSpace.js = stdout;
+    $exec("cd ../ && java -jar build/closure.jar --jscomp_off=internetExplorerChecks --warning_level=QUIET " + options + compileLineString, {maxBuffer: BUFFER},
+      function(error, stdout, stderr) {
+        if (error || stderr) {
+          console.error(error, stderr);
+        } else {
+          processedComponentSpace.js = stdout;
 
-            callback();
-          }
-        });
+          callback();
+        }
+      });
   }
 }
 
@@ -159,20 +192,20 @@ function processSass(callback) {
           commandLineString += " && ";
         }
 
-        commandLineString += " sass" + value + " -I app/assets/styles/inc -g --cache-location=/tmp/.sass-cache --stop-on-error";
+        commandLineString += " sass " + value + " -I app/assets/styles/inc -g --cache-location=/tmp/.sass-cache --stop-on-error";
       }
     });
 
     $exec("cd ../ && " + commandLineString, {maxBuffer: BUFFER},
-        function(error, stdout, stderr) {
-          if (error || stderr) {
-            console.error(error, stderr);
-          } else {
-            processedComponentSpace.css = stdout;
+      function(error, stdout, stderr) {
+        if (error || stderr) {
+          console.error(error, stderr);
+        } else {
+          processedComponentSpace.css += stdout;
 
-            callback();
-          }
-        });
+          callback();
+        }
+      });
   } else {
     var output = "";
 
@@ -185,15 +218,15 @@ function processSass(callback) {
     });
 
     $exec("cd ../ && echo '" + output + "' | sass " + " -t compressed -I app/assets/styles/inc --cache-location=/tmp/.sass-cache --stop-on-error --scss -s", {maxBuffer: BUFFER},
-        function(error, stdout, stderr) {
-          if (error || stderr) {
-            console.error(error, stderr);
-          } else {
-            processedComponentSpace.css = stdout;
+      function(error, stdout, stderr) {
+        if (error || stderr) {
+          console.error(error, stderr);
+        } else {
+          processedComponentSpace.css += stdout;
 
-            callback();
-          }
-        });
+          callback();
+        }
+      });
   }
 }
 
@@ -220,10 +253,12 @@ function processOtherComponents(componentName) {
         content = content.replace(/\s+/g, " ").replace(/\n/g, " ");
       }
 
-      processedComponentSpace[componentName][value.replace("app/", "")] = content;
+      processedComponentSpace[componentName][value.replace("app/", "").replace(/\/(NLI|LI|PUB)\//, "/")] = content;
     });
 
-    transformToBase64(componentName);
+    if (!CONFIG["no-base64"]) {
+      transformToBase64(componentName);
+    }
 
     //TODO: XML JSON OPTIMIZATION
   } else if (componentName === "css") {
@@ -233,7 +268,9 @@ function processOtherComponents(componentName) {
       processedComponentSpace[componentName] += content;
     });
 
-    transformToBase64(componentName);
+    if (!CONFIG["no-base64"]) {
+      transformToBase64(componentName);
+    }
   }
 }
 
@@ -261,7 +298,7 @@ function transformToBase64(componentName) {
 
     for (var i = 0; i < foundCount; ++i) {
       var _match = match[i].match(new RegExp(regex));
-      var fileName = _match[2].replace("/nkf4/", "../");
+      var fileName = _match[2].replace("/app/", "../app/");
       fileName = fileName.replace(/#.+/, "");
 
       if (!fileName.match(/^#|^data:|\.webm$/)) {
@@ -294,72 +331,110 @@ function transformToBase64(componentName) {
   processedComponentSpace[componentName] = data;
 }
 
-function writeFiles() {
-  var indexTemplateFile = $fs.readFileSync("../index.template.xhtml").toString();
-  var xmlDoc = $libxmljs.parseXml(indexTemplateFile);
+function writeFiles(profileId) {
+  var indexTemplateFile = $fs.readFileSync("../profiles/" + profileId + ".html").toString();
 
-  var scriptTag = $libxmljs.Element(xmlDoc, "script");
+  jsdom.env(
+    indexTemplateFile,
+    function(errors, window) {
 
-  //SCRIPT TAG
-  processedComponentSpace.js = "var __dom__ = " + processedComponentSpace.xml + "; var __json__ = " + JSON.stringify(processedComponentSpace.data) + "; " + processedComponentSpace.js;
+      //SCRIPT TAG
+      if (!CONFIG["separate-files"]) {
+        processedComponentSpace.js = "var __dom__ = " + processedComponentSpace.xml + "; var __json__ = " + JSON.stringify(processedComponentSpace.data) + "; " + processedComponentSpace.js;
+      }
 
-  if (CONFIG["js-source-map"]) {
-    processedComponentSpace.js += "//@ sourceMappingURL=/source.map";
-  }
+      if (CONFIG["js-source-map"]) {
+        processedComponentSpace.js += "//@ sourceMappingURL=/source.map";
+      }
 
-  if (CONFIG["separate-files"]) {
-    var isOutExist = $fs.existsSync("../../out");
-    if (!isOutExist) {
-      $fs.mkdirSync("../../out");
-    }
+      var isOutExist = $fs.existsSync("../generated");
+      if (!isOutExist) {
+        $fs.mkdirSync("../generated");
+      }
+      
+      if (CONFIG["separate-files"]) {
+        if (CONFIG["no-base64"]) {
+          var out = "var __dom__ = {\n\n";
 
-    $fs.writeFileSync("../../out/scripts.js", processedComponentSpace.js);
-    $fs.writeFileSync("../../out/styles.css", processedComponentSpace.css);
-  }
+          for (var i in processedComponentSpace.xml) {
+            out += '"' + i + '"' + ": " + "\n'" + processedComponentSpace.xml[i].replace(/\n/g, "\\\n").replace(/</g, "<") + "',\n\n";
+          }
 
-  if (CONFIG["separate-files"]) {
-    scriptTag.attr({
-      src: "out/scripts.js"
-    }).text("");
-  } else {
-    scriptTag.cdata(processedComponentSpace.js);
-  }
+          out += "}";
 
-  // STYLE TAG
-  var cssTag = $libxmljs.Element(xmlDoc, "style");
-  cssTag.attr({
-    type: "text/css"
-  });
+          $fs.writeFileSync("../generated/" + profileId + "-templates.js", out);
+        } else {
+          $fs.writeFileSync("../generated/" + profileId + "-templates.js", processedComponentSpace.xml);
+        }
 
-  if (CONFIG["separate-files"]) {
-    cssTag = $libxmljs.Element(xmlDoc, "link");
+        $fs.writeFileSync("../generated/" + profileId + "-scripts.js", processedComponentSpace.js);
+        $fs.writeFileSync("../generated/" + profileId + "-styles.css", processedComponentSpace.css);
+      }
 
-    cssTag.attr({
-      rel: "stylesheet",
-      href: "out/styles.css"
+      var scriptTag = window.document.createElement("script");
+      scriptTag.setAttribute("type", "text/javascript");
+
+      if (CONFIG["separate-files"]) {
+//        scriptTag.setAttribute("src", profileId + "-scripts.js");
+
+//        scriptTag.attr({
+//          src: "generated/scripts.js"
+//        }).text("");
+      } else {
+        scriptTag.textContent = processedComponentSpace.js;
+      }
+
+      var head = window.document.getElementsByTagName("head")[0];
+
+      // STYLE TAG
+      var cssTag = null;
+      if (CONFIG["separate-files"]) {
+//        cssTag = $("<link />");
+//
+//        cssTag.attr({
+//          rel: "stylesheet",
+//          href: "generated/styles.css"
+//        });
+      } else {
+        cssTag = window.document.createElement("style");
+        cssTag.setAttribute("rel", "stylesheet");
+        cssTag.textContent = processedComponentSpace.css;
+
+//        var head = window.document.getElementsByTagName("head")[0];
+        head.appendChild(cssTag);
+        head.appendChild(scriptTag);
+      }
+
+      if (CONFIG["separate-files"]) {
+        var scriptEl = window.document.createElement("script");
+        scriptEl.setAttribute("src", profileId + "-scripts.js");
+
+        var templateEl = window.document.createElement("script");
+        templateEl.setAttribute("src", profileId + "-templates.js");
+
+        var cssEl = window.document.createElement("link");
+        cssEl.setAttribute("rel", "stylesheet");
+        cssEl.setAttribute("href", profileId + "-styles.css");
+
+        head.appendChild(templateEl);
+        head.appendChild(scriptEl);
+        head.appendChild(cssEl);
+      }
+
+//      $zlib.gzip("<!DOCTYPE html>" + window.document.innerHTML, function(err, buffer) {
+//        if (!err) {
+//          $fs.writeFileSync("../generated/" + profileId + ".html", buffer);
+//
+//          profiles.pop();
+//          init();
+//        }
+//      });
+
+      $fs.writeFileSync("../generated/" + profileId + ".html", "<!DOCTYPE html>" + window.document.innerHTML);
+
+      profiles.pop();
+      init();
     });
-  } else {
-    cssTag.cdata(processedComponentSpace.css);
-  }
-
-  //TODO: in simple mode optimization version coudn't be found. Need to think how to do it better
-//  var nkfVersion = processedComponentSpace.js.match(/,"version":"(.\..\..)/)[1];
-//  var metaTag = $libxmljs.Element(xmlDoc, "meta");
-//  metaTag.attr({
-//    name: "generator",
-//    content: "NikaFramework " + nkfVersion
-//  });
-
-  var head = xmlDoc.get('//xmlns:html/xmlns:head', "http://www.w3.org/1999/xhtml");
-//  head.addChild(metaTag);
-  head.addChild(cssTag);
-  head.addChild(scriptTag);
-
-  $zlib.gzip(xmlDoc.toString(), function(err, buffer) {
-    if (!err) {
-      $fs.writeFileSync("../../index.xhtmlz", buffer);
-    }
-  });
 }
 
 init();
