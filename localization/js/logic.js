@@ -48,7 +48,7 @@ $(function() {
             var value = $(this).val();
 
             if (value != -1) {
-              var result = $.extend({}, templateData, data[value].translate);
+              var result = Object.assign({}, templateData, data[value].translate);
 
               renderTable(result);
             }

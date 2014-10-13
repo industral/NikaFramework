@@ -1,10 +1,8 @@
 (function() {
   "use strict";
 
-  $.namespace("nkf.core.components.component");
-
+  var self = nkf.core.components;
   var ns = "nkf.core.components";
-  var self = $.namespace(ns);
 
   ComponentManager.className = "ComponentManager";
 
@@ -14,17 +12,18 @@
     constructor();
 
     this.load = function(data) {
-      $(document).off(".nkfRemove");
+      //$(document).off(".nkfRemove");
 
       if (preRenderedDOM) {
-        var components = preRenderedDOM.find("section [data-nkf-component-type='widget']");
+        var components = preRenderedDOM.querySelectorAll("section [data-nkf-component-type='widget']");
 
-        $.each(components, function(key, value) {
-          var componentName = $(value).attr("data-nkf-component-name");
+        for (var i = 0; i < components.length; ++i) {
+          var componentEl = components[i];
+
+          var componentName = componentEl.getAttribute("data-nkf-component-name");
 
           delete nkf.instances.widget[componentName];
-        });
-
+        }
       }
 
 
@@ -37,7 +36,7 @@
 
     //TODO: replace data and params with params
     this.setData = function(data, params) {
-      var type = (params && params.type) || $Utils.getComponentType(this);
+      var type = (params && params.type) || utils.getComponentType(this);
 
       pageData = pageData || {};
       pageData.components = pageData.components || {};
@@ -45,7 +44,7 @@
       pageData.components[type] = pageData.components[type] || {};
       var currentData = pageData.components[type][(params && params.className) || this.constructor.className];
 
-      var resultData = $.extend({}, currentData, data);
+      var resultData = Object.assign({}, currentData, data);
 
       pageData.components[type][(params && params.className) || this.constructor.className] = resultData;
     };
@@ -76,7 +75,7 @@
     };
 
     this.getPageName = function(name) {
-      return name || $("[data-nkf-default-page]").attr("data-nkf-default-page");
+      return name || document.querySelector("[data-nkf-default-page]").getAttribute("data-nkf-default-page");
     };
 
     this.localize = function(inputData) {
@@ -159,7 +158,7 @@
           dir: languageCache[inputData.lang].settings && languageCache[inputData.lang].settings.dir || "ltr"
         });
 
-        $(document).trigger("nkf.core.components.ComponentManager", {
+        nkf.emit("nkf.core.components.ComponentManager", {
           name: "localize",
           data: {
             lang: inputData.lang
@@ -194,9 +193,9 @@
     };
 
     function renderScreen(data) {
-      $("body").attr({
-        "data-status": "loading"
-      });
+      //$("body").attr({
+      //  "data-status": "loading"
+      //});
 
       preRenderScreen(data);
       postRenderScreen();
@@ -217,56 +216,65 @@
         dom: preRenderedDOM
       });
 
-      _this.localize({
-        lang: $.cookie("lang") || $("body").attr("data-nkf-lang") || "en"
-      });
+      if (nkf.conf.localization) {
+        _this.localize({
+          lang: nkf.core.utils.cookie("lang") || document.body.getAttribute("data-nkf-lang") || "en"
+        });
+      }
 
-      $(document).trigger(ns + "." + ComponentManager.className, {
+      nkf.emit(ns + "." + ComponentManager.className, {
         name: "preAppend"
       });
 
-      if (!$("body > [data-nkf-component-type=layout]").length) {
-        $(nkf.conf.render.body.selector).append(preRenderedDOM);
+      if (!document.querySelectorAll("body > [data-nkf-component-type=layout]").length) {
+        document.querySelector(nkf.conf.render.body.selector).appendChild(preRenderedDOM);
       }
 
-      $(document).trigger(ns + "." + ComponentManager.className, {
+      nkf.emit(ns + "." + ComponentManager.className, {
         name: "appended"
       });
 
-      $.each(componentsList, function(key, value) {
-        var component = $Utils.getComponentNS(value);
+      //$.each(componentsList, function(key, value) {
+      //  var component = utils.getComponentNS(value);
+      //
+      //  nkf.emit(component, {
+      //    name: "rendered"
+      //  });
+      //});
 
-        $(document).trigger(component, {
-          name: "rendered"
-        });
-      });
-
-      $(document).trigger(ns + "." + ComponentManager.className, {
+      nkf.emit(ns + "." + ComponentManager.className, {
         name: "rendered"
       });
 
-      $("body").attr({
-        "data-status": "loaded"
-      });
+      //$("body").attr({
+      //  "data-status": "loaded"
+      //});
 
       if (nkf.impl.components.context) {
-        nkf.instances.context = {};
+        var contextEls = Object.keys(nkf.impl.components.context);
 
-        $.each(nkf.impl.components.context, function(key, value) {
-          nkf.instances.context[key] = new value();
-          nkf.instances.context[key].Constructor();
-        });
+        if (contextEls.length) {
+          nkf.instances.context = {};
+
+          for (var i = 0; i < contextEls.length; ++i) {
+            var key = contextEls[i];
+            var value = nkf.impl.components.context[key];
+
+            nkf.instances.context[key] = new value();
+            nkf.instances.context[key].Constructor();
+          }
+        }
       }
     }
 
     function postRenderScreen() {
-      $.each(componentsList, function(key, value) {
-        var postInit = value.postInit;
+      for (var i = 0; i < componentsList.length; ++i) {
+        var postInit = componentsList[i].postInit;
 
         if (postInit) {
           postInit();
         }
-      });
+      }
     }
 
     function checkIncludedComponents(params) {
@@ -274,34 +282,42 @@
         component: nkf.conf.def.attr.component.type
       });
 
-      $.each($(params.dom).find(componentSelector), function(key, value) {
-        var dom = $(value);
+      var els = params.dom.querySelectorAll(componentSelector);
 
-        var componentType = dom.attr(nkf.conf.def.attr.component.type);
-        var componentName = dom.attr(nkf.conf.def.attr.component.name);
-        var componentClass = $Utils.getComponentByNS("{componentType}.{componentName}".format({
-          componentType: componentType,
-          componentName: componentName
-        }));
+      if (els && els.length) {
+        for (var i = 0; i < els.length; ++i) {
+          var dom = els[i];
 
-        if (componentClass) {
-          var renderClass = Render[componentType];
-          if (renderClass) {
-            renderClass({
-              component: componentClass,
-              dom: dom,
-              parent: params.component
-            });
+          //$.each($(params.dom).find(componentSelector), function(key, value) {
+          //  var dom = $(value);
+
+          var componentType = dom.getAttribute(nkf.conf.def.attr.component.type);
+          var componentName = dom.getAttribute(nkf.conf.def.attr.component.name);
+          var componentClass = utils.getComponentByNS("{componentType}.{componentName}".format({
+            componentType: componentType,
+            componentName: componentName
+          }));
+
+          if (componentClass) {
+            var renderClass = Render[componentType];
+            if (renderClass) {
+              renderClass({
+                component: componentClass,
+                dom: dom,
+                parent: params.component
+              });
+            }
+          } else {
+            console.error("Can't resolve", componentType + "." + componentName);
           }
-        } else {
-          console.error("Can't resolve", componentType + "." + componentName);
-        }
 
-      });
+          //});
+        }
+      }
     }
 
     function getData(params) {
-      var layoutName = $("[data-nkf-component-type=layout]").attr("data-nkf-component-name");
+      var layoutName = document.querySelector("[data-nkf-component-type=layout]").getAttribute("data-nkf-component-name");
       var pageName = _this.getPageName(params && params.pageName);
 
       var layoutClass = nkf.impl.components.layout[layoutName];
@@ -327,7 +343,7 @@
       currentPageName = pageName;
 
       function callback(data) {
-        $(document).trigger(ns + "." + ComponentManager.className, {
+        nkf.emit(ns + "." + ComponentManager.className, {
           name: "dataFetched",
           data: {
             pageName: pageName,
@@ -337,10 +353,16 @@
 
         renderScreen(currentComponents);
 
-        (_this.getPreRenderedDOM() || $("body")).find(nkf.conf.loadingMaskSelector).addClass(nkf.conf.classes.none);
+        var el = (_this.getPreRenderedDOM() || document.body).querySelector(nkf.conf.loadingMaskSelector);
+        if (el) {
+          el.classList.add(nkf.conf.classes.none);
+        }
       }
 
-      (_this.getPreRenderedDOM() || $("body")).find(nkf.conf.loadingMaskSelector).removeClass(nkf.conf.classes.none);
+      var el = (_this.getPreRenderedDOM() || document.body).querySelector(nkf.conf.loadingMaskSelector);
+      if (el) {
+        el.classList.remove(nkf.conf.classes.none);
+      }
 
       //TODO: option to not load data
       //TODO: option to add additional params
@@ -355,45 +377,37 @@
         pageNameURL += "." + nkf.conf.pageNameExtension;
       }
 
-      $.ajax({
+      nkf.core.Ajax({
         url: pageNameURL,
         data: params.params,
-        type: params.type || "get"
-      }).always(function(a1, statusText, a2) {
-        var jqXHR = statusText === "error" ? a1 : a2;
+        method: params.type || "get",
+        always: function(data, request) {
+          if (request.status === 200 || request.status === 401) {
+            if (request.status === 200) {
+              pageCode = request.status;
 
-        var data = null;
+              pageData = Object.assign(true, {}, data);
 
-        try {
-          data = JSON.parse(jqXHR.responseText);
-        } catch (e) {
-        }
+              if (!params.noRedraw) {
+                callback(pageData);
+              } else {
+                params.noRedraw();
+              }
+            } else if (pageCode !== request.status) {
+              pageCode = request.status;
 
-        if (jqXHR.status === 200 || jqXHR.status === 401) {
-          if (jqXHR.status === 200) {
-            pageCode = jqXHR.status;
-
-            pageData = $.extend(true, {}, data);
-
-            if (!params.noRedraw) {
-              callback(pageData);
+              _this.load({});
             } else {
-              params.noRedraw();
+              nkf.core.Controller.load({
+                pageName: "Welcome",
+                init: true,
+                clear: true
+              });
             }
-          } else if (pageCode !== jqXHR.status) {
-            pageCode = jqXHR.status;
-
-            _this.load({});
           } else {
-            nkf.core.Controller.load({
-              pageName: "Welcome",
-              init: true,
-              clear: true
-            });
-          }
-        } else {
-          if (nkf.pageError) {
-            nkf.pageError(jqXHR);
+            if (nkf.pageError) {
+              nkf.pageError(request);
+            }
           }
         }
       });
@@ -451,9 +465,7 @@
 
       nkf.instances.page[params.component.className] = component;
 
-      params.dom.data({
-        rendered: true
-      });
+      params.dom.rendered = true;
 
       var dom = component.render({
         dom: params.dom
@@ -468,7 +480,7 @@
     };
 
     Render.widget = function(params) {
-      if (!params.dom.data("rendered")) {
+      if (!params.dom.rendered) {
         var component = params.component.getInstance ? params.component.getInstance() : new params.component(params);
 
         if (component.reInit && component.isConstructed) {
@@ -486,9 +498,7 @@
 
         nkf.instances.widget[params.component.className] = component;
 
-        params.dom.data({
-          rendered: true
-        });
+        params.dom.rendered = true;
 
         var dom = component.render({
           dom: params.dom
@@ -528,16 +538,16 @@
     var currentLayoutName;
     var currentPageName;
 
-    var $Utils = nkf.core.Utils;
+    var utils = nkf.core.utils;
 
     var originalStrings = null;
 
     var languageCache = {};
   }
 
-  makeSingleton(ComponentManager);
+  nkf.core.utils.makeSingleton(ComponentManager);
 
-  $.extend(self, {
+  Object.assign(self, {
     ComponentManager: ComponentManager
   });
 

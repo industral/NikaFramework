@@ -1,8 +1,7 @@
 (function() {
   "use strict";
 
-  var ns = "nkf.core";
-  var self = $.namespace(ns);
+  var self = nkf.core;
 
   Controller.className = "Controller";
 
@@ -23,12 +22,12 @@
 
       if (isInit) {
         params.pageName = params.pageName || _this.getNormalizedObject().pageName;
-        params.params = params.clear ? params.params : $.extend({}, _this.getNormalizedObject().params, params.params);
+        params.params = params.clear ? params.params : Object.assign({}, _this.getNormalizedObject().params, params.params);
 
-        if ($("body").attr("data-edit-mode") == "true") {
-          params.params = params.params || {};
-          params.params.mode = "edit";
-        }
+        //if ($("body").attr("data-edit-mode") == "true") {
+        //  params.params = params.params || {};
+        //  params.params.mode = "edit";
+        //}
 
         if (!params.appInit && params.type !== "popstate") {
           _this.setCurrentPath(params);
@@ -48,7 +47,7 @@
       }
 
       if (!params.noRedraw) {
-        $(document).trigger("nkf.core.Controller", {
+        nkf.emit("nkf.core.Controller", {
           name: "load",
           data: {
             init: params.init
@@ -72,11 +71,11 @@
       var output = nkf.conf.URLSuffix;
       output += "/" + (data.pageName || _this.getNormalizedObject().pageName || "");
 
-      if (data.params && $Utils.getObjectSize(data.params)) {
-        var preparedData = $Utils.prepareURLObject(data.params);
+      if (data.params && utils.getObjectSize(data.params)) {
+        var preparedData = utils.prepareURLObject(data.params);
 
-        if ($Utils.getObjectSize(preparedData)) {
-          var serializedData = $Utils.getSerializeObject(preparedData);
+        if (utils.getObjectSize(preparedData)) {
+          var serializedData = utils.getSerializeObject(preparedData);
 
           if (output === "/") {
             output += serializedData;
@@ -105,7 +104,7 @@
       }
 
       output.pageName = pageName;
-      output.params = $Utils.getDeserializedObject(parameters);
+      output.params = utils.getDeserializedObject(parameters);
 
       return output;
     };
@@ -115,7 +114,7 @@
     };
 
     this.getLanguage = function() {
-      return $.cookie("lang") || "en";
+      return nkf.core.utils.cookie("lang") || "en";
     };
 
     // --------------------------------------------------------------------
@@ -158,14 +157,14 @@
     var _this = this;
 
     var componentManager = self.components.ComponentManager.getInstance();
-    var $Utils = nkf.core.Utils;
+    var utils = nkf.core.utils;
 
     var historyCounter = -1;
 
     var isInit = false;
   }
 
-  $.extend(self, {
+  Object.assign(self, {
     Controller: new Controller()
   });
 

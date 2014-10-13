@@ -6,7 +6,6 @@
   },
   "conf": {
     "defaultPage": "Home",
-
     "pageURL": "/data/pages",
     "pageFormatter": "{pageURL}?_name={pageName}",
     "URLSuffix": "",
@@ -48,15 +47,12 @@
         "state": "data-state"
       }
     },
-
     "storage": {
       "key": "ks",
       "usersettings": "UserSettings",
       "networkdata": "NetworkData"
     },
-
     "components": "components",
-
     "render": {
       "html": "__dom__",
       "xml": "__dom__",
@@ -75,12 +71,29 @@
         "selector": "#mask"
       }
     },
-
     "classes": {
       "none": "hidden"
     }
   },
-
+  "core": {
+    "components": {
+      "component": {},
+      "context": {},
+      "page": {},
+      "layout": {},
+      "widget": {}
+    },
+    "utils": {}
+  },
+  "impl": {
+    "components": {
+      "component": {},
+      "context": {},
+      "page": {},
+      "layout": {},
+      "widget": {}
+    }
+  },
   "enumType": {
     "Component": {
       "layout": "layout",

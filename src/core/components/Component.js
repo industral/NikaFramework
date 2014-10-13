@@ -1,8 +1,7 @@
 (function() {
   "use strict";
 
-  var ns = "nkf.core.components";
-  var self = $.namespace(ns);
+  var self = nkf.core.components;
 
   Component.className = "Component";
 
@@ -19,14 +18,11 @@
     };
 
     this.identificate = function(dynamic) {
-      var dom = $(this.getDOM());
+      var dom = this.getDOM();
 
-      var obj = {};
-      obj[nkf.conf.def.attr.component.name] = this.constructor.className;
-      obj[nkf.conf.def.attr.component.type] = $Utils.getComponentType(this);
-      obj[nkf.conf.def.attr.component.dynamic] = dynamic;
-
-      dom.attr(obj);
+      dom.setAttribute(nkf.conf.def.attr.component.name, this.constructor.className);
+      dom.setAttribute(nkf.conf.def.attr.component.type, utils.getComponentType(this));
+      dom.setAttribute(nkf.conf.def.attr.component.dynamic, dynamic);
     };
 
     this.getDOM = function() {
@@ -37,13 +33,13 @@
       data = data || {};
       var resultObj = {};
 
-      $.extend(resultObj, {
-        componentType: $Utils.getComponentType(this),
+      Object.assign(resultObj, {
+        componentType: utils.getComponentType(this),
         componentName: this.constructor.className,
         wrap: false
       }, data);
 
-      return $Utils.getComponentPart(resultObj);
+      return utils.getComponentPart(resultObj);
     };
 
     this.getData = function(data) {
@@ -55,20 +51,20 @@
       if (data && data.all) {
         result = screenData;
       } else {
-        var componentType = data && data.componentType || $Utils.getComponentType(this);
+        var componentType = data && data.componentType || utils.getComponentType(this);
         var componentName = data && data.componentName || this.constructor.className;
 
         result = screenData && screenData.components && screenData.components[componentType] && screenData.components[componentType][componentName] || {};
       }
 
       if (data && data.callback) {
-        if (!nkf.core.Utils.getObjectSize(result)) {
+        if (!nkf.core.utils.getObjectSize(result)) {
           console.debug("Load additional resources");
 
           nkf.core.Controller.load({
             init: true,
             noRedraw: function() {
-              var requestObj = $.extend({}, data, true);
+              var requestObj = Object.assign({}, data, true);
               delete requestObj.callback;
 
               data.callback(requestedComponent.getData(requestObj));
@@ -95,11 +91,11 @@
     // --------------------------------------------------------------------
 
     var _this = this;
-    var $Utils = nkf.core.Utils;
+    var utils = nkf.core.utils;
     var $ComponentManager = nkf.core.components.ComponentManager.getInstance();
   }
 
-  $.extend(self, {
+  Object.assign(self, {
     Component: Component
   });
 

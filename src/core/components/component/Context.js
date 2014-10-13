@@ -1,8 +1,7 @@
 (function() {
   "use strict";
 
-  var ns = "nkf.core.components.component";
-  var self = $.namespace(ns);
+  var self = nkf.core.components.component;
 
   Context.className = "Context";
 
@@ -23,7 +22,7 @@
     // --------------------------------------------------------------------
   }
 
-  $.extend(self, {
+  Object.assign(self, {
     Context: Context
   });
 

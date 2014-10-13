@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  nkf.core.Utils.extend(nkf.core.components.Component, Page, "Page");
+  nkf.core.utils.extend(nkf.core.components.Component, Page, "Page");
 
   function Page() {
 
@@ -10,20 +10,17 @@
     // --------------------------------------------------------------------
 
     this.render = function(params) {
-      var dom = $(this.getDOM());
+      var dom = this.getDOM();
 
-      var attr = {};
-      attr[nkf.conf.def.attr.component.type] = nkf.enumType.Component.page;
-      attr[nkf.conf.def.attr.component.name] = this.constructor.className;
-
-      dom.attr(attr);
+      dom.setAttribute(nkf.conf.def.attr.component.type, nkf.enumType.Component.page);
+      dom.setAttribute(nkf.conf.def.attr.component.name, this.constructor.className);
 
       if (params.dom) {
-        var section = $(params.dom).find(nkf.conf.render.layout.selector);
+        var section = params.dom.querySelector(nkf.conf.render.layout.selector);
 
-        if (section.length) {
-          section.contents().remove();
-          section.append(dom);
+        if (section) {
+          section.innerHTML = ''; //TODO: check memory leaks
+          section.appendChild(dom);
         } else {
           console.warn("Render layout section not found");
         }

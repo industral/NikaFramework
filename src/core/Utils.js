@@ -1,36 +1,11 @@
 (function() {
   "use strict";
 
-  var ns = "nkf.core";
-  var self = $.namespace(ns);
-
-  function Utils() {
-  }
-
-  Utils.template2 = function(dom, obj) {
-    var html = dom[0].outerHTML;
-
-    (function go(obj, ns) {
-      $.each(obj, function(key, value) {
-        if (typeof value !== "object") {
-          var _ns = ns.join(".");
-          var _key = _ns + (_ns ? "." : "") + key;
-
-          html = html.replace(new RegExp("##" + _key + "##", "g"), value);
-        } else {
-          go(value, ns.concat(key));
-        }
-      });
-    })(obj, []);
-
-    dom.html(html);
-  };
-
   // Andy Zhupanov
-  Utils.template = function(template, obj) {
+  nkf.core.utils.template = function(template, obj) {
     var html = template[0].outerHTML;
 
-    var a = html.replace(/##[\w\.]+?##/g, function(matched) {
+    return html.replace(/##[\w\.]+?##/g, function(matched) {
       var chunks = matched.slice(2, -2).split('.');
       var root = obj;
       var i = 0;
@@ -42,11 +17,9 @@
 
       return root || matched;
     });
-
-    return $(a);
   };
 
-  Utils.getComponentPart = function(data) {
+  nkf.core.utils.getComponentPart = function(data) {
     //todo: html?
     data.componentPart = data.componentPart ? data.componentPart : "html";
 
@@ -73,14 +46,14 @@
         var o = document.createElement("div");
         o.innerHTML = componentData;
 
-        return data.wrap ? $(componentData) : o.childNodes[0];
+        return data.wrap ? componentData : o.childNodes[0];
       }
     } else {
       console.warn(pathToComponentPart, "doesn't exist");
     }
   };
 
-  Utils.getComponentType = function(instance) {
+  nkf.core.utils.getComponentType = function(instance) {
     switch (true) {
       case instance instanceof nkf.core.components.component.Layout:
         return nkf.enumType.Component.layout;
@@ -102,13 +75,13 @@
     }
   };
 
-  Utils.parseSVG = function(string) {
+  nkf.core.utils.parseSVG = function(string) {
     var svg = new DOMParser().parseFromString(string, "text/xml");
 
     return $(document.importNode(svg.documentElement, true));
   };
 
-  Utils.getComponentNS = function(component) {
+  nkf.core.utils.getComponentNS = function(component) {
     var resultComponent = "{componentType}.{componentName}".format({
       componentType: Utils.getComponentType(component),
       componentName: component.className
@@ -117,7 +90,7 @@
     return resultComponent;
   };
 
-  Utils.getComponentNSByDOM = function(element) {
+  nkf.core.utils.getComponentNSByDOM = function(element) {
     var selector = "[{componentTypeKey}={componentTypeName}]".format({
       componentTypeKey: nkf.conf.def.attr.component.type,
       componentTypeName: nkf.enumType.Component.widget
@@ -138,11 +111,11 @@
     return result;
   };
 
-  Utils.getComponentByNS = function(ns) {
+  nkf.core.utils.getComponentByNS = function(ns) {
     return eval("nkf.impl.components." + ns);
   };
 
-  Utils.getComponentInstanceByNS = function(ns) {
+  nkf.core.utils.getComponentInstanceByNS = function(ns) {
     var split = ns.split(/\.|#/);
 
     var type = split[0];
@@ -163,14 +136,14 @@
       });
     }
 
-    return $(selector);
+    return document.querySelector(selector);
   };
 
-  Utils.firstLetterUpperCase = function(string) {
+  nkf.core.utils.firstLetterUpperCase = function(string) {
     return string.slice(0, 1).toUpperCase() + string.slice(1);
   };
 
-  Utils.getObjectValueByKey = function(object, path) {
+  nkf.core.utils.getObjectValueByKey = function(object, path) {
     function process(node) {
       return result[node];
     }
@@ -192,7 +165,7 @@
     return object;
   };
 
-  Utils.setObjectValueByKey = function(object, path, keyValue) {
+  nkf.core.utils.setObjectValueByKey = function(object, path, keyValue) {
     function process(o, node, last) {
       last ? (res[node] = keyValue) : (res[node] = res[node] || {});
       return res[node];
@@ -214,9 +187,14 @@
     }
   };
 
-  Utils.prepareURLObject = function(data) {
-    if (data && Utils.getObjectSize(data)) {
-      $.each(data, function(key, value) {
+  nkf.core.utils.prepareURLObject = function(data) {
+    if (data && Object.keys(data).length) {
+      var keys = Object.keys(data);
+
+      for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i];
+        var value = data[key];
+
         if (typeof value === "object" && value && value._custom) {
           if (value.isDelete) {
             delete data[key];
@@ -226,13 +204,12 @@
         } else if (value === null) {
           delete data[key];
         }
-      });
-
+      }
       return data;
     }
   };
 
-  Utils.getSerializeObject = function(data) {
+  nkf.core.utils.getSerializeObject = function(data) {
     var string = JSON.stringify(data);
 
     if (string) {
@@ -242,13 +219,13 @@
     }
   };
 
-  Utils.getDeserializedObject = function(data) {
+  nkf.core.utils.getDeserializedObject = function(data) {
     if (data) {
       var string = decodeURIComponent(data);
       string = string.replace(/(\w+)\s*:/g, '"$1":');
 
       try {
-        return  JSON.parse(string);
+        return JSON.parse(string);
       } catch (e) {
         return {};
       }
@@ -257,7 +234,9 @@
     }
   };
 
-  Utils.getObjectSize = function(data) {
+
+  //FIXME: Object.keys?
+  nkf.core.utils.getObjectSize = function(data) {
     var count = 0;
 
     for (var i in data) {
@@ -269,53 +248,62 @@
     return count;
   };
 
-  Utils.os = {
+  nkf.core.utils.os = {};
+
+  nkf.core.utils.os.win = navigator.platform.match(/win/i);
+  nkf.core.utils.os.mac = navigator.platform.match(/mac/i);
+
+  nkf.core.utils.extendClass = function(extendClass, superClass) {
+    extendClass.prototype = new superClass();
+    extendClass.prototype.constructor = extendClass;
   };
 
-  Utils.os.win = navigator.platform.match(/win/i);
-  Utils.os.mac = navigator.platform.match(/mac/i);
 
-  Utils.extend = function(type, clazz, className) {
+  nkf.core.utils.makeSingleton = function(clazz) {
+    clazz.getInstance = function() {
+      if (!clazz.instance) {
+        clazz.instance = new clazz();
+      }
+
+      return clazz.instance;
+    };
+  };
+
+  nkf.core.utils.extend = function(type, clazz, className) {
     var ns;
 
     switch (true) {
       case type == nkf.core.components.component.Layout:
-        ns = "nkf.impl.components.layout";
+        ns = nkf.impl.components.layout;
         break;
       case type == nkf.core.components.component.Page:
-        ns = "nkf.impl.components.page";
+        ns = nkf.impl.components.page;
         break;
       case type == nkf.core.components.component.Widget:
-        ns = "nkf.impl.components.widget";
+        ns = nkf.impl.components.widget;
         break;
       case type == nkf.core.components.component.Context:
-        ns = "nkf.impl.components.context";
+        ns = nkf.impl.components.context;
         break;
       case type == nkf.core.components.component.Component:
-        ns = "nkf.impl.components.component";
+        ns = nkf.impl.components.component;
         break;
       case type == nkf.core.components.Component:
-        ns = "nkf.core.components.component";
+        ns = nkf.core.components.component;
         break;
       default:
         console.warn("Looks like using wrong instance", type);
     }
 
-    var self = $.namespace(ns);
-
-    extendClass(clazz, type);
+    nkf.core.utils.extendClass(clazz, type);
     clazz.className = className;
 
     var o = {};
     o[className] = clazz;
 
-    $.extend(self, o);
-    
+    Object.assign(ns, o);
+
     return o;
   };
-
-  $.extend(self, {
-    Utils: Utils
-  });
 
 })();

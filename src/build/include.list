@@ -1,12 +1,14 @@
-assets/scripts/jquery.js
-assets/scripts/bowser.js
-assets/scripts/plugins/jquery.namespace.js
-assets/scripts/plugins/string.format.js
-assets/scripts/plugins/jquery.cookie.js
-assets/scripts/plugins/jquery.attributes.js
-assets/scripts/helper.js
+assets/scripts/plugins/emitter.js
 
-core/Utils.js
+core/app.js
+
+assets/scripts/plugins/ajax.js
+assets/scripts/plugins/string.format.js
+assets/scripts/plugins/cookie.js
+
+assets/scripts/legacy/Object.assign.js
+
+core/utils.js
 
 core/components/ComponentManager.js
 core/components/Component.js

@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  nkf.core.Utils.extend(nkf.core.components.Component, Widget, "Widget");
+  nkf.core.utils.extend(nkf.core.components.Component, Widget, "Widget");
 
   function Widget() {
 
@@ -14,13 +14,10 @@
        params.dom - <div data-nkf-component-type="widget" data-nkf-component-name="WIDGET_NAME">
        */
 
-      var dom = $(this.getDOM());
+      var dom = this.getDOM();
 
-      params.dom.append(dom);
-
-      params.dom.data({
-        instance: this
-      });
+      params.dom.appendChild(dom);
+      params.dom.instance = this;
 
       return dom;
     };

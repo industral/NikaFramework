@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  nkf.core.Utils.extend(nkf.core.components.Component, Layout, "Layout");
+  nkf.core.utils.extend(nkf.core.components.Component, Layout, "Layout");
 
   function Layout() {
 
@@ -10,17 +10,14 @@
     // --------------------------------------------------------------------
 
     this.render = function(params) {
-      var dom = $(this.getDOM());
+      var dom = this.getDOM();
 
-      var attr = {};
-      attr[nkf.conf.def.attr.component.type] = nkf.enumType.Component.layout;
-      attr[nkf.conf.def.attr.component.name] = this.constructor.className;
+      dom.setAttribute(nkf.conf.def.attr.component.type, nkf.enumType.Component.layout);
+      dom.setAttribute(nkf.conf.def.attr.component.name, this.constructor.className);
 
-      dom.attr(attr);
-
-      var layout = $("body > [data-nkf-component-type=layout]");
-      layout.remove();
-      $(nkf.conf.render.body.selector).append(dom);
+      var layout = document.querySelector("body > [data-nkf-component-type=layout]");
+      layout.parentNode.removeChild(layout);
+      document.querySelector(nkf.conf.render.body.selector).appendChild(dom);
 
       $ComponentManager.setPreRenderedDOM(dom);
 

@@ -26,7 +26,7 @@
 
     configData.version = version;
 
-    out.push("var nkf=" + JSON.stringify(configData) + ";");
+    out.push("window.nkf=" + JSON.stringify(configData) + ";");
   }
 
   init();
