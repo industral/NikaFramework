@@ -1,9 +1,7 @@
 (function() {
   "use strict";
 
-  var self = nkf.core.components.component;
-
-  Context.className = "Context";
+  nkf.core.utils.extend(nkf.core.components.Component, Context, "Context");
 
   function Context() {
 
@@ -21,9 +19,5 @@
     // Private variables
     // --------------------------------------------------------------------
   }
-
-  Object.assign(self, {
-    Context: Context
-  });
 
 })();

@@ -1,9 +1,9 @@
 (function() {
-  "use strict";
+  'use strict';
 
   var self = nkf.core;
 
-  Controller.className = "Controller";
+  Controller.className = 'Controller';
 
   function Controller() {
 
@@ -21,34 +21,34 @@
       }
 
       if (isInit) {
-        params.pageName = params.pageName || _this.getNormalizedObject().pageName;
-        params.params = params.clear ? params.params : Object.assign({}, _this.getNormalizedObject().params, params.params);
+        params.pageName = params.pageName || _this.getURLObject().pageName;
+        params.params = params.clear ? params.params : Object.assign({}, _this.getURLObject().params, params.params);
 
-        //if ($("body").attr("data-edit-mode") == "true") {
-        //  params.params = params.params || {};
-        //  params.params.mode = "edit";
-        //}
-
-        if (!params.appInit && params.type !== "popstate") {
-          _this.setCurrentPath(params);
-        }
-
-        if (params.init) {
-          ++historyCounter;
-
-          delete params.type;
-
-          if (params.init && nkf.impl.components.page[params.pageName] && nkf.impl.components.page[params.pageName].getURLParams) {
-            params.params = nkf.impl.components.page[params.pageName].getURLParams(_this.getNormalizedObject());
+        if (params.e && (params.e.metaKey || params.e.ctrlKey)) {
+        } else {
+          if (params.e) {
+            params.e.preventDefault();
           }
 
-          componentManager.load(params);
+          if (!params.appInit && params.type !== 'popstate') {
+            _this.setCurrentPath(params);
+          }
+
+          if (params.init) {
+            delete params.type;
+
+            if (params.init && nkf.impl.components.page[params.pageName] && nkf.impl.components.page[params.pageName].getURLParams) {
+              params.params = nkf.impl.components.page[params.pageName].getURLParams(_this.getURLObject());
+            }
+
+            componentManager.load(params);
+          }
         }
       }
 
       if (!params.noRedraw) {
-        nkf.emit("nkf.core.Controller", {
-          name: "load",
+        nkf.emit('nkf.core.Controller', {
+          name: 'load',
           data: {
             init: params.init
           }
@@ -56,65 +56,89 @@
       }
     };
 
+    //FIXME: where we use it
     this.getCurrentPath = function() {
-      var normalBrowsers = window.location.href.replace(window.location.protocol + "//" + window.location.host, "").replace(nkf.conf.URLSuffix, "").replace(/\/#\//, "").replace(/^\//, "");
-      var ie = window.location.hash.replace(nkf.conf.URLSuffix, "").replace(/\#?\/?/, "");
-
-      if (!!history.pushState) {
-        return ie || normalBrowsers;
-      } else {
-        return normalBrowsers;
-      }
+      return window.location.pathname.replace(nkf.conf.URLSuffix, '');
     };
 
     this.setCurrentPath = function(data) {
-      var output = nkf.conf.URLSuffix;
-      output += "/" + (data.pageName || _this.getNormalizedObject().pageName || "");
+      var url = this.getURLFromObject(data);
 
-      if (data.params && utils.getObjectSize(data.params)) {
-        var preparedData = utils.prepareURLObject(data.params);
+      history.pushState({path: url}, '', url);
+    };
 
-        if (utils.getObjectSize(preparedData)) {
-          var serializedData = utils.getSerializeObject(preparedData);
+    this.getURLObject = function(url) {
+      url = url || window.location.href;
 
-          if (output === "/") {
-            output += serializedData;
-          } else {
-            output += "/" + serializedData;
-          }
+      var parser = document.createElement('a');
+      parser.href = url;
+
+      var params = {};
+
+      var splitedPath = parser.pathname.split('/');
+      var pageName = splitedPath[1].replace(/\//g, '');
+
+      if (splitedPath.length === 3 || (splitedPath.length === 2 && pageName.match(':'))) {
+        var suggestedParams = splitedPath[splitedPath.length - 1];
+
+        var splitedParams = suggestedParams.match(/\w+:[\w()~]+/g);
+
+        if (splitedParams) {
+          splitedParams.forEach(function(value) {
+            value = value.trim();
+
+            if (value) {
+              var keyValue = value.split(':');
+
+              var k = keyValue[0];
+              var v = keyValue[1];
+
+              params[k] = v;
+            }
+
+          });
         }
       }
 
-      history.pushState({path: output}, "", output);
-    };
-
-    //TODO: unit tests
-    this.getNormalizedObject = function(url) {
-      var output = {};
-
-      var resultURL = (url || _this.getCurrentPath()).replace(/^\//, "");
-      var splited = resultURL.split("/");
-
-      var pageName = splited[0];
-      if (decodeURIComponent(pageName)[0] === "{") {
-        parameters = decodeURIComponent(decodeURIComponent(pageName));
-        pageName = "Home";
-      } else {
-        var parameters = resultURL.replace(pageName, "").replace(/^\//, "");
+      if (pageName.match(':')) {
+        pageName = nkf.conf.defaultPage;
       }
 
-      output.pageName = pageName;
-      output.params = utils.getDeserializedObject(parameters);
-
-      return output;
+      return {
+        pageName: pageName || nkf.conf.defaultPage,
+        params: params
+      };
     };
 
-    this.getHistoryCounter = function() {
-      return historyCounter;
+    this.getURLFromObject = function(object) {
+      var parser = document.createElement('a');
+      parser.href = '';
+
+      if (object.pageName) {
+        parser.pathname = object.pageName === nkf.conf.defaultPage ? '' : object.pageName;
+      }
+
+      if (object.params) {
+        var paramsKeys = Object.keys(object.params);
+
+        if (paramsKeys.length) {
+          var outputParamsArray = [];
+
+
+          paramsKeys.forEach(function(paramKey) {
+            outputParamsArray.push(paramKey + ':' + object.params[paramKey])
+          });
+
+          parser.pathname += '/' + outputParamsArray.join(',');
+          parser.pathname = parser.pathname.replace('//', '/');
+        }
+      }
+
+      return parser.pathname;
     };
 
     this.getLanguage = function() {
-      return nkf.core.utils.cookie("lang") || "en";
+      return nkf.core.utils.cookie('lang') || 'en';
     };
 
     // --------------------------------------------------------------------
@@ -125,10 +149,10 @@
       window.onpopstate = function(event) {
         if (!event.state || !event.state.init) {
           _this.load({
-            pageName: _this.getNormalizedObject().pageName,
-            params: _this.getNormalizedObject().params,
+            pageName: _this.getURLObject().pageName,
+            params: _this.getURLObject().params,
             init: true,
-            type: "popstate"
+            type: 'popstate'
           });
         }
       };
@@ -136,13 +160,13 @@
 
     function init() {
       if (!nkf.impl) {
-        throw "No implementation found";
+        throw 'No implementation found';
       } else if (!nkf.impl.components) {
-        throw "No component found";
+        throw 'No component found';
       } else if (!nkf.impl.components.layout) {
-        throw "No layout component found";
+        throw 'No layout component found';
       } else if (!nkf.impl.components.page) {
-        throw "No page component found";
+        throw 'No page component found';
       }
 
       isInit = true;
@@ -157,9 +181,6 @@
     var _this = this;
 
     var componentManager = self.components.ComponentManager.getInstance();
-    var utils = nkf.core.utils;
-
-    var historyCounter = -1;
 
     var isInit = false;
   }

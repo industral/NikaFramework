@@ -75,7 +75,8 @@
     };
 
     this.getPageName = function(name) {
-      return name || document.querySelector("[data-nkf-default-page]").getAttribute("data-nkf-default-page");
+      var defaultPage = document.querySelector("[data-nkf-default-page]");
+      return name || defaultPage && defaultPage.getAttribute("data-nkf-default-page") || nkf.conf.defaultPage;
     };
 
     this.localize = function(inputData) {
@@ -193,9 +194,29 @@
     };
 
     function renderScreen(data) {
-      //$("body").attr({
-      //  "data-status": "loading"
-      //});
+      if (nkf.impl.components.context) {
+        var contextEls = Object.keys(nkf.impl.components.context);
+
+        if (contextEls.length) {
+          nkf.instances.context = {};
+
+          for (var i = 0; i < contextEls.length; ++i) {
+            var key = contextEls[i];
+            var value = nkf.impl.components.context[key];
+
+            var component = value.getInstance ? value.getInstance() : new value();
+
+            if (component.Constructor && !component.isConstructed) {
+              component.Constructor();
+              component.isConstructed = true;
+            }
+
+            nkf.instances.context[key] = component;
+          }
+        }
+      }
+
+      document.body.dataset.status = "loading";
 
       preRenderScreen(data);
       postRenderScreen();
@@ -246,25 +267,7 @@
         name: "rendered"
       });
 
-      //$("body").attr({
-      //  "data-status": "loaded"
-      //});
-
-      if (nkf.impl.components.context) {
-        var contextEls = Object.keys(nkf.impl.components.context);
-
-        if (contextEls.length) {
-          nkf.instances.context = {};
-
-          for (var i = 0; i < contextEls.length; ++i) {
-            var key = contextEls[i];
-            var value = nkf.impl.components.context[key];
-
-            nkf.instances.context[key] = new value();
-            nkf.instances.context[key].Constructor();
-          }
-        }
-      }
+      document.body.dataset.status = "loaded";
     }
 
     function postRenderScreen() {
@@ -352,14 +355,9 @@
         });
 
         renderScreen(currentComponents);
-
-        var el = (_this.getPreRenderedDOM() || document.body).querySelector(nkf.conf.loadingMaskSelector);
-        if (el) {
-          el.classList.add(nkf.conf.classes.none);
-        }
       }
 
-      var el = (_this.getPreRenderedDOM() || document.body).querySelector(nkf.conf.loadingMaskSelector);
+      var el = (document.body).querySelector(nkf.conf.loadingMaskSelector);
       if (el) {
         el.classList.remove(nkf.conf.classes.none);
       }
@@ -382,8 +380,13 @@
         data: params.params,
         method: params.type || "get",
         always: function(data, request) {
-          if (request.status === 200 || request.status === 401) {
-            if (request.status === 200) {
+          var el = (document.body).querySelector(nkf.conf.loadingMaskSelector);
+          if (el) {
+            el.classList.add(nkf.conf.classes.none);
+          }
+
+          if (request.status >= 200 && request.status <= 401) {
+            if (request.status >= 200 && request.status <= 302) {
               pageCode = request.status;
 
               pageData = Object.assign(true, {}, data);

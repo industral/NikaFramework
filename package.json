@@ -3,24 +3,20 @@
   "author": "Alex Ivasyuv <alex@itherz.com>",
   "version": "4.5.0",
   "private": true,
-  "engines" :{
+  "engines": {
     "node": ">= v0.10"
   },
   "scripts": {
-    "install-components": "./node_modules/.bin/bower install",
-    "test": "npm run-script build && ./node_modules/.bin/karma start tests/karma-config.js --single-run",
-    "build": "cd src/build/ && node build.js",
-    "node-test": "./node_modules/.bin/mocha --recursive tests/node-tests/"
-  },
-  "dependencies": {
-    "node-sass": "0.4.x"
+    "test": "karma start tests/karma.conf.js"
   },
   "devDependencies": {
     "bower": "0.8.x",
-    "karma": "0.8.x",
-    "mocha": "1.9.x",
     "expect.js": "*",
+    "karma": "^0.12.24",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "mocha": "1.9.x",
     "phantomjs": "1.9.x"
   }
 }
-

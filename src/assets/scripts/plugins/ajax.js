@@ -31,7 +31,7 @@ nkf.core.Ajax = function(options) {
         data = request.responseText;
       }
 
-      if (request.status === 200) {
+      if (request.status >= 200 && request.status <= 401) {
         if (options.success) {
           options.success(data);
         }
